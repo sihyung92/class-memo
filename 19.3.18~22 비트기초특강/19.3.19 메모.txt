@@ -1,0 +1,9 @@
+19.03.19 (화)
+
+조건문의 종류 : if문, switch문
+if문 = 조건절이 true / false로 나와야 함.
+switch = 한개의 변수에 대해서 다양한 값의 조건
+*이클립스 단축키 : ctrl + shift + f = 자동 줄맞춤 ctrl + f11 = 재생
+
+반복문의 종류 : for문, while문
+for문 : 

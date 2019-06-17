@@ -1,0 +1,109 @@
+19.5.10(금)
+
+**rinux oracle 포트번호 8080!!!
+
+centos는 rinux redhat 계열
+oracle의 최소 필요 메모리단위는 2기가
+
+vmware에서 create virtual machine => root암호,사용자암호 class03 사용자 user03
+접속후에는 root(최고권한계정)으로 로그인. 비밀번호는 칠 때 커서가 안뜸
+
+gui 구현하는 법 (그래픽) 
+	sudo yum update 이후 y
+	다 다운로드 받고 나면
+	sudo yum group install "GNOME Desktop"
+	다운로드 받고 인스톨까지 하고나면
+	startx
+
+rinux상에서 받아야 할 자바파일 - rinux 68 ,rpm파일
+	다운로드 이후 우클릭 openTerminal 
+	$ rpm -ivh jdk-8u211-linux-x64.rpm
+	sudo alternatives --config java
+	버전확인 javac -version
+
+안될때는 
+	nmtui - 2번째것, disactive로 만들어주기
+
+oracle 설치=> 압축 해제 후 설치 필요목록
+	sudo yum install bc 
+	sudo yum install flex
+	sudo yum install libaio
+	sudo yum install bc flex libaio 도 가능
+
+오라클 설치 후 초기값 세팅할 때 포트번호 8080은 바꿔주는게 좋다.
+
+오라클 폴더 찾아가서 oracle_env.sh 실행
+sqlplus 실행 => 설정이 필요
+cd ~ 를 통해 홈으로 가서 ls -a 로 전체목록을 확인하고 gedit .bash_profile 을 들어가서
+	ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe (오라클의 설치폴더 디렉토리)
+	PATH 에 $ORACLE_HOME/bin 추가 ($부터 $까지, : 는 구분자)
+	export ORACLE_HOME 문구 추가
+	export ORACLE_SID=XE 문구 추가
+
+	source .bash_profile치기(재부팅없이 환경변수 적용)
+
+	어디서나 sqlplus로 접근 가능
+	미리 설정한 아이디, 비밀번호 입력
+
+
+rinux - otherLocations , window의 c-drive 역할
+
+rinux 용어
+/ : 최상위 디렉토리
+~ : 윈도우의 내 문서(home)
+
+rinux terminal 명령어
+	pwd 현재 디렉토리
+	cd 디렉토리 바꾸기
+	unzip 압축해제
+	ls 디렉토리에 있는 목록 확인
+		-a 를 붙이면 숨은 파일까지 모두 보임
+	gedit 메모장
+	clear 내용들 지우기
+
+rinux 상에서 oracle 다운로드받기.
+ database se 18c가서 prior 클릭, 11버전 다운로드 (그 이후 버전은 너무 무거움)
+
+window 오라클 설치 후 port번호 바꾸기 exec dbms_xdb.sethttpport('9090');
+port번호 확인 : select dbms_xdb.gethttpport() from dual; 
+이후 cmd -> sqlplus 로 접속
+
+오라클은 DBMS 중에 RDBMS이다. Relational data base management system
+RDBMS의 기본적인 데이터 저장단위는 테이블이다. 로우row와 칼럼column으로 구분되고 하나의 로우는 하나의 레코드이다. 칼럼은 속성이다
+
+dummy 파일 아이디 scott, 비번 tiger
+
+query문
+	SELECT 테이블에서 정보를 불러오는 명령어. 
+		ex)dummy 자료에서 select * from emp; 하면 사원 전체의 데이터를 불러오고 select * from dept; 하면 부서정보들을 불러오는 식이다.
+		* column 명을 *대신 넣어주면 해당 정보만 불러온다
+		* column 변수명 as "바뀔 이름" 으로 변수명을 바꾸어 출력할 수 있다(이번에만 그렇게 출력하는 것이지 변수명을 바꾸는 것은 아님, 띄어쓰기없고 특수문자없는 한 단어라면 ""생략 가능,
+		  불러오는 변수가 하나라면 as도 생략가능)
+		* SELECT DISTINCT 변수명 = 중복자료를 제외한다, 변수가 많아지면 변수들 전부가 중복됐을 때 제외한다.
+		* WHERE 조건문 을 붙여서 조건문 부여 가능 (sql에서는 비교연산자 == 를 =로 쓴다)
+			java와 다른 비교연산자 : <>,^= (다르다)
+		* AND 는 java의 &&와 같다.
+		* OR 은 java의 ||와 같다.
+		* NOT 은 java의 !와 같다.
+		* BETWEEN A AND B = A와 B 사이를 나타내는 조건문.
+		* in (A,B,C) A or B or C인 조건문
+		* like 는 뒤에 오는 패턴을 찾는 조건문.
+			패턴 % 문자가 없거나 하나 이상의 문자가 어떤 값이 와도 상관없다.
+			     _ 하나의 문자가 어떤 값이 와도 상관없다.
+			패턴 예시 ) where name like 'A%' = 첫글자가 a인 사람 모두, '%A' A로 끝나는 사람 모두, '%A%' A가 들어가는 사람 모두
+				    where name like '__A_' = 이름이 4글자면서 세번째 글자가 A인 사람, '_A%' 두번째 글자가 A이고 그 뒤는 상관없음
+		* is null 은 null이면 출력. is not null 은 반대. 
+		!주의 null+100은 null이다.
+		* order by 변수명 = 변수명 오름차순으로 정렬해서 출력(끝에 asc를 붙여줘야하지만 생략가능), 끝에 desc를 붙이면 내림차순이다. 
+		!주의 order by는 조건문보다 뒤에 와야한다.
+	변수값은 ''로 표시한다. (쿼리문과 달리 대소문자를 구분하므로 주의)
+
+	날짜 데이터를 조회할 때 '년/0월/0일' 규칙을 지켜주면 >=, <=를 통해 이후, 이전을 나타낼 수 있다.
+
+*window는 다른 os보다 제한되는 부분이 있다?? 
+	pc는 서버 위주로 돌아가게 만들어졌는데 window사용할 사람만을 위해 만들어졌기 때문에 클라이언트 위주. 서버의 최고권한인 root가 없이 클라이언트가 많은 권한을 부여받아
+	휘두를 수 있게 만들어졌음. 차후에 인터넷이 생기고 실제 클라이언트가 아닌 웹으로 접근한 클라이언트가 administrator  권한을 획득할 수 있는 문제가 생김. 그런 문제를 막기위해 그 이후 root를
+	만들게되고 그 이후로는 서버위주도, 클라이언트 위주도 아닌 애매한 os가 되었음
+
+*MSDB와 DBMS 혼동 말것. MSDB = micro soft data base , DBMS = database management system
+이후 공부해야 할 목록 : window를 제외한 기타 os

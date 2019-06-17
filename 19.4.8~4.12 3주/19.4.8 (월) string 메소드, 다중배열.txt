@@ -1,0 +1,50 @@
+19.4.8 (월)
+
+String 객체 생성시
+String str= ""; (암시적 생성) => class영역의 constant pool(상수영역)에 저장
+String str= new String(명시적 생성); =>다른 객체처럼 heap영역에 객체생성
+그러므로..
+String str = "java";
+String str = new String("java"); 는 서로 다르다.
+참조주소(reference)가 다르기 때문에.
+두개의 값비교를 하고싶으면 String 메소드 중 하나인 equals() 메소드를 활용하자.
+문자열 + 문자열 을 할 때 우리는 단순 둘이 붙는다고 생각하지만 사실 새로운 객체를 생성한다..
+
+다중 배열 : 배열 속 배열~
+	선언 : type[][] name; 앞 네모 큰배열 / 뒷 네모 들어가는배열
+
+다중배열의 특징을 보쟈.. array=int[][];앞은 뒤의 배열 객체 주소를 가지는거고, 뒤는 그 객체 속의 값.
+int[3][]면 객체 3개가 생성되겠져.. 이때 뒤에 []를 출력하려고 하면 컴파일은 되지만 출력시 에러나지만..
+앞[3]은 주소값을 갖고 있고요..[][]로 해놓고 앞[]을 출력해보면 null값이 나오겠져..[3][2]로 해놓고 뒤에걸
+출력해보면 00으로 초기화가 되어있습니다. [3][2] 해놓고 array[0]{1,2,3}해도 에러 안납니다 왜냐하면 뒷 숫자는
+처음 객체 생성시에 자리잡는 용도기 때문 
+
+*String method
+	equals(Object 객체):String과 객체 간의 값비교 같다면 true 아니라면 false ,boolean 타입 리턴
+	equalsIgnoreCase(String aaa) : String과 aaa를 대소문자 구분없이 비교 같다면 t 아니라면 f, boolean타입 리턴
+	concat(String aaa):string 에 aaa를 붙여서 새로운 String값으로 리턴
+	length(): 문자열의 길이를 봐줌 길이를 int 로 리턴
+	indexOf(String str, int fromIndex) : string에서 str이 몇번째인지(index) 찾음, fromindex는 그 인덱스이후부터 찾음. 안적으면 처음부터. int 리턴
+	lastIndexOf(String str, int fromIndex) : 위와 동, 그러나 뒤에서 부터 찾음. fromIndex도 뒤에서부터.
+	charAt(int index):index자리에 있는 글자를 char타입으로 리턴 (index는 0부터 세는것에 유의)
+	toCharArray() : char 배열로 만들어줌. 리턴은 char[]
+	ieEmpty() : length()가 0이라면 true 반환. boolean 리턴 (null에 하면 에러남)
+	valueOf(type aaa) : 각 타입을 문자열로 만들어줌. 배열은 char[] 만 가능. 리턴은 static String
+	getBytes() : 문자열을 각 글자들을 유니코드상의 숫자를 따서 byte타입의 배열로 바꾸어줌. 리턴은 byte[]
+	charAt(int index) : String 에 index위치에 있는 문자를 리턴 타입 char로 반환.
+	substring(int begin, int end) 과 split(String aaa, int limit) =>substring은 begin부터 end전!까지 잘라서 String으로 반환,
+		split은 aaa를 기준으로 잘라서 String배열로 반환. end와 limit는 안 넣어도 됨
+	startsWith(String str, int offset) : string이 str로 시작하는지, offset이 있으면 offset다음이 str로 시작하는지. 하면 T 아니면 F boolean 타입 반환
+	endsWith(String str, int offset) : string이 str로 끝나는지, 이하 위와 유사
+	contains(charSequance c) : c가 있으면 true, boolean 반환
+	compareTo(String str) : str과 비교해서 일단 길이가 다르면 몇글자나 다른지 반환. str이 짧으면 짧은만큼 -n,길면 길만큼+n. 길이가 같다면 처음으로 다른 문자의 char값의 차를 반환.String것에서 str것을 뺀 값. int 반환
+	replace(char old, char new),(char들 target, char들 replace) : string중 old(target)를 다 지우고 new(replace)를 대신 넣어줌. String 반환
+	trim(): 앞뒤 공백 다짤라줌. 사이는 냅둠. String 반환
+	
+*String constructor
+	String(byte[] aaa) : 기존 default charset(윈도우에선 유니코드겠지)에 정해있는 값으로 바꾸어서 문자열로 만들어줌.
+				aaa[] = {97,98,99}이면 "abc"가 되는식
+	String(char[] aaa) : 배열에 있는 캐릭터들을 죽~~나열해서 문자열로 만듬
+
+*switch 문은 문자열 조건문의 경우 참조변수가 아닌 값 비교를 한다.
+*null(주소값없음)과 ""(텅빔)은 다르다

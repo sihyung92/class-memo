@@ -1,0 +1,97 @@
+19.6.12(수)
+JQuery
+	function
+	.outerWidth() 바깥너비 (보더까지 포함)
+	.outerheight() 바깥높이 (위와동)
+	.innerWidth() 안쪽너비(패딩까지만 포함)
+	.innerHeight() 안쪽높이(위와동)
+	
+	.add(selector) 해당 dom도 추가해서 잡음
+	.remove(selector) 해당 dom 나가
+
+	.find(selector||element) 해당요소들을 찾아서 잡아줌
+	.filter(selector) 해당요소들을 찾는데 find와 다른 점은 부모에서부터 찾음
+	.has(selector) selector을 가진 애들
+	.is(selector) 가졌으면 true 없으면 false
+	.not(selector||element) 해당 요소들 나가
+
+	.each(function(index, element)) forEach문 idx만큼, element들을 돌림
+		*자바스크립트 foreach와 달리 index,element 순으로 인자를 받음, js는 item,index,array순
+		*순서가 달라진 이유는 index만 인자로 주면 this를 default로 처리하기 위함임
+
+	.append('content'||function(idx,html)) html()와 같지만 기존내용을 살린채 뒤에 덧붙여줌
+	$().appendTo(target) Jquery를 target html의 뒤에다가 붙이겠다, append()와 주어목적어가 다르다
+		*순서상 jquery가 먼저 실행된다는 것에 유의하자
+	.prepend() append와 달리 앞에 붙여줌
+	$().appendTo(target) target html 앞에다 붙이겠다
+
+	.after(content || function(idx)) 뒤로 들어간다(outerHtml처럼) jquery 리턴
+	.before(content || function(idx)) 위로 들어간다(outerHtml처럼) jquery 리턴
+	$().insertBefore(target) jquery가 target위로 들어간다
+	$().insertAfter(target) jquery가 target뒤로 들어간다
+
+	.wrap(Selector or htmlString or Element or jQuery) outerHTML 앞뒤로 들어간다
+		ex) $('p').wrap(<div></div>)를 하면 div로 쌓여있는 것을 볼 수 있다.
+	.unwrap() wrap의 반대
+
+	.clone() 해당 요소 깊은 복사
+	.detach() Remove the set of matched elements from the DOM.
+	.replaceWith(newContent) element들을 newContent로 다 바꿈
+	$().replaceAll(target) target을 jquery로 바꿈
+
+	$(document).scrollTop() 현재 스크롤상 어디인지를 나타냄. 값을 안주면 위치를 px단위로 리턴해주고,
+		인자로 숫자를 주면 스크롤에서 해당 px로 이동시켜줌
+
+	.position() 위치정보를 담아줌 left,top으로 빼낼 수 있음.
+	.text() 텍스트노드 정보 얻어옴
+
+	selector	
+	:eq(n)에서 선택자에 해당하는 것들중에 n번째 것이 아닌
+		걔들 중에 위에서 셀 때 n번째 것임
+
+JQuery 이벤트 처리
+	마우스 이벤트
+	click(handler) 클릭시 이벤트
+	mouseup(handler) 떼는 순간의 이벤트
+	mousedown(handler) 누르는 순간의 이벤트
+	mouseover(handler) 마우스가 올라가면 일어나는 이벤트 out과 세트
+	mouseout(handler) 마우스가 나오면 일어나는 이벤트
+	mouseenter(handler) 마우스가 올라가는 순간 일어나는 이벤트 leave와 세트
+	mouseleave(handler) 마우스가 나가면 일어나는 이벤트
+	dbclick(handler) 더블클릭시 (천천히 두번하면 안됨)
+		*over와 enter, out과 leave의 차이점 : over/out은 해당 엘리먼트 바로 위에 있을때 만 작동한다.
+				enter/leave는 바로 위가 아니더라도(만일 자식요소가 있어 그 위로 올라왔더라도)작동한다
+
+	키보드 이벤트
+	keyup(handler) 키보드에서 손을 뗄 때
+	keydown(handler) 키보드를 누른 순간 실행
+	keypress(handler) 키보드를 누르고 있으면 계~속 실행, ctrl,alt,shift등은 무시
+	.metakey 맥에 네잎클로버처럼 생긴 이상한거랑 window에 window키를 뜻함
+	.pageX,.pageY 마우스클릭 시 해당 객체의 x좌표, y좌표
+	.data 현재 실행 핸들러가 바인드 될 때 이벤트 메소드에 전달되는 선택적 데이터 오브젝트.
+ 
+	$(document).ready() window.onload=~~와 같음 (스트럭쳐가 구성된 시점) *$(function(){}) 도 같은의미를 가짐
+	$(document).load() 로드하는 시점 (읽어들이는 시점), 레디가 더 빨라서 ready를 씀
+		*이벤트 로드와 통신의 로드가 있어서 헷갈릴 우려가 있어 ready를 쓰는 이유도 있음
+	
+	이벤트 바인더 (겉으로 보기엔 lv1 접근처럼 보여도 lv2임)
+	.on(events [, selector ] [, data ], handler) 이벤트를 실어줌 1.7버전 이후 주로 사용, this 는 document가 아니라 셀렉터가 this임
+	.delegate(selector,eventType,handler) 1.4.3때 사용 하던 바인더
+	.bind() Attach a handler to an event for the elements.
+	.one(events [, data ], handler) 딱 한번만 작동하는 이벤트 바인더
+
+	.off(events [, selector ] [, handler ]) 이벤트 핸들러를 지움.	
+	.trigger(eventType [, extraParameters]) 이벤트를 발생시킨다.
+
+	.hide() 안보이게 봐꿔줌, 시간을 인자로 주면 애니메이션 효과를 줄 수 있음, 콜백함수까지 주면 에니메이션 효과가 끝나고 발동한다. 오브젝트를 줌으로써 여러가지 옵션을 하나씩 줄 수 있다
+	.show() 보이게 바꿔줌, 시간을 인자로 주면 애니메이션 효과를 줄 수 있음, 콜백함수까지 주면 에니메이션 효과가  끝나고 발동한다. 오브젝트를 줌으로써 여러가지 옵션을 하나씩 줄 수 있다
+	.toggle() 보이면 안보이게, 안보이면 보이게 바꿔줌, 시간을 인자로 주면 애니메이션 효과를 줄 수 있음, 콜백함수까지 주면 효과가 끝나고 발동한다. 오브젝트를 줌으로써 여러가지 옵션을 하나씩 줄 수 있다
+		* 원리는 x,y사이즈를 0으로 조정하는 것이다
+	.slideUp() 위와 동, 위에서 아래로 내려오고 올라간다는 차이점이 있음
+	.slideDown()
+	.slideToggle()
+
+	.fadeOut() 위와동, 사라지고 나타난다 
+	.fadeIn()
+	.fadeToggle()
+		* 시간을 인자로 안주면 default는 400이다(0.4초)

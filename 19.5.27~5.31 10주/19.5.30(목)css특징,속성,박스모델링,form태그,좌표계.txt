@@ -1,0 +1,88 @@
+19.5.30(목)
+css 특징
+	구조structure에 사이즈를 주면 구조 자체는 영향을 받지만 내용은 영향을 받지 않고 자기 생긴대로 논다. overflow 나 float을 통해 조정 가능
+
+css 속성 :
+	font-size 의 값속성 : 1em(상위 요소 크기), px(픽셀), pt(포인트)
+	color
+	background-color
+	font-weight : 폰트의 두께
+	font-style : 폰트 스타일(이탈릭)
+	font : 폰트설정
+	font-family : a폰트,b폰트,c폰트  / a없으면 b, b없으면 c폰트 실행, 폰트설정은 3개까지 가능
+	text-decoration : underline,overline,line-through,none. none은 어따쓰냐? 하겠지만 <a>태그의
+			밑줄을 지워주는데 쓰지요~ 혹은 hover,active등 다른 상황마다 다른 퍼포먼스를 주고 싶을때
+	text-indent : 들여쓰기 (px만큼) 음수값으로 내어쓰기도 가능
+	text-align : 정렬상태 설정
+
+박스 모델링과 박스 레벨, 인라인 레벨
+요소마다 어떤 것은 개행을 하고, 어떤것은 옆에 바로 붙는데 박스레벨은 개행, 인라인레벨은 개행아님
+박스레벨 : h,p,div 등등
+인라인레벨 : a,img,span 등등
+왜 그런고 하니 박스레벨은 한줄을 다 차지하는 사이즈이고 인라인레벨은 자기 내용만큼의 공간만 차지
+박스레벨들의 특징은 크기를 지정할 수 있음(width,height)
+속성
+margin = box level, inline level 각각 끼리끼리 있을 때 이격이 생기는 경우가 있는데 그것은 margin default값이
+	있기 때문이다. margin속성 설정을 통해 제어할 수 있다. margin은 자기자신 범위가 끝나는 부분부터 시작된다.
+	margin left,right,bottom,top으로 사방의 margin을 제어할 수 도 있지만
+	margin=상 우 하 좌 순서(값 사이는 뛰어쓰기)로 값을 주는 방법도 있다.
+border = 가생이를 줄 수 있다. border-style 속성을 주면 나타나며, border-width로 가생이의 두께, border-color로
+	색을 지정할 수 있다.
+padding = 살을 찌워줄 수 있다. padding left,right,bottom,top으로 상세조정가능 padding 상 우 하 좌 으로도 가능
+
+글자를 완전히 가운데 정렬 시키고 싶으면 text-align:center; + line-height: 높이만큼; 하면 된다.
+최종적으로 박스 레벨의 크기는 자체크기 + padding + border + margin 크기가 된다.
+박스 자체를 가운데 정렬하고싶으면 박스를 div에 담은 다음 그 div를 margin:auto;를 줘서 가운데로 보낼 수 있다.
+
+
+박스레벨과 인라인레벨은 display: inline 혹은 block 를 줌으로써 상호 변환이 가능하다.
+word-wrap: break-word;를 통해 box레벨들의 텍스트가 최대한 삐져나가지 않게 막아줄 수 있다.
+* display의 값에는 inline-block 도 있다. inline과 block의 특성을 동시에 지니고 있다.(블록지긴 하지만 한줄 다 채우진 않고 인라인처럼 옆에 붙는다)
+* body도 margin을 가지고 있다. 보통 *{margin=0}으로 시작하는게 보통이다.
+
+css를 통한 이미지 처리
+                background-image: url(이미지 경로(""없이)); 백그라운드로 처리하기 때문에 텍스트가 있어도 밀리지 않는다, 요소의 크기가 이미지보다 크면 자동 반복
+			이미지 크기 자체를 조정하고 싶다면 background-size:100% 를 통해 조정가능, 반복이 싫다면 background-repeat:no-repeat;(repeat-x,repeat-y로 원하는 방향만 반복도 가능)
+			background-position: center와 동서남북 해당 요소에서의 위치 정해줄 수 있음
+			background-attachment:fixed; 를 통해 이미지를 반복시킬 때 자연스러운 위치(전체화면에서 반복했다고 가정했을 때) 로 배치시킨다. local로 하면 해당 요소에서 지연스럽게~
+			background-color 투명도 처리는 rgb라면 0(완전투명)~1(완전불투명), 해쉬라면 #rrggbb투명 0(투)~ff(불)식으로 가능하다.
+			opacity 투명도 0~1까지 (bgcolor에서 줄 때 와는 달리 element들도 다 투명해져버린다..)
+			visiblity hidden값을 주면 완전투명(display:none도 안보이게 되지만 다른 투명방법들과는 달리 차지하던 공간자체도 사라져버린다)
+css에서의 table 
+	브라우저에서 html5 table을 만나면 맘대로 thead(테이블 헤드)와 tbody(테이블 바디)를 만들어 버린다. 그래서 table>tr>td 식의 접근보다는 table tr>td식으로 접근해야 의도에 걸맞게 적용할 수 있다.
+	그게 싫다면 집적 <thead>태그와 <tbody>태그 위치를 지정해주자
+	table과 td,tr,th가 가질 수 있는 속성은 박스레벨과 유사하다.
+		<caption>테이블의 제목</caption>
+		특이한 것
+			border-collapse: collapse; (cellspacing="0"과 같은 효과)
+			border-spacing도 있지만 원하는 결과를 얻지 못할때가 있다(선이 두개 겹쳐보이는)
+			border-style 로 각종 효과를 줄 수 있다.(땡땡이 가생이 등등)
+
+css에서의 form
+	input text type들의 길이가 안맞아서 짜증났었지만.. 이젠 label을 display를 통해 inline-block으로 바꾸고 길이값을 주어서 조절할 수 있다.
+	 특이한 것
+		input type=>tel : text랑 무슨차이냐? 싶겠지만 모바일에서 찍어보면 다이얼 자판이 나옴.
+		input type=>email : 이건 또 text랑 무슨차이냐? 싶겠지만 모바일에서 찍어보면 이메일 입력용(기본자판에 @추가된) 자판이 나옴 그리고 @가 없으면 안받아줌
+		input type=>url : 넴.. 모바일에서 찍어보면 .com이 추가되어있는 자판이 나옴 http://~~ 가 아니면 안 받아줌
+		*email과 url은 아무것도 안치면 그냥 통과된다. 필수항목이 아닐 때 일 수도 있으니까^^
+		input type=>number : 숫자입력창인데 +,-할 수 있는 버튼이 제공된다. 브라우저마다 약간씩 다름
+		input type=>range : 당겨서 옮길 수 있는 range 타입. min 과 max 속성을 통해 최솟값 최댓값 지정을 할 수 있다. default는 0~100, value를 몇을 주냐에 따라 시작점이 달라진다.
+		input type=>color : 그림판의 색상고르기 창이 뜬다. 값은 %00000000 (뭔지 몰겠다 ㅎ)
+		<select>태그에 option들을 묶어줄 수 있는 <optgroup label="그룹이름">, 그룹명은 선택되지 않는다
+		textarea => resize : none을 통해 사이즈 조절 막을 수 있다.
+	*또한 form태그도 block 레벨이더라~~
+ 	*form문 안에 있는 button태그는 submit 과 같은 역할을 수행한다.
+ul과 ol
+	list-style:을 통해 원하는 기호를 사용할 수 있다. 앞의 기호들은 별개의 공간을 지니고 있다. padding을 통해 제어가능
+
+css 좌표계
+	position 을 통해 제어할 수 있는 좌표계~ default는 static
+		static을 하면 해당 좌표에 고정된다. margin을 줘서 움직이는 꼼수는 있다.
+		absolute를 하면 절대좌표가 된다.(위치 찍어주는대로 간다는 말) 위치를 설정해주지 않고 절대좌표를 선언하면 원래 있던 자리를 고수한다.
+			left,top을 통해 x좌표, y좌표로 간다. 단위는 px, %, in(인치),cm,mm,pt,em(글꼴크기)
+			하지만 부모가 있으면 부모의 좌표가 0,0이 된다.
+		relative를 하면 상대좌표가 된다.(자기위치 기준으로 이동)마찬가지로 위치를 설정해주지 않으면 자기자리.
+			left,top을 통해... 위와 동일하지만 여기서 left 등은 말 그대로 현재위치에서 왼쪽(혹은 다른 방향)으로 ?px만큼 이동..이라는 뜻이 되겠지
+		fixed를 하면 사용자가 어느 화면을 봐도 그 자리에 고정된다. (자주 쓸 듯)
+	*relative와 부모를 가진 absolute의 차이? 부모가 0,0이 되는 absolute와 자기가 있을 자리(부모의 컨테이너 만큼 밀렸을)를 0,0으로 삼는 relative는 좌표차이가 있다.
+	*static도 absolute와 마찬가지로 부모 따라댕김 fixed는 지 갈 길 감

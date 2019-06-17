@@ -1,0 +1,10 @@
+19.4.4 (목)
+
+java의 기본단위 : class
+
+class의 구성요소 :
+1. 메소드 (static 과 non static)
+2. 변수(static 과 non static)
+3. 
+
+*한 file 당 public클래스는 하나만 존재할 수 있다.

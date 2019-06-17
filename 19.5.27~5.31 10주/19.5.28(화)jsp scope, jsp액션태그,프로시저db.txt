@@ -1,0 +1,24 @@
+19.5.28(화)
+jsp 기본객체와 scope(범위)
+애플리케이션에는 4개의 scope가 존재한다.
+page, request, session, application
+	page scope는 하나의 jsp페이지 내에서 객체를 공유하는 영역을 의미한다.
+	request scope는 요청을 받아서 응답하기까지 객체가 유효한 영역이다.
+		!주의 forward 또는 include를 이용하면 같은 request객체가 가니 헷갈리지 않도록
+	session scope 는 session(같은 브라우저)에서 객체를 공유하는 영역
+	application scope는 application(서버가 켜지고 꺼질때까지) 객체를 공유하는 영역
+
+jsp 파라미터 쉽게 받는 방법(useBean을 통해 javaBean 객체생성)
+	 형식 <jsp:useBean id="bean" class="클래스패키지주소"></jsp:useBean>
+	값세팅	<jsp:setProperty property ="파라미터이름" name="bean(객체이름)" value="집적 value를 넣어주고 싶을 때"/>
+	값을 세팅할 때 알아서 타입설정을 해준다(숫자면 int,실수면 double 등등)
+	<jsp:include> 나 <jsp:forword>를 사용할 때 파라미터를 주고싶다면 <jsp:param name="객체이름" value="값">
+	*property=* 하면 알아서 파라미터에서 긁어와서 해당 필드에 넣어줌(필드에 존재해야 받겠지)
+	*useBean이 객체를 찍을 수 있는 원리?
+	java reflection 자바 리플렉션 을 통해 먼저 클래스 찍어놓고 class=의 값을 통해 클래스의 구체적인 
+	경로로 접근해 클래스 생성, 객체 생성
+
+프로시저를 통한 db접근
+	장점 : 보안측면에서 뛰어남(내가 설정한 변수명등은 노출하지 않기 때문에)
+	단점 : 성능 구려, 프로시저 코드를 따로 관리해야 함
+	프로시저로 db구현=> 같은 폴더 프로시저 db구현 참조

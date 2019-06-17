@@ -1,0 +1,61 @@
+19.4.23(화)
+io사용시 주의사항 :
+outputstream을 통해 씌울때 기존의 내용은 지우고 새로운 내용을 덮는 것이기 때문에 기존 데이터를 보존하고 싶다면
+백업파일을 만들든지 템프파일을 만들든지 안전대책을 도모해야 한다.
+
+close를 할때 제일 먼저 열었던 파일은 가장 나중에 닫아야 한다.
+
+개행 시! 윈도우에서는 \r\n을 해야 개행이 된다. (자바 상에서는 \n만해도 개행이 되겠지만 파일을 뜯어보면 개행은 안되고 이상한게 들어있다.)
+기타 운영체제에서는 \n이 개행이다.
+
+FileInputStream의 read 에서 -1은 null, 0은 해당자리가 비어있다는 뜻이다.
+
+java.io.InputStream
+java.io.OutputStream
+	InputStream,OutputStream 최상위 추상클래스들
+
+java.io.PrintStream
+	Byte나 int값뿐만 아니라 다 받아주고 개행도 알아서 output 시켜주는 클래스
+	System.out.print 에서 out 이 바로 이 printStream입니당~
+
+	생성자
+
+	PrintStream(File file)
+	PrintStream(OutputStream out) 여기서 buffered를 받으면 버퍼사이즈로 프린트, 두번째 인자로 boolean autoFlush를 주면 true면 매번 오토 플러쉬, false면 안함.
+
+	메소드
+	print(기본형타입들과 char[], String , Object obj) 개행없이 아웃풋 void
+	println(위와 동) 개행하고 아웃풋 void . . . 개행은 \r\n으로 할까(윈도우) \n으로 할까?(기타) 얘가 알아서 판단함
+	
+java.io.DataOutputStream
+	각종 타입으로 마구 입력하고 싶어요.. 데이타 아웃풋으로 내보내자
+	
+
+java.io.DataInputStream	
+	write를 온갖 타입으로 화려하게 입력했다(실제로 그럴일이 적긴하다)... 불러올때는 어떻게? 바이트 단위로 불러오면 개박살이 나서 read될 것 이다. 그 때 DataInputStream을 사용하자
+	다만 순서를 지켜야..올바른 결과를 얻을 수 있다
+	DataOutputStream으로 타입은 잘 넣었는뎅..어떻게 반복으로 뽑아먹어? 입력당시에 구분자'1 등 구분용 아무거나'를 받아 read()를 통해 while문을 돌리던지 패턴이 일정하다면 dis.length / 갯수 로 for문 돌리던지  	
+	
+java.io.ByteArrayInputStream
+java.io.ByteArrayOutputStream
+ByteArray를 저장할때 유용하게 쓸수 있는 클래스들
+
+문자 스트림
+	문자열이 아닌 동영상이나 사진을 할때는 주의하자. 2바이트 기반이기때문에 버그가 날지도 몰라~
+	writer
+		FileWriter
+		BufferedWriter
+			특이점 : newLine();을 통해 개행가능
+		PrintWriter
+			특이점 : 생성자 PrintWriter(Writer out, boolean autoflush) autoflush로 매행 flush가능
+		CharArrayWriter
+	reader
+		FileReader
+		BufferedReader
+		CharArrayReader
+
+Scanner 클래스
+	java.util클래스이지만 io와 뗄레야 뗄 수 없는 관계이다.
+	System.in 은 콘솔에 InputStream,
+	SYstem.out 은 콘솔에 PrintStream이다.
+	

@@ -1,0 +1,72 @@
+19.6.11(화)
+요구공학
+	요구분석 시 건축에서는 조감도 보여주면 될텐데 소프트웨어는 그게 안되니까..ㅜㅜ
+	시나리오 하나 써서 던져주자
+
+소프트웨어 설계
+	FE,BE,DB로 나눌 수 있다.
+	FE(front end) -> 메뉴 설계도, 스토리보드
+	BE(back end) -> 클래스 다이어그램, 시퀀스 다이어그램
+	DB(database) -> ER-D(er다이어그램)
+
+jquery
+	https://jquery.com/
+	jquery 버전의 의미
+	1.0.0~ js의 dom제어
+	2.0.0~ mobile 제어
+	3.0.0~ 개발의 범위 확대
+
+	수업 버전 : 1.0.0~ jquery , download page에서 가장 밑에있는 링크(JQuery/cdn) 클릭->
+	jQuery 1.x uncompress, minify 눌러서 나오는 소스의 src=이후에 적혀있는 도메인 찾아가기->
+	나오는 텍스트 저장
+
+jQuery 태그 <script type="text/javascript" src="jquery파일 경로">
+	jquery태그는 바로 닫고 스크립트 태그를 새로 열어 작성하면 된다.
+DOM제어
+		$('선택자') => document.querySelectorAll();과 같은 퍼포먼스
+			하지만 집적 속성에 제어하던 dom과 달리 jquery함수로만 제어 가능,
+			2개 이상의 객체인 경우 노드제어 할 땐 배열로 반환하는 것과 달리 선택된 엘리먼트들을 객체 하나에 담을 수 있다.
+		$('태그') => create element한 것과 같음
+		*중요 JQuery 함수들은 JQuery객체를 리턴한다~!
+		jQuery('선택자') => 위와 동, jQuery=$ 해보면 true이다.
+		$('엘리먼트') => JQuery 객체로 바꿔줌~!
+
+	선택자
+		:a => element가 a인
+		:empty => element가 비어있는
+		:lt(n) 앞에서 n번째 까지(n보다 작다)
+		:gt(n) 뒤에서 n번째 까지(n보다 크다)
+		:eq(2) n번째 것(n과 같다)
+			*위 3개는 zero-based index
+		:not(a) element가 a가 아닌 것
+		:odd 홀수번째
+		:even 짝수번째
+	노드접근
+		$().next() => 다음 sibling
+		$().prev() => 이전 sibling
+		$().children() => 자식요소들
+		$().first() => 처음 나오는 선택자
+		$().last()=> 마지막으로 나오는 선택자
+		$().parent() => 부모 요소
+
+		*커맨드를 줄줄줄 연결할 수 있음 (chaining) chaining을 할 수 있는 이유를 생각해보면 method들이 역할을 수행한 후 
+			jquery()를 return하겠구나.. 예상할 수 있다.
+		 ex )$('h1').css('color','blue').next().children().first().last().css('color','red'); 막 이따위로
+			실제로 과하게 쓰진 말자.. 읽기 뭣하다
+
+	스타일 속성 부여 $().css('속성','값') => style 주는 방법
+		css로 인자를 하나 주면 해당 속성의 값을 String type으로 반환한다. []배열로 주면 object배열로 반환한다.
+		하나 줄때 오브젝트타입{key:value,key:value} 로 주면 이름이 key인 attribute에 value를 대입한다
+		*값을 줄 때 css와는 달리 숫자를 줘도 숫자px로 준 것으로 인식한다.
+		css(property name, function(index, value))
+		A function returning the value to set. this is the current element. Receives the index position of the element in the set and the old value as arguments.
+		
+		$().attr() 해당 엘리먼트의 attribute 값을 반환, 버전마다 다른 퍼포먼스가 있으므로 주의(boolean으로 주는 버전과 string으로 주는 버전이 있다)
+			String타입을 반환하는 버전이라면(1.6이상) prop(property name)을 사용하여 boolean값을 얻어내자
+		$().val() value를 얻어낸다. 인자를 안 주면 게터, 인자를 주면 세터 역할을 수행한다
+
+		$().html() innerHTMl을 얻어낸다, 인자를 주면 세터
+		$().text() innerText를 얻어낸다, 인자를 주면 세터
+		$().addClass() 인자로 받은 클래스를 부여한다
+		$().removeClass() 인자로 받은 클래스를 제거한다
+		$().toggleClass() 인자로 받은 클래스가 없으면 추가 있으면 제거

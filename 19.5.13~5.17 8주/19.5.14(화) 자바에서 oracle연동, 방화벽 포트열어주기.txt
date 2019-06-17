@@ -1,0 +1,37 @@
+﻿19.5.14(화)
+
+java프로젝트와 oracle 연동하기. 경로 => ORACLES/APP/oracle/product/해당버전/jdbc/lib/jar파일..둘 중 아무거나
+java프로젝트 만들때 next => libraries 탭 => add external jars => 경로의 jar파일 확인.=>finish
+오라클 불러오는 순서 =>
+	1.드라이버 객체 생성(oracle.jdbc.driver.OracleDriver를 import)
+	2.java.sql.Connection conn = null;
+	3.java.sql.Statement stmt = null;
+	3.conn = java.sql.DriverManager.getConnection(url,info);
+	4.url은 jdbc:oracle:<drivertype>@ip:port:sid 형식(오라클이 정한 패턴)
+	  ex)"jdbc:oracle:thin:@localhost:1521:xe"
+	  info는 java.util.Properties 객체를 생성해서 넣어준다.
+	5.info.put ("user","scott"); info.put ("password","tiger");
+	6.stmt = conn.createStatement();
+	7.stmt.executeUpdate("insert into bonus (ename, job, sal, comm) values ('user05','new',500,50)");
+	8.conn.close();
+
+자바에서 ORACLE 접근시 url 다른 버전. https://docs.oracle.com/cd/E11882_01/appdev.112/e13995/oracle/jdbc/OracleDriver.html 참조
+	String url = "jdbc:oracle:thin:scott/tiger@localhost:1521:xe";
+			new OracleDriver();
+			Connection conn = null;
+			Statement stmt = null;
+			ResultSet rs = null;
+			try {
+				conn = DriverManager.getConnection(url);
+				stmt = conn.createStatement();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+
+!주의 : 자바 상에서 sql문에 ;빼줘야함
+
+내 방화벽에서 포트 열어주기.
+	= 제어판 => 방화벽 => 프로그램 또는 기능허용에서 허용해주는 방법.
+	= 제어판 => 방화벽 => 고급설정 => 인바운드규칙(들올때)/아웃바운드규칙(나갈때) => 새 규칙 => 포트 => 원하는 포트번호 => 연결
+	!주의 포트를 다 열어버리면 너무 보안에 취약해진다.
+

@@ -1,0 +1,85 @@
+19.5.16(목)
+front end와 back end
+html, css, java script 등등등등... 페이지 소스 긁어보면 나오는 부분이 프론트엔드.
+java c c++ 등등등등.. 페이지 소스만 긁어서는 알 수 없는 숨은 코드 부분이 백엔드.
+
+아파치 서버를 셋업을 하고 켠 후 C:\Apache24\htdocs 에 ex01.html 파일을 만들고 http://localhost/ex01.html로 접근하여 결과를 확인하자.
+
+HTML 초본문 표식달기 언어(HyperText Markup Language)
+	*메모장에서 적은 한글이 브라우저에서 깨진다면 메모장을 (인코딩) UTF-8타입으로 다시 저장해서 시도해보자.
+	최근의 브라우저들은 UTF-8타입을 이용하고 있다.
+	*HTML문은 대소문자를 구분하지 않는다. (내용에선 당연히 구분하고)
+	<무언가> = 태그라고 부른다. 태그를 연다.
+	</무언가> = 태그를 닫는다.
+	*HTML로 기를 써봐야 이하에 적은 기능 수준을 벗어날 수 없다.
+
+	<html>이 사이에는 두가지의 태그가 올 수 있다. html문서의 시작과 끝이다. </html>
+	<!--이 안에 들어가는 내용은 주석이다--> 
+		1. <head>  = 화면상에서 표시되지 않는 부분. 문서의 속성 등을 정의한다.</head>
+			하지만 헤더에서 보여지는 부분도 있는데, <title> 태그다.
+			1-1. <title> 탭(주소창 아래쪽)에 올라가는 부분 </title>
+		*front end 는 문법에 맞지 않아도 어거지로 되는 경우가 많다. 물론 차후 문제의 소지 있음
+		
+		2. <body> = 화면상에서 표시되는 부분. bgcolor "색깔"로 배경색 설정 가능, background="이미지경로" 로 뒤에 이미지 도배 가능
+			2-1. <h1>이 안에는 제목이 들어간다. </h1>
+				<h6> 1부터 6까지 넘버링이 가능하다. </h6>
+				숫자가 작을수록 사이즈가 커진다. 폰트는 동일하다. h문들은 1줄을 다먹음
+				2-1-가. h태그도 속성을 줄 수 있다.
+				<h align = "left||right||center"> 정렬~ 
+			2-2. <p>이 안에는 제목에 대한 내용이 들어간다.</p>
+				<p>태그와 태그 사이에는 2번 개행이 들어간다. 그리고 <p>의 내용이 화면을 다 채울때 개행한다.
+					(화면사이즈에 맞게 조정됨)
+				<p>태그 안 쓰고 내용을 작성해도 무관하다.
+				2-2-가. p태그도 속성을 줄 수 있다.
+					<p align = "left||right||center"> 정렬~ 
+			2-3. <font>폰트를 설정할 수 있다.</font>
+					<font color = "색깔"> 색 설정
+					<font size = "3"> 사이즈 설정. 커질수록 글자가 커진다. 범위는 1~7, dafault는 3
+					<font face = "글씨체"> 글씨체를 바꾼다. 클라이언트에게 해당 글씨체가 없으면 아무일도 일어나지 않는다.
+					<font face="" size="" color="">다양한 옵션을 한번에 걸 수 있다.</font>
+				*서식과 관련된 속성들 <i>이탤릭체</i>, <b>두껍게</b>, <u>밑줄</u>, <big>한 사이즈 크게</big>, <small>한 사이즈 작게</small>
+					!주의 서식관련속성들은 html5에서는 사라진 문법이다. html5에선 <em>이탤릭</em>,<strong>두껍게</strong>. 가급적 html5문법 사용
+			2-4. 안선생님.. 개행이.. 하고 싶어요. => <br> br태그는 닫지않음.
+			2-5. <a>링크를 걸 수 있다.</a> 링크 주소는 <a href="http://ip주소 혹은 도메인주소:포트번호/ 찾아갈 경로"> 양식으로 걸면 된다.
+				<a href = ... target = "이름"> frameset 에서 <name="이름">을 선언해 두었다면 해당 이름이 있는 프레임창에 링크 내용이 뜨게 할 수 있다.
+				https 인 경우 포트번호가 80으로 고정이라 포트번호는 생략 가능하다. 서버 자기 자신인 경우 ip번호를 생략하고 "/찾아갈 경로" 혹은 "찾아갈 경로" 만 입력해도 된다.
+				하지만 "/찾아갈 경로" 는 절대주소를 의미하고 "찾아갈 경로" 는 상대주소라서 현재 주소를 기준으로 이동한다. 주의할 것.
+			2-6. 띄어쓰기는 &nbsp; <<를 한 번 넣을때마다 한 칸 씩 띄워진다.
+			2-7. &는 식별자 역할을 한다. 는 &를 치고 싶을 땐 &amp;를 쳐주면 된다. &gt; = > ,  &lt; = < 이다. &copy; = 저작권 기호. 필요하면 검색해서 쓰자.
+			2-8. <img border = "0" alt="문구 혹은 이미지 경로" src="이미지 경로" width="50||50%" height="50||50%" align="botom||left||right||center||top" vspace = "0" hspace = "0"> 이미지 삽입.
+					alt는 이미지를 불러오는데 실패했을 때 나올 문구 혹은 이미지, src는 경로 border="사이즈" 로 테두리 설정 align은 정렬 vspace는 세로공백 hspace는 가로공백
+					img이하 문법 전부 생략가능, 순서 상관 없음, 크기의 단위는 pixel, %로 하면 사이즈에 맞춰서 크기가 유동적으로 변한다.
+				* 이미지나 동영상들은 서버에 저장하지말고 경로를 쌔벼서 박으면 저장공간도 아끼고 서버 트래픽도 줄어들고 좋다. 그리고 저작권에 걸려 대가리가 날아가면 된다.
+				* <a><img>이를 통해 이미지 링크를 할 수 있다 </a>
+			2-9. <table border = "1" cellspacing="0" cellpadding="5" width="800 || 50%" height="200 || 50%" bgcolor = "white">표만들기</table> <tr rowspan = "2" width=100 height=100>행</tr> <td colspan = "2" width=100 height=100>열</td>
+				border은 테두리, bgcolor은 배경색, cellspacing는 셀과 셀사이의 간격, cellpadding=셀의 크기 지정 colspan, rowspan은 한 열/행의 사이즈를 키워줄 수 있음.
+				표의 크기는 넓이지정이나 cellpadding를 선언하지 않는다면 컨텐츠의 사이즈에 따라 유동적이다.
+				table의 전체 사이즈(width와 height를 선언한 경우)는 각 행과 열이 n/1씩 차지한다. 전체사이즈도 정해주고 특정 열/특정 행의 사이즈를 정한다면 정한 특정 셀 사이즈를 제하고 나머지끼리 1/n한다.
+				<th> td태그 대신 사용. value값을 두꺼운 가운데 정렬 폰트(헤드라인) 으로 출력한다.</th>
+			2-10. <ul> <li>목차가 ●인 리스트</li></ul>, <ol type="I"><li>목차가 숫자인 리스트</li></ol>, <dl><dt>목차제목</dt><dd>목차 내용<dd></dl>, <marquee>이 안에 적은 문구는 움직입니다.</marquee>
+				ol.type="I"는 로마숫자로 목차가 붙는다.
+			2-11. <input type="button" value="버튼" size="숫자" placeholder="">
+				placeholder="text타입 같은 경우 빈칸에 떠있을 메세지" 
+				버튼추가, 들어갈 수 있는 타입은 text,password,checkbox,radio,hidden,submit,reset가 있다. 
+				checkbox와 radiobox는 checked="check"로 디폴트로 체크옵션이 들어가게 할 수 있다. radio는 name="그룹이름"을 통해 같은 이름을 지정해주어야 라디오 박스 구실을 한다.
+			2-12. <textarea rows="5" cols="50">이 안에있는값이 default로 들어가는 텍스트필드</textarea>
+			2-13. <label for="id">라벨인데 for뒤에 element가 id=""으로 설정해 놓은 값을 넣으면 하나로 묶인다.</label>
+			2-14. <center>사이에 있는것들을 align=center로 해줌</center>
+			2-15. <pre>내용 그대로(뛰어쓰기와 개행을 포함해서)출력해주는 태그</pre>
+			2-16. <form action=""> input type=submit을 통해 해당 action=""으로 보내주며 input type의 name들을 파라미터로, 해당 input type들의 value를 값으로 함께 전송한다. get방식의 전송이 기본이다.</form>
+				예시	<form action="ex08.jsp">
+					id:<input type="text" name="id"><br>
+					<input type="hidden" name="pw" value="히든값">
+					<br> <input type="submit" value="전송">
+					<textarea name=parameter1></textarea>
+					</form>
+				*form태그에서 제공하는 메소드(방식) get과 post - get은 주소표시줄을 통해 encoding해서 날리고, post는 헤더를 이용해서 정보를 날린다.
+				get방식이 주소표시줄을 통해 정보를 전달하기 때문에 헤더에서 긁어와야하는 post보다 상대적으로 빠르다. 하지만 
+				post방식은 정보의 노출을 막고, get에서는 자칫 길어져서 곤란해질 수 있는 정보들을(주소표시줄이 너무 길어질 테니까)
+				아무리 길어도 다 담아줄 수 있다.
+
+		3. <frameset cols = "50%,50%" || rows = "50%,50%" scrolling = "no"> 화면을 분할할 수 있는 프레임셋</frameset> 
+			cols, rows = 분할창이 전체창에서 차지하는 비율 설정, scrolling = 스크롤이 나타나게 할 것인지를 정함
+	
+		* 내용 사이사이를 띄어쓰기나 개행을 해봤자 모조리 띄어쓰기 한 칸으로 인식한다. 개행은<br>혹은 <p></p>를 이용, 여러칸 띄어쓰기는 &nbsp;을 여러번 이용하자.
+

@@ -1,0 +1,123 @@
+19.5.17(금)
+
+PL/SQL porcedural language / structured query language
+ 오라클에서 제공하는 언어. 요새는 잘 안쓰이는 추세
+	PL/SQL에서는 프로시저로 명령을 구성한다.
+	프로시저의 구조
+-------------------------------------------
+		declare --선언부
+			--지역변수의 선언부
+		begin
+			--자바로 봤을때 메인문과 같음
+		exception
+			--trycatch 문 catch절과 내용 비슷
+		end; --종료
+		/ --실행
+-------------------------------------------
+	java의 System.out.println()과 동일한 dbms_output.put_line('내용');
+	*출력을 보고 싶으면 set serveroutput on; 을 해주어야 한다.
+	*문장은 뒤에 ;를 달아서 마무리한다.
+	*무의미한 개행은 에러를 유발할 수 있다.
+
+PL/SQL에서 지원하는 query문
+	대입연산자 := (sql 에서 =은 논리연산자 역할을 하기 때문에)
+	스칼라변수 = <타입명> 으로 선언
+	레퍼런스 변수 = <변수명> <reference ex)emp.empno>%type; 으로 선언, 레퍼런스 경로에 있는 데이터타입과 같은 데이터타입으로 선언됨
+		*레퍼런스 변수명은 'v_<참조해온 칼럼명>'으로 하는 것이 일반적이다
+	레퍼런스 변수 rowtype = <v_테이블명> <reference>%rowtype;
+		정보를 받아올 때는 SELECT * into <v_테이블명>으로 받아오고, 사용할때는 <v_테이블명>.해당칼럼 <<==이렇게 쓸 수 있다.
+	데이터타입 BINARY_INTEGER -2147483647에서 2147483647 사이의 정수
+
+	SELECT <칼럼명> into <선언한 변수> ~~~ = 변수에 읽어온 값을 대입한다.
+	if <조건문> then <실행문> elsif <조건문> then <실행문> else <실행문> end if; 조건 부여
+		!주의 조건뒤에 then 이 와야 실행함
+
+	반복문 basic loop
+		loop로 시작, end loop로 종료, exit로 탈출. end loop를 만나면 loop로 되돌아간다
+		*DB에서 무한루프는 에러가 난다.
+		*loop 뒤는 ; 가 없고 end loop; 에는 있다.
+	반복문2 FOR loop
+		FOR <정수명> IN [REVERSE]<N>..<M> LOOP
+			<실행문>
+		end loop;
+		<M>-<N>회만큼 실행되고 <정수명>은 자동선언된다. reverse를 넣으면 거꾸로 반복한다.
+	반복문3 while loop
+		WHILE <조건문> LOOP
+			<실행문>;
+		END LOOP;
+
+	커서 pl/sql이 사용하는 포인터, 1줄의 정보를 저장한다.
+		묵시적 커서 - 집적 선언하진 않지만 오라클에 내장되어있는 커서
+			SQL%NOTFOUND 커서 영역의 자료가 모두 FETCH됐다면 true
+			SQL%FOUND 해당 커서 안에 아직 수행해야 할 데이터가 있을경우 true
+			SQL%ROWCOUNT 해당 커서에서 실행한 총 행의 개수
+			SQL%ISOPEN 현재 묵시적 커서가 메모리에 open 되어있으면 true
+		명시적 커서 -
+			DECLARE 
+				CURSOR <커서이름> is <커서의 상태>;
+			BEGIN
+				open <커서> for
+					SELECT * into v_row from <테이블>; --커서가 갈때마다
+					fetch <커서> into v_row; --커서에 값넣기
+				
+				close <커서>;
+
+	exception
+		WHEN <에러명> THEN
+			<실행문>
+
+저장 프로시저 
+	생성문
+	CREATE [OR REPLACE] PROCEDURE <이름>
+		(<받은인자이름> [IN] <타입>, <받은인자이름> OUT <타입>, ...)
+		is
+			--변수 선언부
+		begin
+			<실행문>
+		end;
+
+	실행문
+	execute <이름> [(인자, OUT인 경우 :<변수>)]
+	* 프로시저에 out을 선언한 경우 :변수를 통해 out 인자값을 받아 올 수 있다.
+	*()괄호안은 프로시저 실행할 때 줄 수 있는 인자 값인데, in은 받아오는 인자,(아무것도 안붙이면 IN)
+		OUT은 돌려주는 값(return처럼) 이다.
+
+	변수선언 : variable <변수명> <type>;
+	선언한 변수 출력 : print <변수명>;
+
+패키지 - 프로시저 다수로 묶어 한번에 실행하는 것.
+	생성문
+	CREATE[OR REPLACE] PACEAGE <패키지 이름>
+		PROCEDURE <프로시저 이름>;
+		PROCEDURE <프로시저 이름>;
+	end;
+	
+	실행문
+	execute <패키지이름>
+
+함수 - 사용자 정의 함수
+	생성문
+	CREATE[OR REPLACE] function <함수명>
+	(<받아올 인자> <타입>, <받아올 인자2> <타입>)
+	return <type>
+	is
+		--변수 선언부
+	begin
+		return <리턴할 내용>;
+	end;
+	
+	실행문
+	기존 함수처럼 활용한다
+
+트리거 - 특정 테이블의 데이터에 변경이 가해졌을 때 (입력,수정,삭제) 자동으로 수행되는 저장 프로시저.
+	생성문
+	CREATE TRIGGER <트리거 이름>
+	[BEFORE || AFTER] EVENT ON {TABLE||VIEW||SCHEMA||DB}
+	FOR EACH ROW
+	[WHEN <조건절>]
+	DECLARE
+	BEGIN
+	 <실행문>
+	END;
+	
+	트리거의 특성상 집적 실행시킬 수 는 없다.

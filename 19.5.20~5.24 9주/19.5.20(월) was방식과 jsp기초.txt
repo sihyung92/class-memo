@@ -1,0 +1,147 @@
+19.5.20(월)
+웹 어플리케이션의 구성요소 / 정보전달 순서
+	↑■↓브라우저	1.웹브라우저가 웹 서버에 서비스 실행을 요청
+	↑◎↓웹서버	2.웹서버는 어플리케이션서버에게 데이타를 요청
+	↑○↓어플서버	3.어플리케이션 서버가 DB에서 데이터를 가져오며 정보처리, 웹서버에게 전달
+	 ◆데이타베이스	4.웹서버는 웹브라우저에게 결과 전송
+
+과거의 웹서버 구동방식
+	실행코드(CGI) 방식 => 웹서버가 요청을 받으면 프로그램을 집적 실행 . . . 대량 트래픽 발생시 불리
+현재의 웹서버 구동방식
+	스크립트(어플리케이션 서버 이용)방식 => 웹서버에서 받은 요청을 전달하면 어플리케이션 서버가 요청문을 컴파일한 후 실행, 결과문만 웹서버로 전달.
+	메모리 사용량 및 프로세스 관리 부하 감소.
+	* WAS(web application server). . . 현재 수업환경에서는 apache가 웹서버 역할, tomcat이 was역할
+
+TOMCAT 실행 및 중지 => TOMCAT 7.0/bin/Tomcat7w.exe(윈도우용)
+TOMCAT 서버의 기본 URL : TOMCAT 7.0/webapps/ROOT/
+ip:8080/요청파일 하면 나오는 게 TOMCAT 7.0/webapps/ROOT/ 하위 파일중에 검색 해서 나오게 된다.
+기타 디렉토리들은 디렉토리도 명시해야한다.
+
+이클립스 - 실행 파일들은 WebContent 하위에 만들어야 한다. 
+!주의 META-INF와 WEB-INF 하위에 파일을 넣으면 실행되지 않는다.
+
+JSP페이지의 구성요소
+
+1. 디렉티브(Directive)
+	JSP페이지에 대한 설정 정보를 지정
+	용법 : <%@ 디렉티브이름 속성1 = "값1" 속성2="값2"... %>
+		디렉티브에서 설정되는 페이지정보는 was에서 java문법을 독해할 때 필요한 정보들.
+		header에 담긴 페이지 정보는 브라우저가 화면에 띄울 때 필요한 정보
+	종류 : page 디렉티브, 속성 = 문서의 타입(contentType), 사용할 클래스(import), 버퍼 여부(buffer), 세션여부(session)
+		중요속성 : contentType = jsp페이지가 생성할 문서의 타입 지정.
+				형식 :TYPE || TYPE; charset=캐릭터셋 형식임
+				* 대표 캐릭터셋 : EUC-KR, UTF-8, ISO-8859-1 등
+			   import = JSP페이지에서 사용할 클래스(인터페이스) 지정.
+				형식: import "클래스주소,클래스주소2"
+			   include = jsp페이지의 특정영역에 다른 문서를 포함시킨다.
+				<%@ include file = "파일경로">로 사용 가능
+				완전히 복사해서 붙여넣은 것과 동일한 효과를 볼 수 있다.(변수를 공유할 수 있다든지)
+				file의 확장명을 jsp가 아닌 엉뚱한 것으로 바꿔서 (jspf 등)혹시 파일을 읽어서 일어날 수 있는 오류를 방지하는 경우가 있다.
+				header와 footer페이지를 만들어 자주 사용
+2. 스크립트 : 스크립트릿(Scriptlet), 표현식(Expression), 선언부(Declaration)
+	2-1. 표현식 = 값을 출력. <%= 출력할 값이나 변수명%>
+		*괄호안을 System.out.println()의 괄호안과 같다고 생각하면 편하다.
+	2-2. 스크립트릿 = 자바 코드를 실행. <% java실행문 %>
+		<% %>안에서 코드를 끝낼 필요는 없다.
+		ex) <% for(int i = 0 ; i < 5 ; i++{ %>
+			<br>
+		    <%}%>
+			이런식으로..
+	2-3. 선언부 = 자바 메소드를 선언. <%! java메소드 선언,정의 %>
+		스크립트릿이나 표현식에서 사용할 수 있는 메소드를 선언.
+			* <%%>안에 메소드를 선언하고 정의하려고 해보라. 실패하게됨. 메소드를 선언을 위한
+			 문법이 따로있기때문.
+		<%! 메소드 %>
+		*순서를 지켜야 할 필요가 없다. 메소드를 호출하고 나중에 정의해도 에러가 나지 않는다. (변수는 안 됨!)
+		 그래도 보기 불편하니까 상단에 몰아놓자
+		!주의 static 선언을 할 수 는 있지만 쓸모는 없다.
+		!주의 내장객체는 메소드에서 사용할 수 없다! 
+		
+jsp 내장객체(or 기본객체)
+	- 웹프로그래밍에 필요한 기본정보,기능들을 담고있는 객체.
+	request(자주씀) 웹 브라우저가 서버에 요청한 관련 정보 제공
+		request.getRemoteAddr(); 서버에 정보를 요청한 ip를 알아낼 수 있다. String 반환
+		request.getMethod(); 접근 방식(프로토콜)을 알 수 있다. String 반환
+		request.getServerName(); 서버의 이름을 알 수 있다. String 반환
+		request.getServerPort(); 클라이언트가 접근한 서버 포트를 알 수 있다. int 반환
+		request.getRemotePort(); 클라이언트의 포트 호를 알 수 있다. int 반환
+		request.getRequestURI(); 클라이언트의 입력 URL을 알 수 있다. String 반환
+		request.getContextPath(); 클라이언트가 접근한 파일을 알 수 있다. String 반환
+		request.getParameterNames(); 파라미터의 종류(이름)을 알 수 있다. java.util.Enumeration 반환
+		request.getParameterValues(); 파라미터의 값이 여러가지일때 배열로 만들어 반환한다. String[] 반환
+		request.getParameter("인자"); URL 뒤의 인자값을 얻을 수 있다.
+			ex)http://192.168.1.31:8080/web04/ex08.jsp?id=SYSTEM&pw=ORACLE
+				jsp뒷부분은 id=뒤가 id의 인자값, pw뒤가 pw의 인자값
+				자세한 내용은 web04의 ex08,ex09 참조
+		request.getHeaderNames() 해당 정보의 해더 이름을 읽어온다.
+		request.getHeader("head이름") 해당 해더의 정보를 읽어온다.
+				web04의 ex08,ex09 참조
+		*링크를 줄 때
+	 	<% String ctxt = request.getContextPath(); %>
+		<a href ="<%=ctxt %>/ex08.jsp?id=AAAA&pw=BBBB&name=CCCC">우앙</a>
+		이런 식으로 하면 상대경로를 줘야할지, 절대경로를 줘야할 지 고민할 필요가 없이 동적으로 처리된다.
+
+	response(자주씀) 웹 브라우저에 전송하는 응답 정보 설정
+		getOutputStream 아웃풋 스트림을 집적 얻어온다.(실용성은 물음표)
+		addHeader(String name) name에 header를 추가한다.
+		addDateHeader(String name, long date) name에 date헤더를 추가한다. 70년1월1일후 지나간 시간을 밀리세컨드로 전달
+		sentRedirect(String url) 해당 url로 다시 접속시켜줌. 
+
+	out(자주씀) == javax.servlet.jsp.jspwriter
+		out.write("내용") HTML문으로 출력
+		out.println("내용") HTML문으로 출력
+		out.newLine() \r\n(\n)을 출력함. 화면상에서 개행하고 싶으면 <br>을 해라.. 뉴라인치지말고
+		out.isAutoFlush 자동으로 플러쉬 하니? (default true)
+
+	session(자주씀)
+		*세션(session)이란? 각 브라우저가 서버에 접속할 때 개별적으로 생성되는 일련의 자료구조를 의미. attribute가 키 역할을 하고, 각 attribute마다 값을 설정할 수 있다.
+		*어플리케이션(application)이란? 서버에서 단 하나 형성되는 자료구조.
+		세션 유지시간 바꾸는법  eclipse접속=> workspace servers=>tomcat v7.0=> <session-config> 태그 하위의 session-timeout 시간을 설정할 수 있다. default 30이고
+		단위시간은 분이다.
+			session.setAttribute(속성명,값) 해당 속성에 대한 정보를 Object타입으로 저장한다.
+			session.getAttribute(속성명) 해당속성의 값을 얻어낸다. 값이 없으면 null을 반환한다
+			session.removeAttribute(속성명) 해당 속성의 값을 지운다.
+	application
+	config
+	page
+	exception
+	pageContext
+		pageContext.getOut(); 아웃풋 스트림(JspWriter타입)를 뽑아내고 싶을 때
+		pageContext.getRequest() 리퀘스트 객체 얻어오기 ServletRequest 반환
+		pageContext.getResponse() 리스폰스 객체 얻어오기 ServletResponse 반환
+		pageContext.getSession() 세션 객체 얻어오기 HttpSession 반환
+		pageContext.getOut() 아웃 객체 얻어오기 jspWriter 반환 
+HTML 추가
+	form태그 예시
+	<form action="ex08.jsp">
+		id:<input type="text" name="id"><br>
+		<br> pw:<input type="password" name="pw"><br>
+		<br> name:<input type="text" name="name"><br>
+		<br> <input type="submit" value="전송">
+	</form>
+	submit을 하는 순간 name값들을 쿼리문자열로 가지는 "ex08.jsp"주소로 이동한다.
+	<pre> pre태그 안에 적힌 문구는 blank와 개행을 표현한 그대로 해준다. </pre>
+	<th> td태그 대신 사용. value값을 두꺼운 가운데 정렬 폰트(헤드라인) 으로 출력한다.</th>
+내장(기본) 객체와 영역
+	-page 영역 - 하나의 jsp페이지를 처리할 때 사용되는 영역
+	-request 영역 - 하나의 http 요청을 처리할 때 사용되는 영역
+	-session 영역 - 하나의 웹 브라우저와 관련된 영역
+	-application 영역 - 하나의 웹 어플리케이션과 관련된 영역
+
+java EE에 오라클 드라이버 사용법
+	C:\oraclexe\app\oracle\product\10.2.0\server\jdbc\lib\ojdbc14.jar 을 복사해서
+	java파일에 하나넣고(경로 간단하게 하기위한 용) webContent폴더에 WEB-INF\lib에 복사해 넣자
+
+*주석 : <!-- html주석--> , //자바주석 각 문법이 사용될 수 있는 곳에 적어야한다. 그리고 html주석은 frontend영역이기 때문에 client한테 전달이 된다.
+ 그러나 //주석은 전달되지 않는다.
+
+*서블릿이란? 자바 만든 Sun에서 정한 웹 개발 표준
+서블릿 : 실행 코드 방식
+JSP(JAVA SERVER PAGE) : 스크립트 코드 방식
+JSP의 특징 : 자바 기반 스크립트 언어(자바 기능 그대로 사용 가능)
+	웹 어플리케이션에서 결과 화면을 생성할 때 주로 사용
+
+*웹컨테이너란? 웹 어플리케이션을 실행할 수 있는 컨테이너.
+	jsp나 서블릿을 실행시켜줌.
+	공짜인거 ^^ : 톰캣,재티,글래스피쉬
+	많이쓰는거 : BEA Web Logic, tMax jeus(국내 관공서), JBOSS

@@ -1,0 +1,163 @@
+19.4.24(수)
+객체도 스트림으로 보내고싶은데여.. object스트림
+객체용이기 때문에 byte[]를 기본으로 한다.
+java.io.ObjectOutputStream
+	dataOutputStream 과 마찬가지로 기본형타입들을 write할 수도 있다. 객체는 Object형에 넣어서 보내면 된다.
+	자바에서 제공하는 클래스 객체(콜렉션 등) 은 마구마구 보낼 수 있지만 내가 집적 정의한 클래스의 객체같은 경우에는 못 보내~
+	왜냐하면 직렬화가 안되어있는 객체이기 때문. 보내고 싶으면 클래스에 Serializable 을 implements 해주자.
+	그 말은 자바에서 제공하는 클래스 들은 Serializable을 implements 받고 있겠구나~ api확인해봐
+	내가 정의한 클래스 아웃풋 할 때 주의점 ~~ 나 혼자하면 상관 없지만 다른 폴더 ~ 다른 사람에게 보낼 때 그 사람도 해당 클래스가
+	있어야만 Object객체를 casting할 수 있고 활용할 수 있겠지?
+	
+	
+java.io.ObjectInputStream
+	기본형 타입들은 dataInputStream과 비슷하게 읽어내면 되고(순서를 지켜야한다.) 객체는 readObject()를 통해 읽어낸다.
+	Object 타입으로 반환되기 때문에 형변환이 필요하다. collection 을 가져오는데 유용
+
+Serializable
+	객체 직렬화의 대상은 필드밖에 못한다. 객체에 필드+메소드라고 배우지만 사실은 메소드부분은 바이트코드로 구현할 수 없는 부분이기때문에
+	필드만 불러올 수 있다. 객체 자체도 마찬가지 논리로 실은 필드와 메소드는 힙영역에 다른부분에 저장된다.
+	Serializable를 implements 할 때 java에서 자동으로 SerialVersionUID를 부여해서 버전 관리를 한다. 만약 Car클래스를 수정한다면
+	다른 SerialVersionUID가 부여되고 다른 버전의 ID를 불러올 때 에러가 난다.
+	transient를 필드앞에 붙여줌으로써 값의 전달을 막을 수도 있다. 그럴경우 inputstream에서 해당 필드를 호출하면 그 타입의 default값이 나간다.
+	하지만 static값은 못막아 조심^.^
+
+	Externalizable 
+		Serializable의 sub interface. 읽을때와 쓸때 작동하는 메소드 2개를 가지고 있다.
+			writeExternal(ObjectOutput out)
+				out.wrtie타입(보내고싶은거)
+			readExternal(ObjectInput in)
+				in.read타입(쓰고싶은거)
+
+RandomAccessFile 클래스
+	인풋 아웃풋을 다갖추고 있고, 아무거나 막읽음. 읽은걸 또읽을수도~
+	mode라는 인자를 받음. mode목록 "r"읽기, "rw"읽고쓰기, "rws"읽고쓴걸 싱크로나이즈, or "rwd"읽고쓰고 쓰자마자 실제파일에 반영
+	
+	write시 여타 io와 달리 다 지우고 새로 저장하는게 아니라 덮어씌움. 덮어씌우는 위치를 seek(int len) 메소드를 통해 지정할 수 있음.
+
+StreamTokenizer 클래스
+	스트림을 토큰내서 보내준다. 문자와 숫자, 특수문자로 분류해서 보낼 때 유용하다.
+
+	
+UI (user interface)
+ 자바 UI 구리다. UI전문 언어, 툴(파워빌더 마이빌더 등)들이 강세인 가운데 자바는 느릿느릿 구린것만 골라서 추가한다. 그래도 배워보자
+java UI 종류
+	AWT 제일 오래됨 운영체제가 가지고있는 기본 요소를 사용하여 UI를 구성한다.
+	Swing jdk1.2에 추가된 UI  자바가 집적 구현한 UI를 보여준다.
+	속도는 운영체제의 것을 가져오는 awt가 빠르다. 하지만 운영체제에 종속된다는 문제점도 같이 가지고 있다. 운영체제 시키는대로 다해야함
+	ex)윈도우에서 버튼에는 문자밖에 못 쓰는 등
+	무야잠깐..그러면 맥에서 swing켜면 윈도우삘나는 화면 나옴?
+	아니요 각각 운영체제에 맞춰서 다른 UI를 제공합니다
+	그럼 속도포기하고 swing쓰면 되나?
+	아니요 안 이쁜데요 쓰지마 
+
+AWT
+	Java.awt.Frame 창 틀을 만들어주는 클래스
+		주요 메소드
+			setVisible(boolean b) true 넣으면 창이 보임. false면 안보임.
+			setSize(int 가로, int 세로) 최초생성 시 가로값 세로값만큼 길이 설정
+			setLocation(int 가로, int 세로) 최초생성 위치설정, 해당 길이단위은 해상도의 픽셀과 동일
+			add(PopupMenu popup) popup을 추가
+			setLayout(Layout lay) 레이아웃 배치.
+			setTitle (String label) 프로그램 이름이 적히는 부분.
+			setResizable(boolean resizable) 사이즈 조절 가능,불가능
+			setMenuBar(MenuBar me) 메뉴바는 add로 추가안됨.
+			setBounds(int 가로위치, int 세로위치, int 가로크기, int 세로크기) setSize와 setLocation을 합체
+			dispose() 창 끄기
+
+	Layout 시리즈
+		레이아웃의 디폴트는 FlowLayout인데, null로 주고 내가 원하는대로 배치하는 방법 도 있다. 하지만 일일이 모든 element의 size 와 location을 지정해줘야하는 불편이 생긴다.
+		java.awt.FlowLayout 
+			배치 순서는 add된 순서대로.
+			element를 항상 가운데에 배치하는 특성이 있다.
+		java.awt.GridLayout
+			격자무늬 내서 element를 배치해준다.
+			 생성시 (int 세로, int가로)를 넣어주면 해당 양식으로 조각낸다 숫자 사이즈와 엘리먼트 숫자가 다르면 세로부터 채운다.
+		java.awt.BorderLayout
+			add(엘리먼트, BorderLayout.방향) 동서남북센터 지정해서 추가
+		java.awt.CardLayout
+			가운데에 놓고 add된것들을 순서대로 next()를 통해 하나씩 넘길수 있다.
+		java.awt.GridBagLayout
+			사용할 때 java.awt.GridBagConstraints이 필요하다.
+				GridBagConstraints 필드 및 메소드
+					gridx = 그리드의 위치 x좌표
+					gridy = 그리드의 위치 y좌표
+					gridwidth = 그리드의 길이
+					gridheight = 그리드의 높이
+					weightx = x값 가중치 (채울 공간이 있다면 배율만큼 더 빨리 커짐) (double)
+					weighty = y값 가중치
+					fill() 에 상수를 무엇을 넣느냐(필드로도 정의되어 있다.)에 따라 element의 크기가 결정된다.		
+			gbc객체에 원하는 정보를 담은 후 add(element e, GridBagConstraints gbc) 로 사용한다.
+	패널
+	java.awt.Panel
+		엘리먼트들을 배치할수 있는 미니창 같은거지 패널을 생성하고 배치한 후 프레임에 add하면 됨.
+		패널은 레이아웃이 있다+는걸 전제하기 때문에 frame에 레이아웃이 없으면 Flow레이아웃을 자동 적용
+		add(Element e) 판넬에 추가. 
+		setLayout(Layout lay) 판넬의 레이아웃 추가.
+	
+	Dialog 
+	 새로운 팝업창을 띄워줌.
+		생성자 (Dialog owner) 상위의 dialog 객체
+			(Frame owner) 상위의 프레임
+			(Window owner) 상위의 윈도우(프레임의 부모클래스)
+				,String title, boolean modality) 추가가능. 타이틀 이름변경, 부모창과 왔다갔다 할수 있는지 여부
+
+		메소드
+		setVisible(boolean b) true면 보임, false면 안보임
+		setSize(int x, int y) 
+		setLocation(int x, int y)
+
+		FileDialog 클래스 (sub)
+			생성자 부모와 거의 같지만 boolean대신 int mode가 있음.해당클래스 필드인 LOAD ,SAVE로 대체가능.
+			보통 프로그램에서 불러오기,저장하기하면 뜨는 창 뜸
+			
+			메소드 getFile() 선택한 파일의 이름을 얻어옴.
+				getDirectory() 선택한 파일의 절대주소값을 얻어옴.
+
+	컴포넌트 java.util.component
+	조합가능한 캡슐화 단위들. 컴포넌트들의 super class로서 컴포넌트들에 쓸 수 있는 메소드를 가지고있다.
+		컴포넌트 클래스들
+		Button 버튼을 만들어 줄 때 사용 setLabel로 내용변경가능, 생성자 (String label)로 이름 설정 가능
+		label 고정문자열을 표시할 때 사용, 경계선도 없고 그냥 덩그러니. setAlignment(int align) =>CENTER,LEFT,RIGHT 필드를 통해 정렬시킬수 있음
+			get,setText() 를 통해 문자확인 / 표시가능
+		CheckBox 체크박스 생성자(String label,boolean check, CheckboxGroup cbg) label이름을 가진 체크박스 생성, check가 true라면 체크 된 채로, cbg가 있다면 그룹된 애 중 하나만 선택가능(라디오 박스라고 부름). 
+			getState() 체크인지 아닌지 boolean으로 반환
+		Choice 고를 수 있는 박스.
+		TextField 생성자(int columns) columns 만큼의 textfiled를 만들어줌 
+		TextArea 생성자 (String text, int rows, int columns, int scrollbars)
+		MenuBar 메뉴바. add(Menu me)
+			Menu클래스 생성자(String category)category로 이름생성, 메뉴바에 들어가는 메뉴들
+					add(MenuItem mi) mi를 메뉴 하위목록에 추가. 
+					addSeparator() 메뉴 하위목록에 구분선 추가.
+				MenuItem클래스 생성자(String label)label로 이름 생성,메뉴바에 들어가는 메뉴에 들어갈 항목들
+				CheckBoxMenuItem 생성자(String label) label이름을 가진 체크박스항목을 추가할 수 있당
+				PopupMenu 생성자(String label) label이름을 가진 누르면 톡튀어나오는 팝업메뉴
+		Canvas 그림
+			paint오버라이딩을 통해 구현
+				Graphics g를 인자로 받는데, Graphics 의 메소드들을 통해 그림을 그릴 수 있다.
+					g.setColor(Color c) 색칠
+					g.drawRect(int x, int y, int width, int height) x,y점에서 x+width,y+height 의 네모 그리기.
+					g.drawLine(int x, int y, int endx, int endy) x,y에서 시작해서 ex,ey까지 가는 선 그리기
+					g.drawOval(int x, int y, int width, int height) x,y점에서 x+width까지, y+height까지 가는 원 그리기 
+					g.drawArc(int x, int y, int width, int height,startAngle, arcAngle) 위와 동, startangle 부터 arcangle까지만 구현
+					g.draw3DRect(int x, int y, int width, int height,boolean b) b를 true하면 모서리 두꺼운 네모 가능 
+					".fill" 하면 line빼고 속이 꽉찬 애들로 구현가능
+
+		컴포넌트 메소드
+			setFont(Font font) 폰트 설정
+			setBackground(Color c) 색깔 설정, Color.멤버필드로 접근
+
+		
+
+	기타 클래스 
+		Toolkit 추상클래스이므로 객체.getToolkit()혹은 Toolkit.getDefaultToolkit()으로 객체 얻어냄, 기능 이것저것, 수업중 용례 로는 .getScreenSize()로 스크린 사이즈 측정, beep() 소리나게 함
+		Dimension 사이즈의 정보를 가지는 클래스. Toolkit으로 얻어낸 스크린사이즈를 디멘션에 넣고, Location을 디멘션.getWidth/2 이런식으로 비율상 내가 원하는 지점에 뜨게 할 수 있겠다. 각종 int가로, int세로 인자를 받는 곳에 대신 들어갈 수 있다.
+		Font 생성자(String 글꼴, int style, int size) 글꼴, 기울임등의 스타일(클래스 필드를 통해 설정가능), 사이즈를 가진 폰트생성
+		List 고를수있는 것들이 나열되어있는 텍스트박스 생성. 기본크기는 4개. 생성자(int size, boolean mul) su에따라 크기설정, mul이 true면 다중선택가능
+		Color 생성자 (int r, int g, int b) rgb값 설정가능
+Swing
+	javax.swing.JFrame 스윙에서 창 틀을 만들어주는 클래스
+	javax.swing.JButton 버튼 만들어주는 클래스
+
+awt와 swing은 대부분 호환된다.
+		

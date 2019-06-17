@@ -1,0 +1,57 @@
+19.5.13(월)
+SQL (structured query language)
+	DB를 처리하기 위한 문법
+	데이터를 검색(조회)과 변경(입력, 수정, 삭제) 가능
+
+SQL의 종류 
+1.DML Data manipulation language
+2.TCL Transaction Control Language
+	트랜젝션 제어. commit : 영구저장, rollback : 되돌림 
+3.DDL data definition language
+4.DCL data control language
+5.DQL data qurey language
+
+SQL*Plus (프로그램)
+	SQL*plus는 SQL명령문을 기능으로 제공하는 프로그램이다. 제어력 강함
+	cmd상에 sqlplus를 입력하여 접근가능.
+	* sqlplus id/pw 로 로그인 생략가능
+	* 기본형식 sqlplus [계정명]/[비밀번호] [@ ip] [/ as sysdba][/no log]
+	* nolog는 접속만 하고 로그인은 안나옴.. 무슨 의미가 있는지는?^^;
+sqlplus 계정
+	SYS  (현재 설정 비밀번호 oracle) DB시스템 전체를 관장
+	SYSTEM (현재 설정 비밀번호 oracle) DB시스템 제어 가능
+	hr (?) 오래 안쓰면 잠기게 되는데 system(혹은 그 이상의 권한을 가진 계정)에서
+		alter user hr account unlock; 으로 잠금해제 가능하다.
+system으로 로그인해서 select tname from tab;을 통해 테이블의 이름들을 볼 수 있다.
+여타 db도 마찬가지.
+
+sys로그인 법 : sqlplus 아무ID/아무PW as sysdba
+sys특징 : db에서 모든걸 제어할 수 있음. 다만 local에서만 접근가능(online 불가)
+
+*sqlplus DB제어가 아닌 기타 명령어
+	exit 끈다
+	conn (id/pw) 새로운 id로 접속
+	list || l = 마지막으로 쳤던 명령어 출력
+	run || r || / = 마지막으로 쳤던 명령어 실행
+	edit 현재 버퍼에 남아있는 쿼리문 메모장에 저장 = save 파일이름	
+	edit [메모장이름] = 메모장 켜기 ,해당 메모장 저장 후 종료
+	 !주의 cmd경로에 따라 안되는 곳 있음 
+	start 메모장이름 || @ 메모장이름 = 메모장 내용 실행
+	get 메모장이름
+	spool 파일이름 ~ spool off = spool이후부터 off까지의 로그파일 만들기
+	set heading on / off = table의 헤더를 살림, 날림
+	set linesize 숫자 = 한줄에 몇글자나 들어갈 수 있는지 정함
+	set pagesize 숫자 = 한 페이지(한 단락)에 들어갈 수 있는 줄 숫자 정함(header의 길이도 포함)
+	column 속성명 format 9,999,999 = 숫자 포맷 정해주기.
+	column 속성명 format A20= 문자 포맷 정해주기. a숫자는 글자수.
+	 !주의 table과 관계없이 모든 column들의 포맷을 정해주는 거니 주의 필요
+	column 속성명 clear = 포맷 삭제.
+
+
+*dual table = 오라클에서 제공하는 더미테이블. 이런저런 테스트를 해볼 수 있다.
+
+*DB가 중지된 경우 : 제어판에서 서비스 => 로컬 서비스를 실행해보면 oracle이 실행되고 있는 것을 알 수 있다. 만약 오라클의 서비스가
+	중지되면 해당 창으로 가서 집적 실행시킬 수 있다. 혹은 설치폴더 가서 데이터베이스 시작 이라는 파일을
+	관리자 권한으로 실행 시켜도 같은 효과를 얻을 수 있다. 혹은 SYS로 접속해서 START UP이라는 명령어를 통해 DB를 실행시킬 수 있다.
+
+*CRUD = create, read, update, delete. DB의 검색과 변경의 약자들

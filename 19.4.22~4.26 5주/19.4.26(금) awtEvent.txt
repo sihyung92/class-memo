@@ -1,0 +1,35 @@
+19.4.26(금)
+java.awt.event awt이벤트~~
+	이벤트는 소스, 리스너, 핸들러로 나뉜다.
+	소스는 이벤트가 발생하는 컴포넌트 들이 소스, 리스너는 이벤트가 발생하는지를 체크하는 것들이 리스너,
+	이벤트가 발생했을때 기능을 구현하는게 핸들러이다. 핸들러는 리스너들에 메소드로 포함되어 있다.
+	java.awt.event.WindowListener
+		윈도우 리스너, 윈도우(Frame의 super)에서 일어나는 일들을 컨트롤 할 수 있게 해주는 인터페이스.
+		구현해야 하는 메소드들
+			windowOpened(windowEvent e) 화면이 열렸을때.
+			windowClosing(windowEvent e) x를 눌러 창을 닫을때.
+			windowClosed(windowEvent e) 창이 완전히 닫힌 후.
+			windowIconified(windowEvent e) 최소화
+			windowDeiconified(windowEvent e) 이전화면
+			windowActivated(windowEvent e) 활성화
+			windowDeactivated(windowEvent e) 비활성화
+
+	java.awt.event.mouseListener
+		마우스 리스너, 마우스에서 일어나는 일들을 컨트롤 할 수 있게 해주는 인터페이스
+		구현해야 하는 메소드들
+			mousePressed(MouseEvent e) 눌렀을때
+			mouseReleased(MouseEvent e) 놨을때
+			mouseClicked(MouseEvent e) 클릭(놨을때 이후)
+			순서 press->release->click
+			mouseEntered(MouseEvent e) 마우스가 해당 객체위에 있을때
+			mouseExited(MouseEvent e) 마우스가 해당 객체위에 있다가 벗어났을때
+
+java.awt.event.KeyListener
+		키보드 리스너, 키보드에서 일어나는 일들을 컨트롤 할 수 있게 해주는 인터페이스
+			KeyTyped(keyEvent e) 타이핑됐을때 (ctrl,alt등등 타입이 안되는 키도 많다)
+			keyPressed(keyEvent e) 누를때, 누르고있으면 수십번 연속으로
+			keyRelease(keyEvent e) 뗄 때.
+			순서 press->type->release
+		
+			keyEvent e 에서 e.getKeyCode()를 출력함으로써 키보드 버튼들이 어떤 키 코드를 가지고 있는지 알 수 있다.
+			e.getKeyChar()는 문자가 있는부분은 해당문자가, 없는부분은 ?가 뜸

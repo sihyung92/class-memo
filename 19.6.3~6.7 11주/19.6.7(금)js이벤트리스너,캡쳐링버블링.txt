@@ -1,0 +1,45 @@
+19.6.7(금)
+DOM level 0 - 인라인 방식
+DOM level 1 - 노드 잡아다 맥이는 방식(0이나 1이나 도찐개찐)
+DOM level 2 - 리스너를 추가하여 이벤트들을 binding하는 방식
+
+javascript
+	이벤트에 펑션달기
+		내가 이벤트에 기능을 달아줘도 해당 태그가 가지고 있던 디폴트 기능까지 오버라이드하는 건 아니다.
+		내가 붙인 기능을 수행하고 원래 가지고 있던 기능을 수행하게 된다.
+		만약 원래 가지고 있던 기능을 수행 안하게 하고 싶으면 말미에 return false; 하면 된다.
+		*그렇다면 값에 false를 주면 되지않냐? 왜 안돼? 이벤트가 일어나는 순간 콜백함수를 호출하는 구조이기 때문에
+		 값을 주면 값이아니라 false()라는 함수를 실행하게 돼.. 그런데 그딴 함수는 없다면 그냥 오류나고 말겠지
+		!이벤트 뿐만 아니라 함수를 값으로 가지는 애들은 마찬가지로 함수를 넣어줘야 동작한다.
+		!생각해볼 것 : form태그에 딸린 button이나 input(submit)은 onclick=return false;해도 submit이 작동해버린다.(현재는 안 됨^^;업데이트 된 듯)
+			그런데 button은 트리거 역할을 할 뿐이고 submit을 하는 것은 form태그의 onsubmit()이기 때문에 onsubmit을 return false; 해줘야 기능을
+			멈추게 할 수 있다. 이벤트 처리가 원하는대로 작동하지 않는다면 실제 작동하는 이벤트가 뭘까? 고민해보자
+	
+	이벤트
+		onfocus 포커스가 갈 때
+		onblur 포커스가 나갈 때
+		onkeydown,mousedown 누르는 동작
+		onkeyup,mouesup 떼는 동작
+		onkeypress,click 키보드는 무언가 입력, 마우스는 클릭
+		
+	캡처링capturing & 버블링bubbling
+		이벤트 버블링은 특정 화면 요소에서 이벤트가 발생했을 때 해당 이벤트가 더 상위의 화면 요소들로 전달되어 가는 특성을 의미한다.
+		캡쳐링은 반대로 상위에서 하위로 향하는 이벤트, 디폴트는 버블링
+	
+	함수에 e인자를 주고 e.stopPropagation();을 통해 이벤트 전파를 막을 수 있음;
+
+	addEventListener
+		onclick 류의 이벤트를 이용해서 값을 줄 때 와 addEventListener(click, 함수)를 통해 이벤트를 추가하는 것(리스너 등록방식) 의 차이점 : 
+		onclick은 하나의 함수만을 값으로 가질 수 있지만 add~를 통하면 다수의 이벤트를 등록 할 수 있다.
+		참고로 add~에 들어가는 이벤트 인자는 on을 뗀 나머지를 적어준다.
+		3번째 인자로 true를 줌으로써 capturing으로 바꿀 수 있다.(capturing의 T/F)
+		!주의 : 함수를 익명함수로 주게 되면 지울 때 문제가 되겠지? 
+		*focus와 blur는 focusin, focusout으로도 가능
+	removeEventListener(이벤트, 함수)
+		이벤트 제거~
+
+	! IE 옛날버전 방식
+		attachEvent, detachEvent를 통해 붙이고 떼고, 이벤트명도 조금 다르다. 주의
+
+	속성값 줄 때 주의사항 : css는 단위(px,pt,em등등)를 함께 받는 경우가 많다. js에서 노드를 잡아 속성값을 설정하려고 할 때 0과 단위를 분리하여
+		(0px이라면 0+'px'식으로) 주는 것이 좋고, 값을 얻어오고 더해주는 경우라면 parseInt를 사용해야 연산자를 활용할 수 있다.

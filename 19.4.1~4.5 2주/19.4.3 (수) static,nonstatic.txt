@@ -1,0 +1,54 @@
+﻿19.4.3 (수)
+
+class 명이 중복될 경우 나중에 컴파일 한 클래스로 덮어씌워짐.
+class 이름이 겹치지 않는 것은 쉽지않다.. 카테고리로 구분하자
+카테고리 이름도 겹칠 수 있기 때문에 도메인주소로 구분하는 것이 편함
+도메인 주소를 활용할 때 뒤에부터 쓰자. 
+	Ex) www.plusgoogle.com 이면 com폴더
+	    www.oracle.com이면	     ┘└google폴더
+			     orcle폴더	└plus폴더
+			클래스들┘	   └ 클래스들
+이 때 이런식으로 클래스들을 포함하는 상위 카테고리같은 개념을 package 라고 한다.(category와 동일은 아님)
+
+package에 있는 것을 사용하려면 package 주소를 .을 써서 입력해야하는데 Ex)java.util.Scanner
+String 이나 Math.random 함수 같은것은 package를 왜 입력하지 않을까?
+API 상에 java.lang 패키지 아래에 있는 것들은 package 주소를 생략가능하다(자주쓰기때문에 지원)
+
+자바 파일과 클래스 파일 저장장소를 분리하고 싶으면 프롬프터에서 javac -help 참조. 
+javac -d 주소 *.java를 하면 주소에 class 파일을 생성할 수 있다.
+
+클래스1이 다른 클래스2의 메소드를 참조하고 있으면 클래스 1을 컴파일 할 때 자동으로 클래스2도 컴파일된다.
+
+접근제한자 public=누구나 (protected=내패키지 +다른패키지의 상속자)defalut=내 패키지만 private=내 클래스만
+*아무것도 안적으면 = defalut *main 문은 public해야함 jvm에서 접근해야 실행이 가능하니까
+*class 도 접근제한자 설정을 할 수 있다. 기본적으로 default, private설정을 불가함
+
+*cmd 상 이동방법 - 절대경로 : cd c:\java\...모든 주소를 다 치는 것 -상대경로 cd (\생략되어있음)com\bit\...현재위치를 기준으로
+.\..\com\bit = 한경로 뒤로가서 com이하 주소를 찾아가라 .은 현재 디렉토리 ..은 한경로 뒤로
+
+non-static method(인스턴스 메소드, 멤버 메소드) 사용법
+1. static method에서 non-static method 를 호출(call)하기 위해서 객체 생성 후
+	참조변수.메소드명();(참조변수를 이용해서 접근)
+2. non-static method에서 non-static method의 호출
+	메소드명();
+3. static method 에서 static method 로 호출
+	메소드명();
+4. non-static method에서 static method로 호출
+	메소드명();
+
+JVM의 메모리 구조 
+ 클래스영역 - static 영역, 상수 영역, core영역 등등...
+ 스택영역 - 4.2(화)참조
+ 힙영역 - 객체를 찍어내는 영역 
+
+ static은 값을 static영역에 저장함. 프로그램을 시행할 때 static에 다 대입하고 시작하기때문에 로딩이 느림.
+ non-static은 힙영역에 객체를 찍어내는 경우에 한해서 그 정보를 힙영역에 저장. 메모리가 얼마나 되는지 모르기때문에
+ 주소값(참조변수)를 통해 접근하는 것임.
+
+ 프로그램의 메모리관리 측면에서 생각해보자. static영역에 저장되는 값은 언제든지 불러낼 수 있어야 하기 때문에
+ 함부로 비울 수 없고, stack은 return이 올때마다 한칸씩 비우기때문에 프로그래머가 조절하고있는거고.. java는
+ 알아서 메모리를 관리한다며? heap영역에 객체를 저장해놓고 주소(참조변수)만 주고 찾을때만 생성, 주소가 없으면
+ garbage collector 가 다 비워버림
+
+ 참조변수는 null 값을 가질수도 있다. null=undefined 그렇다면 아무것도 가리키지 않는다는 말이 된다. 하지만 초기화는 가능.
+ 참조변수의 메모리를 임의로 비우고 싶을때도 null을 활용할 수 있다.

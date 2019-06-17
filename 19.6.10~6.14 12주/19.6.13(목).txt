@@ -1,0 +1,48 @@
+19.6.13(목)
+jquery 애니메이션 처리
+	.animate( properties [, duration ] [, easing ] [, complete ] ) 애니메이션 처리.
+		 duration에 object(배열)이 오면 속성 목록을 주는셈이 된다. 배열에 들어갈 수 있는 속성은 api참고. du는 시간, ea는 가속방식, com은 이 애니메이션이 끝나고 수행할 것
+		*jQuery에서 연쇄 animation 은 queue에 저장하게 된다
+	.stop( [clearQueue ] [, jumpToEnd ] )인자 둘다 boolean(default false). 애니메이션 정지
+		clearqueue를 true를 주면 연쇄된 애니메이션 전부 정지,jumptoend를 true를 주면 finish()와 같은 효과
+	.finish( [queue ] ) 애니메이션를 종료시킨 결과 로 가게됨, queue에 스트링으로 정지시킬 애니메이션을 지정가능
+
+	*다중의 인터발은 피하자! js는 싱글쓰레드라서 
+
+jquery 플러그인
+	jquery => plugin 탭에서 마음에 드는 플러그인을 다운로드 하고 사용 할 수 있음
+	교육용 plugin - bxSlider https://bxslider.com/
+	인스톨페이지에 안내를 읽고 활용해보자
+
+jsp 서블릿
+	tomcat api => http://tomcat.apache.org/의 Documentation탭 참조
+	dinamic web project를 만들 때 next->next-> generate web.xml 을 체크해 주어야 한다
+	
+	tomcat에 내장되어있는 javax.servlet을 임포트하여 인터페이스로 사용 하면 임플먼트 해야 하는 메소드들을 통해 서블릿의 구조를 생각해보자
+		init(ServletConfig arg0) 서버가 실행된 후 최초의 접속 작동하는 메소드, 서비스를 하기 위한 준비
+		destroy() 서비스가 정상 종료될 때 실행하는 메소드. 서블릿 정리작업
+		getServletInfo() 서블릿의 정보. 기계어이다
+ 		getServletConfig() 서블릿 환경설정 정보들을 얻어낼 수 있는 메소드
+		service(ServletRequest arg0, ServletResponse arg1) 요청이 있을 때 마다 호출되는 메소드
+	*web.xml을 generate 한 이유? web-inf는 보안상의 이유로 접근을 불허하는데, web-inf하에 있는 classes에 컴파일 코드들을 써야할것 아니야..
+	web.xml이 web-inf에 접근할 때 다른 경로로 접근을 할 수 있도록 도와주는 역할을 한다. 그동안 아무것도 안치면 index.~~로 갔던 이유는 
+	web.xml의 내용이 그렇게 구성되어있기 때문이다. 마음에 안 들면 밀어~
+
+	서블릿 사용법
+		HttpServlet에서 doPost(), doGet() 사용-post방식일 때,get방식일 때.
+	
+	서블릿 작동시 web.xml작성법
+  <servlet>
+  	<servlet-name>ex01</servlet-name>
+  	<servlet-class>com.bit.test01.Ex01</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>ex01</servlet-name>
+  	<url-pattern>/ex01.html</url-pattern>
+  </servlet-mapping>
+	실행순서 : mapping에서 url패턴이 ex01.html로 들어오면 서블릿네임이 ex01인 것을 실행시키게 되고, 위에서
+	 서블릿 네임ex01은 com.bit.test01.ex01이므로 해당 컴파일 코드를 실행해서 출력해주게 됨
+	이렇게 url 을 내맘대로 제어함으로써 보안성이 강화되고, 자유도가 올라간다
+
+	*서블릿에서 자바코드 혹은 web.xml파일을 수정하면 서버를 껐다 켜야 컴파일이 이루어진다.

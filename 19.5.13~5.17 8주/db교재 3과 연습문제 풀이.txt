@@ -1,0 +1,168 @@
+BOOK
+bookid / primary key
+bookname
+publisher
+price 정가
+
+CUSTOMER
+custid / primary key
+name
+address
+phone
+
+ORDERS
+orderid /primary
+custid /foreign
+bookid /foreign
+saleprice 판매가
+orderdate
+
+IMPORTED_BOOK
+bookid /primary
+bookname
+publisher
+price
+
+193page
+---1---
+1번. SELECT bookname FROM book WHERE bookid = 1;
+2번. SELECT bookname FROM book WHERE price > 20000;
+3번-1. SELECT sum(saleprice) FROM orders WHERE custid = (SELECT custid FROM customer WHERE name='박지성') 결과 :39000
+3번-2. SELECT sum(saleprice) FROM orders, customer WHERE orders.custid = customer.custid AND name='박지성'
+4번. SELECT count(*) FROM orders, customer WHERE orders.custid = customer.custid AND name = '박지성'
+5번. SELECT count(publisher) FROM orders,customer,book WHERE orders.custid=customer.custid AND orders.bookid = book.bookid AND name = '박지성';
+6번. SELECT bookname, saleprice, price-saleprice FROM orders,customer,book WHERE orders.custid=customer.custid AND orders.bookid = book.bookid AND name = '박지성';
+7번. SELECT DISTINCT bookname FROM book LEFT OUTER JOIN ORDERS ON book.bookid = ORDERS.bookid WHERE custid<>(SELECT custid from CUSTOMER where name = '박지성');
+
+---2---
+1번. SELECT count(*) FROM book;
+2번. SELECT count(publisher) From book;
+3번. SELECT name, address FROM customer;
+4번. SELECT orderid FROM orders WHERE orderdate BETWEEN '14/7/4' AND '14/7/7';
+5번. SELECT orderid FROM orders WHERE orderdate NOT BETWEEN '14/7/4' AND '14/7/7';
+6번. SELECT name, address FROM customer WHERE name LIKE '김%'
+7번. SELECT name, address FROM customer WHERE name LIKE '김%아';
+8번. SELECT name FROM customer WHERE custid NOT IN (SELECT custid FROM orders)
+9번. SELECT sum(saleprice), avg(saleprice) FROM ORDERS
+10번. SELECT name, SUM(saleprice) FROM customer NATURAL JOIN orders GROUP BY name;
+11번. SELECT name, bookname FROM book NATURAL JOIN (SELECT * FROM orders INNER JOIN customer USING(custid)) ORDER BY name;
+12번. SELECT MAX(A.price - B.saleprice) FROM book A INNER JOIN orders B ON A.bookid=B.bookid
+13번. SELECT NAME FROM (SELECT name, AVG(saleprice) FROM orders NATURAL JOIN customer group by name having AVG(saleprice)>(SELECT AVG(saleprice) FROM orders));
+
+---3---
+1번. SELECT DISTINCT name 
+FROM customer A INNER JOIN orders B ON A.custid = B.custid INNER JOIN book C ON B.bookid = C.bookid
+WHERE publisher in (SELECT publisher FROM customer A INNER JOIN orders B ON A.custid = B.custid INNER JOIN book C ON B.bookid = C.bookid WHERE name='박지성')
+ORDER BY name
+2번. SELECT name FROM customer WHERE custid in (SELECT A.custid FROM (SELECT * FROM orders NATURAL JOIN book) A , (SELECT * FROM orders NATURAL JOIN book) B WHERE A.custid = B.custid AND A.publisher<>B.publisher);
+3번. SELECT bookname FROM (SELECT bookid, COUNT(*) FROM orders GROUP BY bookid HAVING COUNT(*)/(SELECT COUNT(*) FROM orders) > 0.3 ORDER BY bookid) NATURAL JOIN book;
+
+---4---
+1번. primary key인 bookid가 없다
+2번. DELETE FROM book WHERE publisher = '삼성당';
+3번. orders에서 bookid를 외래키로 받아서 쓰고 있잖아..
+4번. UPDATE book SET publisher = '대한출판사' WHERE publisher = '대한미디어';
+5번. CREATE TABLE Bookcompany(
+	name VARCHAR(20),
+	address VARCHAR(20),
+	begin DATE,
+	PRIMARY KEY(name)
+	);
+6번. ALTER TABLE Bookcompany
+	ADD webadress VARCHAR(30)
+7번. INSERT INTO bookcompany VALUES ('한빛아카데미', '서울시 마포구', '1993-01-01', 'http://hanbit.co.kr')
+
+---5---
+1번. 박세리의 데이터 FROM customer
+2번. 나머지 사람의 데이터 FROM data , 질의문의 목적은 주문이 없는 사람을 찾는 것이다. 다른 양식으로는 SELECT * FROM customer A OUTER JOIN orders B ON A.custid = B.custid WHERE orderid is null;과 2번문항의 8번이 있다  
+
+---6---
+상상 테이블로 작성합니다 ^^
+1-1번. SELECT 극장이름, 위치 FROM 극장;
+1-2번. SELECT 극장이름 FROM 극장 WHERE 위치 = '잠실';
+1-3번. SELECT 이름 FROM 고객 WHERE 주소 = '잠실' ORDER BY 이름;
+1-4번. SELECT 극장번호, 상영관번호, 영화제목 FROM 상영관 WHERE 가격 <= 8000;
+1-5번. SELECT 고객 FROM 극장 INNER JOIN 고객 ON 극장.위치 = 고객.주소;
+2-1번. SELECT COUNT(*) FROM 극장;
+2-2번. SELECT AVG(가격) FROM 상영관;
+2-3번. SELECT COUNT(*) FROM 예약 WHERE 날짜 = '2014-09-01';
+3-1번. SELECT 영화제목 FROM 상영관 WHERE 극장번호 = (SELECT 극장번호 FROM 극장 WHERE 극장이름 = '대한');
+3-2번. SELECT 이름 FROM 고객 WHERE 고객번호 = (SELECT 고객번호 FROM 예약 WHERE 극장번호 = (SELECT 극장번호 FROM 극장 WHERE 극장이름 = '대한'));
+3-3번. SELECT sum(가격) FROM 예약 NATURAL JOIN (SELECT * FROM 극장 NATURAL JOIN 상영관) WHERE 극장이름 = '대한';
+4-1번. SELECT 극장이름, COUNT(*) "상영관 수" FROM 극장 NATURAL JOIN 상영관 GROUP BY 극장이름
+4-2번. SELECT 극장이름, COUNT(*) "상영관 수" FROM 극장 NATURAL JOIN 상영관 WHERE 극장이름 = '잠실';
+4-3번. SELECT 극장이름, AVG(*) FROM 극장 NATURAL JOIN 상영관 NATURAL JOIN 예약 WHERE 날짜 = '2014/09/01' GROUP BY 극장이름
+4-4번. SELECT 영화제목, COUNT(*) FROM 상영관 NATURAL  JOIN 예약 WHERE 날짜 = '2014/09/01' GROUP BY 영화제목;
+5-1번. INSERT INTO 극장 VALUES (4, 씨지, 산본);
+	INSERT INTO 상영관 VALUES (4, 1, 이상한 영화, 100, 5000);
+	INSERT INTO 고객 VALUES (1, 똘똘이, 산본)
+	INSERT INTO 예약 VALUES (4, 1, 1, 4500, 2014-09-01);
+5-2번 UPDATE 상영관 SET 가격 = 가격*1.1;
+
+---7---
+1번.
+2번. SELECT DISTINCT name, salary FROM salesperson ;
+3번. SELECT name FROM salesperson WHERE age<30;
+4번. SELECT name FROM customer WHERE city like = '%s';
+5번. SELECT COUNT(DISTINCT custname) FROM order;
+6번. SELECT salesperson, COUNT(*) FROM order GROUP BY salesperson;
+7번. SELECT DISTINCT name, age FROM salesperson WHERE name IN (SELECT custname FROM order WHERE custname in (SELECT custname FROM customer WHERE city = 'LA')) (틀림)
+8번. SELECT DISTINCT name, age FROM salesperson NATURAL JOIN order NATURAL JOIN customer WHERE city = 'LA';
+9번. SELECT name FROM (SELECT salesperson COUNT(*) FROM orders GROUP BY salesperson HAVING COUNT(salesperson)>=2);
+10번. UPDATE salesperson SET salary = 45000 WHERE name = 'TOM';
+
+---8---
+^^...
+2번. SELECT name FROM employee;
+3번. SELECT name FROM employee WHERE sex = 'female';
+4번. (manager가 empno이라고 가정)SELECT name FROM employee INNER JOIN department USING (empno, manager);
+5번. SELECT name, address FROM employee A INNER JOIN department B ON A.deptno = B.deptno WHERE deptname = 'IT';
+6번. (manager가 name이라고 가정)SELECT COUNT(*) FROM employee WHERE deptno = (SELECT deptno FROM department WHERE manager = '홍길동');
+6번-2(manager가 empno이라고 가정)SELECT COUNT(*) FROM employee  WHERE deptno = (SELECT deptno FROM employee WHERE name='홍길동')
+7번. SELECT deptname, name, hours-worked FROM employee NATURAL JOIN department NATURAL JOIN works OREDR BY deptname, name; (order by 에 대해)
+8번. SELECT projno, projname, (SELECT COUNT(*) "사원수" FROM project NATURAL JOIN works NATURAL JOIN employee GROUP BY projno HAVING COUNT(*)>1) FROM project NATURAL JOIN (SELECT projno, COUNT(*) NATURAL JOIN works NATURAL JOIN employee GROUP BY projno HAVING COUNT(*)>1);
+9번. SELECT name FROM employee NATURAL JOIN (SELECT deptno FROM (SELECT deptno, COUNT(*) FROM department NATURAL JOIN employee GROUP BY deptno HAVING COUNT(*)>2));
+
+---9---
+1번. SELECT ename "사원이름", job "사원직위" FROM emp;
+2번. SELECT ename, sal FROM emp WHERE deptno = 30;
+3번. SELECT ename, sal, 1.1*sal-sal "증가액", 1.1*sal "인상된 급여" FROM emp ORDER BY empno;
+4번. SELECT ename, deptno FROM emp WHERE ename LIKE "S%";
+5번. SELECT MAX(sal) "MAX", MIN(sal) "MIN", SUM(sal) "SUM", ROUND(AVG(sal)) "AVG" FROM emp;
+6번. SELECT job "업무", COUNT(job)"업무별 사원수" FROM emp GROUP BY job;
+7번. SELECT MAX(sal) - MIN(sal)"사장놈직원님임금차이" FROM emp;
+8번. SELECT COUNT(empno)"사원수", MAX(sal)"팀장놈급여", ROUND(AVG(sal),2)"평균급여" FROM emp WHERE deptno=30;
+9번. SELECT MAX(AVG(sal))"평균급여최고부서" FROM emp GROUP BY deptno;
+10번. SELECT job, ROUND(AVG(sal),1)"평균급여" FROM emp WHERE job<>'salesman' AND JOB IN (SELECT job FROM emp GROUP BY job HAVING SUM(sal)>3000) GROUP BY job ORDER BY AVG(sal) desc;
+11번. SELECT COUNT(empno) FROM emp WHERE mgr is not null;
+12번. SELECT ename, sal, comm, sal+comm FROM emp WHERE comm is not null ORDER BY sal+comm desc;
+13번. SELECT deptno, job, count(*) FROM emp GROUP BY deptno, job;
+14번. SELECT dname FROM emp RIGHT OUTER JOIN dept USING(deptno) WHERE empno is null;
+15번. SELECT job, COUNT(*) FROM emp GROUP BY job HAVING COUNT(*)>=4;
+16번. SELECT ename FROM emp WHERE empno between 7400 AND 7600;
+17번. SELECT ename, dname FROM emp NATURAL JOIN dept;
+18번. SELECT staff.ename "이름", manager.ename "매니저" FROM emp staff INNER JOIN emp manager ON staff.mgr = manager.empno
+19번. SELECT ename FROM emp WHERE sal>(SELECT sal FROM emp WHERE ename='SCOTT');
+20번. SELECT DISTINCT deptno FROM emp WHERE ename='SCOTT' OR deptno IN (SELECT deptno FROM dept WHERE loc = 'DALLAS');
+
+---10---
+1번. 범례 = (tablename, FK, PK)
+	(job_history, [job_id,employee_id,department_id],[start_date,job_id])
+	(jobs, null, job_id)
+	(job_grades, null, [grade_level, lowest_sal, highest_sal])
+	(departments, [location_id, manager_id], department_id)
+	(employee_id, [job_id, department_id], employee_id)
+	이하생략
+2번. 네
+3번. SELECT COUNT(*) FROM employees;
+     SELECT COUNT(*) FROM departments; (ㅜㅜ)
+4번. SELECT employee_id, last_name, job_id, hire_date FROM employees
+5번. SELECT last_name, salary FROM employees WHERE salary>=12000
+6번. SELECT last_name, department_id FROM departments NATURAL JOIN employees WHERE department_id IN (20,50) ORDER BY last_name;
+7번. SELECT last_name FROM employees WHERE last_name like '__a%';
+8번. SELECT job_id, COUNT(*) FROM employees GROUP BY job_id;
+9번. SELECT MAX(salary)-MIN(salary) FROM employees;
+10번. SELECT last_name, job_id, department_id, department_name FROM employees NATURAL JOIN departments NATURAL JOIN locations WHERE city = 'Toronto';
+11번. SELECT last_name, job_id, hire_date FROM employees WHERE last_name IN ('Matos', 'Taylor') ORDER BY hire_date;
+12번. SELECT last_name, hire_date FROM employees WHERE hire_date like '94%';
+13번. SELECT last_name, job_id, salary FROM employees NATURAL JOIN jobs WHERE job_title IN('Stock Clerk', 'Sales Representative') AND salary NOT IN (2500,3500,7000);

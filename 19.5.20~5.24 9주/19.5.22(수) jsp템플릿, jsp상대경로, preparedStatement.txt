@@ -1,0 +1,42 @@
+19.5.22(수)
+중복되는 부분 header와 footer로 따로 만들기. 
+이후 include 디렉티브를 이용해 위아래로 가져다 붙이기.
+header와 footer에서의 경로는 어떻게?
+절대경로로 지정해주는 방법, 상대경로를 만들어서 붙여주는 방법이 있다.
+상대경로는
+	String url = request.getRequestURI();
+	int cnt = -2;
+	for(int i = 0 ; i < url.length();i++){
+		if(url.charAt(i)=='/'){cnt++;}
+	}
+	String path= "./";
+	for(int i = 0 ; i < cnt ; i++){
+		path+="../";
+	}
+위와같이 상대경로의 패스를 만들어내는 것은 번거롭지만
+보안에 다소 유리한 점이 있다고 볼수도 있을지도 모른다고 여겨진다고 생각된다
+
+ResultSet에서 while문을 돌려 값을 집적 html문에 투사하는 경우 io 작업이 while한바퀴마다 매번 진행되어
+지연이 생기고 그동안 DB를 사용할 수 없는 문제도 있다.
+그런 문제를 방지하기 위해 db에서 받아오는 값을 별도의 자료구조에 저장하고 DB에서의 Input을 종료한 뒤
+자료구조에서 필요한 값을 얻어내는 방식이 더 낫다.(속도면, DB관리측면)
+혹은 이너클래스를 선언하여 클래스 객체를 통해 값들을 받아내고 출력할 수 있다.
+
+메소드(통신방식) 받을 때 get과 post를 구분할 때 주의할점 : request.getMethod()는 대문자로 반환한다.
+equals로 비교할 때 유의
+
+자바 스크립트릿에서 return을 하면 스크립트릿이 종료된다(main에서 return하는 경우를 생각해보라)
+
+form 태그에서 action을 지정하지 않으면 submit시 가는 곳은 자기자신이다.
+
+		PreparedStatement pstmt=null;
+		String sql = "update bbs03 set sub=?, content=? where num=?";
+		try{
+			conn=DriverManager.getConnection(url);
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, sub);
+			pstmt.setString(2, content);
+			pstmt.setInt(3, num);
+		인젝션 공격도 막아주는 개꿀 프리페어드 스테이트먼트 구분자는 ?임
+다음주에 프로시저로 해달라고 졸라야함
+<input type="password" id="pw" name="pw" placeholder="비밀번호" class="int" maxlength="16" onkeypress="capslockevt(event);getKeysv2();" onkeyup="checkShiftUp(event);" onkeydown="checkShiftDown(event);">

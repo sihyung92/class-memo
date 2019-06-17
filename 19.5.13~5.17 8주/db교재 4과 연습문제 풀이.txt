@@ -1,0 +1,183 @@
+1번.
+ABS(-15)=15
+CEIL(15.7)=16
+COS(3.141519)=-1
+FLOOR(15.7)=15
+LOG(10,100)=2
+MOD(11,4)=3
+POWER(3,2)=9
+ROUND(15,7)=16
+SIGN(-15)=-1
+TRUNC(15.7)=15
+CHR(67)=C
+CONCAT('HAPPY','Birthday')=HAPPYBirthday
+LOWER('BIRTHDAY')=birthday
+LPAD('page 1',15,'*') = *********page 1
+LTRIM('Page 1','ae') = Page 1
+REPLACE('JACK','J','BL') = BLACK
+RPAD('Page 1', 15, '*') = Page 1*********
+RTRIM('Page 1','ae') = Page 1
+SUBSTR('ABCDEFG', 3, 4)= CDEF
+TRIM(LEADING 0 FROM '00AA00')=AA00
+UPEER('Birthday') =BIRTHDAY
+ASCII('A') = 65
+INSTR('CORPRORATE FLOOR','OR',3,2) = 15
+LENGTH('Birthday')=8
+ADD_MONTH('14/05/21',1) = 14/06/21
+Last_day(SYSDATE) = 19/05/31
+NEXT_DAY(SYSDATE) = 19/05/21
+ROUND(SYSDATE) = 19/05/19
+SYSDATE =19/05/19
+TO_CHAR(SYSDATE)=19/05/19
+TO_CHAR(123) = 123
+TO_DATE('12 05 2014','DD MM YYYY')=14/05/12
+TO_NUMBER('12.3') = 12.3
+DECODE(1,1,'aa','bb')= aa
+NULLIF(123,345) = 123
+NVL(null,123) = 123
+
+2번.
+생성문 -
+DROP TABLE mybook;
+
+CREATE TABLE mybook (
+	bookid number PRIMARY KEY,
+	price number
+);
+
+INSERT INTO mybook VALUES(1, 10000);
+INSERT INTO mybook VALUES(2, 20000);
+INSERT INTO mybook VALUES(3, null);
+
+2-1. NULL값은 비어서 나온다
+2-2. NVL함수로 null인 경우 값을 설정할 수 있다.
+2-3. IS NULL 로 NULL값이 있는 투플을 찾아낼 수 있다.
+2-4.  =''로 NULL값을 찾아 낼 수는 없다.
+2-5. null과 무엇을 더하든 null이다.
+2-6. 그룹함수 같은 경우 COUNT를 제외하고는 더할 값이 없다면 null값을 출력한다.
+2-7. 그룹함수 같은 경우 연산에서 NULL값은 제외한다.
+2-8. 위와 같음
+
+3번.
+3-1. book의 모든 로우
+3-2. 북아이디 1~5까지의 로우
+3-3. 북아이디 1~5까지의 로우가 price오름차순으로.
+3-4. 가격오름차순으로 1~5번째까지의 로우(원하는 값)
+3-5. 3-3과 같음.
+3-6. 3-3과 같음.
+
+4번.
+4-1. 각 지역에 사는 사람들의 구매 총액
+4-2. 각 사람의 구매 평균액
+4-3. 주문번호 3 이하인 사람들의 구매총액
+
+5번. 뷰의 장점 : 반복되는 복잡한 쿼리문의 결과 테이블을 처리할 때, DB를 집적 노출시키고 싶지 않을 때
+     뷰의 단점 : DML문을 사용할 때 제한되는 경우가 있다.(베이스 테이블이 두개 이상일 때, 기본키를 제외한 값을 수정할 때)
+6번.
+6-1.
+	CREATE OR REPLACE VIEW highorders as
+	SELECT C.bookid, C.bookname, B.name, C.publisher, A.saleprice
+	FROM ORDERS A INNER JOIN customer B ON A.custid=B.custid INNER JOIN book C ON A.bookid = C.bookid
+	WHERE A.saleprice>=20000;
+6-2. SELECT name, bookname FROM highorders;
+6-3. ALTER VIEW AS
+	SELECT C.bookid, C.bookname, B.name, C.publisher, 
+	FROM ORDERS A INNER JOIN customer B ON A.custid=B.custid INNER JOIN book C ON A.bookid = C.bookid 
+	WHERE A.saleprice>=20000;
+7번.
+7-1. SELECT ename FROM emp WHERE mgr IS NULL;
+7-2. scalar type - SELECT ename, (SELECT dname FROM dept A WHERE A.deptno = B.deptno) FROM emp B;
+     join type - SELECT ename, dname FROM emp INNER JOIN dept ON emp.deptno = dept.deptno;
+7-3. join type - SELECT ename FROM emp INNER JOIN dept ON emp.deptno = dept.deptno WHERE loc = 'CHICAGO';
+     inline view type - SELECT ename FROM emp, (SELECT deptno FROM dept WHERE loc = 'CHICAGO') A WHERE emp.deptno = A.deptno;
+     nested subquery type - SELECT ename FROM emp WHERE emp.deptno IN (SELECT deptno FROM dept WHERE loc = 'CHICAGO');
+     exists type - SELECT ename FROM emp A WHERE EXISTS(SELECT * FROM dept B WHERE A.deptno = B.deptno AND loc = 'CHICAGO');
+7-4. SELECT ename FROM emp WHERE sal > (SELECT AVG(sal) FROM emp);
+7-5. SELECT ename FROM emp A WHERE sal > (SELECT AVG(sal) FROM emp B WHERE A.deptno = B.deptno GROUP BY deptno);
+
+8번. 
+생성문
+drop table auditorium;
+drop table customer;
+drop table reservation;
+drop table theater;
+
+CREATE TABLE theater(
+	theaterid number PRIMARY KEY,
+	theatername VARCHAR2(30),
+	theaterloc VARCHAR2(300)
+);
+
+CREATE TABLE auditorium(
+	theaterid number,
+	auditoriumnum number CONSTRAINT auditorium_price_check check (auditoriumnum BETWEEN 1 AND 10),
+	moviename VARCHAR2(300),
+	movieprice number CONSTRAINT movieprice_price_check Check (movieprice<=20000),
+	seatamount number,
+	PRIMARY KEY (theaterid,auditoriumnum),
+	FOREIGN KEY (theaterid) REFERENCES theater(theaterid)
+);
+
+CREATE TABLE customer(
+	customerid number PRIMARY KEY,
+	name varchar2(20),
+	address varchar2(100)
+);
+
+CREATE TABLE reservation(
+	theaterid number,
+	auditoriumnum number,
+	customerid number,
+	seatnumber number CONSTRAINT reservation_seatnumber_un UNIQUE,
+	moviedate date,
+	FOREIGN KEY (theaterid) REFERENCES theater(theaterid),
+	FOREIGN KEY (customerid) REFERENCES customer (customerid),
+	PRIMARY KEY (theaterid,auditoriumnum,customerid)
+);
+
+INSERT INTO theater VALUES (1,'롯데','잠실');
+INSERT INTO theater VALUES (2,'메가','강남');
+INSERT INTO theater VALUES (3,'대한','잠실');
+
+INSERT INTO auditorium VALUES (1,1,'어려운 영화', 15000,48);
+INSERT INTO auditorium VALUES (3,1,'멋진 영화', 7500,120);
+INSERT INTO auditorium VALUES (3,2,'재밌는 영화', 8000,110);
+
+INSERT INTO customer VALUES (3,'홍길동','강남');
+INSERT INTO customer VALUES (4,'김철수','잠실');
+INSERT INTO customer VALUES (9,'박영희','강남');
+
+INSERT INTO reservation VALUES (3,2,3,15,'2014-09-01');
+INSERT INTO reservation VALUES (3,1,4,16,'2014-09-01');
+INSERT INTO reservation VALUES (1,1,9,48,'2014-09-01');
+
+8-1. 
+CREATE view theater_customer as 
+SELECT name, theatername
+FROM theater A, reservation B, customer C
+WHERE A.theaterid=B.theaterid AND B.customerid = C.customerid;
+
+8-2. 
+CREATE view daehan_customer as 
+SELECT COUNT(*) "고객수", moviedate
+FROM reservation A
+WHERE A.theaterid = (SELECT theaterid FROM theater WHERE theatername='대한')
+GROUP BY moviedate;
+
+9번.
+극장당 예약개수를 알려주는 뷰
+9-1. 극장당 예약 개수
+9-2. 강남지점의 예약 개수
+9-3. 가장 예약이 적은 지점
+9-4. 지점의 개수
+9-5. 예약수가 100개가 넘은 지점
+9-6. 예약수 오름차순으로 지점 나열
+
+10번. 탐색시간(엑세스 헤드를 트랙으로 이동)+회전지연시간(섹터가 헤드에 접근하는 시간)+데이터전송시간(데이터를 읽어오는 시간)
+
+11번. 네에..
+
+12번. ...? 로우가 하나도 안 담기는데요
+
+13번. 네에..
+

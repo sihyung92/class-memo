@@ -1,0 +1,29 @@
+css attribute
+	overflow : 요소 안에 넘쳐버린 엘리먼트 처리. default는 visible, hidden은 삐져나간걸 출력 안함,scroll은 스크롤 달아줌,
+		auto도 스크롤을 달아주지만 내용을 다소 조정해줌(개행해준다든지)
+	overflow-x, overflow-y x축과 y축을 따로따로 지정해 줄 수 도 있다.
+	float : 띄워주기.화면의 left왼편, right오른편에 배치할 수 있다. default는 none. float이 있으면 다른 element들은 자동 정렬되서 붙는다.
+		!주의 : float을 하면 주위 다른 요소들에 영향을 주게 된다. float의 영향권에서 벗어나고 싶다면
+		clear: left,right,both(float이 있는 위치에 따라)해주면 영향권에서 벗어날 수 있다.
+	border radius : 모서리를 둥글둥글하게.. 0~50px까지 줄 수 있다. 2개이상의 인자를 주면 각 모서리가 둥글어지는 걸 볼 수 있다
+	text-shadow: 글자 그림자 줄 수 있는 속성.. x좌표 y좌표 번지는양 색깔 순으로 인자를 준다.
+
+media query
+	screen, print, speech 상황에 따라 다른 css를 출력한다. default는 all이다.
+	and 를 통해 추가조건을 줄 수 있는데 screen과 and (속성:값) 으로 특정상황에서만 css가 출력되도록 할 수 도 있다.
+	그를 통해 각 디바이스에서 다른 UI가 적용되도록 할 수 있다.
+
+animation처리
+	이미 a태그에 hover 등의 속성을 줘서 액션을 하면 바뀌는 에니메이션 처리는 해왔다.. 근데 에니메이션 느낌나게 하고 싶으면
+	transition-duration: 3s(초) 를 써보자. 해당 변환이 천천히 일어나게 할 수 있다. 돌아올 때 margin을 줌으로써 돌아오는 느낌도 낼 수 있는데.. 원리는 잘 모르겠다..
+	html5day03 ex13.html참고
+	transition-delay:1s(초) 설정한 n초 후 실행됨
+
+	keyframe과 기타등등.. html5day03 ex14.html참고
+
+*width 등을 %를 소숫점 까지 사용할 때 소숫점 남는자리는 버림처리 해야한다. 올림처리하면 합이 100.0%가 넘어서면서 개행이 되기때문에~ 합이 100을 안 넘게 유지하자
+*bootstrap 에서 정의한 device의 크기
+            small device(phones, less than 768px)
+            Small device(tablets, 768px and up)
+            Medium devices(desktops, 992px and up)
+            Large devices(large dsektops, 1200px and up)

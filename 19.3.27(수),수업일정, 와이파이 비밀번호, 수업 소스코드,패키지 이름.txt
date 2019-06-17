@@ -1,0 +1,64 @@
+19년 3월 27일(수)
+김영조 강사님
+wifi = bitcamp_1class , bitcamp5404
+수업 소스코드 https://github.com/bit01class/java2019
+패키지 이름 com.bit.day06
+하루시간표
+9:30~10:20
+~
+13:20~14:20 식사시간
+14:20~15:10
+~
+
+수업 일정
+
+3.27~9.25
+
+JAVA - 25일(+-5일)
+---1달---
++semi project1(소켓통신) ...프로젝트는 임의 팀 배정 - 1주
+Datebase - 2일
+web - 비표준식 수업 (jsp) - 3~5일
++semi project2(홈페이지)...이때만 개인 프로젝트 - 1주
+Datebase - 2일
+---2달---
+web - 표준식 수업 - 2.5주 
+	=> html5 - 1일, css - 1일, javascript - 3일, Jquarry - 4일, 서블릿(MVC2) - 5일
++semi project3(현장식 의뢰)-요구공학,소프트웨어공학 -1주
+---3달---
+framework 4주
+	 => bit framework - 3일, struts2 - 3일, spring(2.x) - 3일, (3.x) -5 일,(4.x~5.x) -10일
+app => 네이티브 - 2일,하이브리드 - 3일
+---4달---
+최종프로젝트 - 2달
+
+아파서 결석은 2번까지 가능, 아플시 진료확인증 필요
+면접 결석시 면접공고문, 면접확인서
+
+java SE,EE,ME
+SE=STANDARD Edition
+EE=ENTERPRISE
+ME=MICRO
+http://openjdk.java.net/ <==JDK 프리웨어
+
+cmd에서
+set PATH=C:\Program Files\Java\jdk1.8.0_201\bin
+입력=>path추가
+기존에 있는 path 확인 = echo %path%
+
+os의 갈래
+windows 시리즈 / unix=>rinux,mac
+
+자바는 컴파일 언어(사람말로 작성을 하고 컴파일을 통해 바꾸는 언어) java,c,c++,c#등
+문법이 맞아야만 compile을 해줌 . . .jre는 javac가 없음
+컴파일과정이 필요없는 언어 => interpreter 언어 Python,ruby,PHP 등, 실시간 번역
+에러와 관련없이 맞는부분까지는 다 틀어줌.. 그렇다면 interpreter언어가 더 좋을 것 같지만 오류가 어딘지 알려주는 compile 언어가 나을때가 많다
+
+사람말을 컴퓨터말로 바꾸는 과정 =>compile, javac = java compile / Ex01.java 라는 영어로쓰인 파일을 compile, class파일로 변경
+만약 실행파일이 필요하다면 class, 소스코드를 보고싶으면 .java파일을 가져와야 한다
+
+java는 유니코드를 사용하기 때문에 특수문자 등도 가능
+
+*java와 javascript는 전혀 관계가 없다.
+*전자정부프레임워크 <= spring framework 기반
+*알약 알집 쓰지마라 // 7-zip사용 (윈도우 상에서 파일 이름이 너무 길면 오류가 나게됨. 7-zip사용으로 방지)

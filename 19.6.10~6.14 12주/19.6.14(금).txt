@@ -1,0 +1,25 @@
+19.6.14(금)
+eclipse에서 sql파일 다루기
+	sql파일 생성->db oracle버전에 맞춰 설정 -> user create클릭->
+	oracle 필터타입 클릭, next 클릭 -> drivers 우측에 수레바퀴를 눌러 알맞은 버전 클릭->
+	next로 이동하여 오라클jdbc 드라이버파일 추가->ok누르고 나와서 general에
+	sid:xe,host:localhost,id,pw 값 입력 후 우측하단에 테스트를 눌러 ping connection이 나오면 finish
+	해당 user를 이용하여 sql파일 생성.
+
+	실행 : 우클릭, execute all 기타옵션
+
+	db구조 확인하기 => perspective db꺼 추가해서 database Connections 하위 폴더들 따라가기	
+	
+css
+	z-index : 숫자가 높을수록 상위로간다. z좌표
+
+jquery 비동기통신
+	.load( url [, data ] [, complete ] ) Load data from the server and place the returned HTML into the matched elements.
+	jQuery.get( url [, data ] [, success ] [, dataType ] )Load data from the server using a HTTP GET request.
+	jQuery.post(url [, data ] [, success ] [, dataType ]); Load data from the server using a HTTP POST request.
+	jQuery.error(String message); Takes a string and throws an exception containing it.
+	$.ajax(url [,settings]) Perform an asynchronous HTTP (Ajax) request. / contentType 속성도 확인해볼것..
+	$.getJSON( url [, data ] [, success ] ) Load JSON-encoded data from the server using a GET HTTP request
+	
+cross domain과 same origin policy 알아보자, frontend해당, backend에선 막을 수 없음(웹크롤링이라 부름)
+웹 크롤링 알아보기

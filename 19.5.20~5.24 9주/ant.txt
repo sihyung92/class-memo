@@ -1,0 +1,100 @@
+발표 6월4일!!!
+
+1. XML은 다른 목적의 마크업 언어를 만드는 데 사용되는 다목적 마크업 언어입니다.
+2. XML은 다른 시스템끼리 다양한 종류의 데이터를 손쉽게 교환할 수 있도록 해줍니다.
+3. XML은 새로운 태그를 만들어 추가해도 계속해서 동작하므로, 확장성이 좋습니다.
+4. XML은 데이터를 보여주지 않고, 데이터를 전달하고 저장하는 것만을 목적으로 합니다.
+5. XML은 텍스트 데이터 형식의 언어로 모든 XML 문서는 유니코드 문자로만 이루어집니다.
+
+https://ojava.tistory.com/65
+https://srand.tistory.com/entry/apache-Ant-사용하기
+ant 메뉴얼 = http://ant.apache.org/manual/index.html
+xml 기본 = http://www.novonetworks.com/jamestic/XML_1.0.pdf
+
+설치경로
+http://www.apache.org/ => projectList에서 ANT클릭=>
+ant.apache.org => 좌측 리스트에서 Download => Binary Distributions 클릭 => 화면 하단 1.10버전 다운로드
+
+설치이후 환경변수에서 path설정
+
+http://blog.naver.com/PostView.nhn?blogId=wideeyed&logNo=221077109026에서 긁어온 빌드예제
+
+<?xml version="1.0" ?>
+<project name="MyProject" default="tgt.deploy" basedir=".">
+  <description>
+    MyProject ant build and deployribution.
+  </description>
+ 
+  <property name="dir.src" location="src"/>
+  <property name="dir.build" location="build"/>
+  <property name="dir.deploy" location="deploy"/>
+ 
+  <target name="tgt.clean" description="deletes generated directories">
+    <delete dir="${dir.build}"/>
+    <delete dir="${dir.deploy}"/>
+  </target>
+ 
+  <target name="tgt.init" depends="tgt.clean" description="generate directories">
+    <tstamp/>
+    <mkdir dir="${dir.build}"/>
+    <mkdir dir="${dir.build}/classes"/>
+    <mkdir dir="${dir.deploy}"/>
+    <mkdir dir="${dir.deploy}/lib"/>
+  </target>
+ 
+  <target name="tgt.checkout" depends="tgt.init" description="source checkout">
+  </target>
+ 
+  <target name="tgt.compile" depends="tgt.checkout" description="source compilation">
+    <javac srcdir="${dir.src}" destdir="${dir.build}/classes"/>
+  </target>
+ 
+  <target name="tgt.package" depends="tgt.compile" description="packaging">
+    <jar jarfile="${dir.deploy}/lib/MyProject-${DSTAMP}.jar" basedir="${dir.build}/classes"/>
+  </target>
+ 
+  <target name="tgt.deploy" depends="tgt.package" description="deploy">
+  </target>
+ 
+</project>
+
+ant 유저메뉴얼에 있는 심플예제
+
+<project name="MyProject" default="dist" basedir=".">
+  <description>
+    simple example build file
+  </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source">
+    <!-- Compile the Java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}"/>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/lib/MyProject-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+
+  <target name="clean"
+        description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>

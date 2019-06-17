@@ -1,0 +1,122 @@
+19.4.29(월)
+
+https://github.com/bit01class/java2019를 먼저 켜고 보시오~
+
+awt.Event (4.26(금)참조)이어서.
+	이벤트는 소스source, 리스너listener, 핸들러handler로 나뉜다.
+	소스는 이벤트가 발생하는 컴포넌트(구성요소 ; 텍스트필드, 버튼, 패널 등) 들이 소스, 리스너는 이벤트가 발생하는지를 체크하는 것들이 리스너,
+	이벤트가 발생했을때 기능을 구현하는게 핸들러이다. 핸들러는 리스너들에 메소드로 포함되어 있다.
+
+	마우스 모션 리스너-
+			↓%활용예시 github java24 - com.bit.event.ex01참조.%↓
+		java.awt.event.MouseMotionListener 인터페이스. 드래그와 마우스 움직임을 체크한다.
+			포함하고 있는 메소드
+				mouseDragged(MouseEvent e) : 드래그중일때 실행되는 메소드
+				mouseMoved(MouseEvent e) : 마우스를 움직이면 실행되는 메소드
+					인자로 받고 있는 MouseEvent클래스로 할 수 있는 메소드
+						getX() : e가 일어나는 x좌표를 int값으로 얻어냄
+						getY() : e가 일어나는 y좌표를 int값으로 얻어냄
+						getXOnScreen() : e가 일어나는 화면 전체의 x좌표를 int값으로 얻어냄
+						getYOnScreen() : e가 일어나는 화면 전체의 y좌표를 int값으로 얻어냄
+						paramString() : 현재 상태를 영어문장으로 바꿔줌. String 반환
+						
+			↓%활용예시 java24 - com.bit.event.github ex02참조.%↓
+	키(키보드) 리스너 - 
+		java.awt.event.KeyListener
+			키 리스너, 키보드에서 일어나는 일들을 컨트롤 할 수 있게 해주는 인터페이스
+				KeyTyped(keyEvent e) 타이핑됐을때 (ctrl,alt등등 타이핑이 안 되는 키도 있다)
+				keyPressed(keyEvent e) 누를때, 누르고있으면 수십번 연속으로
+				keyRelease(keyEvent e) 뗄 때.
+				순서 press->type->release
+					사용할만한 예시 ) TextField tf에 addKeyListner(keyListener)를 통해 키 리스너를 적용한 상황.
+							오버라이딩을 keyRelease(keyEvent e){System.out.println(tf.getText());} 이렇게 함으로써
+							키를 뗄때마다 텍스트필드 전체에 적힌 메세지를 출력할 수 있다.
+
+					인자로 받고 있는 MouseEvent클래스로 할 수 있는 메소드
+						getKeyCode() : 키보드 버튼들이 어떤 키 코드를 가지고 있는지 알 수 있다. String으로 반환
+						getKeyChar() : 문자가 있는부분은 해당문자가, 없는부분은 ?가 뜸. character 반환
+
+			↓%활용예시 java24 - com.bit.event.github ex02참조.%↓
+	텍스트 리스너 - 
+		java.awt.event.TextListener
+			텍스트 리스너, 텍스트가 바뀔때마다 체크해주는 인터페이스. 메소드 단 한개, 텍스트 전용이기 때문에 텍스트를 달 수 없는 컴포넌트들은(ex.버튼) addTextListener 메소드를 가지고 있지 않다.
+				textValueChanged(TextEvent e) 텍스트가 바뀔때마다 실행되는 메소드
+					인자로 받고 있는 TextEvent클래스로 할 수 있는 메소드
+						getSource() : 해당 TextListener가 담겨있는 객체의 주소값을 받아옴
+						
+		*키보드 리스너 keyTyped와 뭐가 달라? : 키보드를 치지 않고 텍스트가 바뀔때도 작동함. 예시에서 mouse clicked로 setText를 할 때마다 textListener이 작동함에 주목하라.
+
+			↓%활용예시 java24 - com.bit.event.github ex03참조.%↓
+	아이템 리스너 - 
+		java.awt.event.ItemListener 선택항목이 있는 컴포넌트(choice나 checkbox,리스트)에 들어가는 아이템들의 변화를 감지하는 인터페이스
+			포함하고 있는 메소드
+				itemStateChanged(ItemEvent e) 아이템이 바뀔때(ex. choice box에서 다른 것을 고른다던지) 작동
+					인자로 받고 있는 TextEvent e클래스로 할 수 있는 메소드
+						getItem() 현재 아이템이 뭔지 Object로 반환
+						getStateChange() 아이템의 상황을 인트값으로 반환. 선택되었으면 1, 선택해제일땐 2 반환. 클래스 내에 final field로도 구현되어있음.(TextEvent.SELECTED, TextEvent.DESELECTED)
+
+자바 awt 클래스
+		↓%활용예시 java24 - com.bit.event.github ex03참조.%↓
+	java.awt.List 아이템들을 죽 늘어놓아 선택지를 주는 컴포넌트 클래스. 
+		생성자
+			default생성자도 있음.
+			List(int rows) rows 만큼의 List 객체 생성
+			List(int rows,boolean multipleMode) multipleMode가 true라면 다중선택 가능한 아이템, false라면 한개만 선택가능.
+		
+		주요 메소드
+			add(String item) "item"을 추가함
+			getItem(int index) index번의 item을 얻어옴
+			remove(String item 'or' int index) 내용이 "item"이거나 index번째 요소를 제거함.
+			addItemListener(ItemListener l) 액션리스너를 추가시켜주는 메소드. 원하는 리스너를 추가시키면 됨.
+
+java.event로 돌아와서..
+		↓%활용예시 java24 - com.bit.event.github ex04참조.%↓
+	컴포넌트 리스너 - 
+		java.awt.event.ComponentListener 컴포넌트들의 동작을 감지하는 인터페이스.
+			포함하고 있는 메소드
+				ComponentResized(ComponentEvent e) : 컴포넌트의 사이즈가 바뀔때 작동
+				ComponentMoved(ComponentEvent e) : 컴포넌트의 위치가 바뀔때 작동
+				ComponentShown(ComponentEvent e) : 컴포넌트가 나타날 때 (ex. Frame이라면 setVisible이 true가 될 때)
+				ComponentHidden(ComponentEvent e) : 컴포넌트가 사라질 때 (ex. Frame이라면 setVisible이 false가 될 때)
+
+		↓%활용예시 java24 - com.bit.event.github ex05참조.%↓			
+	포커스 리스너 - 
+		java.awt.event.FocusListener 포커스(사용자의 관심, 마우스 커서가 깜박이는 것처럼 입력준비의 상태)를 감지하는 인터페이스
+			포함하고 있는 메소드
+				focusGained(FocusEvent e) 포커스 on일때 작동하는 메소드
+				focusLost(FocusEvent e) 포커스 off일때 작동하는 메소드
+		*실행시 컴포넌트에 포커스를 주고싶을 때 requestFocus()메소드
+
+		↓%활용예시 java24 - com.bit.event.github ex06참조.%↓
+	액션 리스너 - 
+		java.awt.event.ActionListener 버튼,리스트,메뉴등의 컴포넌트가 눌리거나 선택이 되었을 때 감지하는 인터페이스. 가장 많이 사용하는 리스너 중 하나이다.
+			포함하고 있는 메소드
+				actionPerformed(ActionEvent e) : 컴포넌트가 가지고 있는 고유의 액션 수행했을때 ; 버튼을 누르거나, 텍스트필드에서 엔터를 치거나, 리스트에서 더블클릭을 하거나 엔터를 칠 때 작동.
+								 정확히 언제 동작하는지는 사용하면서 경험상 알아내야한다.
+
+	↓%활용예시 java24 - com.bit.event.github ex09참조.%↓	
+어댑터 Adapter :
+windowListener 의 메소드는 너무 많아.. implements받아서 쓰고는 싶은데 코드만 너무 길어져. 난 하나만 쓰고 싶은데. 그럴 때 사용하는 java.awt.event.WindowAdapter
+WindowAdapter 은 WindowListener을 implement하고 아무 기능도 없이 구현만 해놓은 클래스이다. 추상클래스이기 때문에 객체생성으로는 쓸 수 없다.
+사용법 : WindowAdapter를 상속받아 원하는 메소드만 오버라이딩해서 쓰면 된다.
+adapter 클래스들은 Listener 인터페이스 들의 쓰지않는 메소드들을 줄일 목적으로만 만들어진 클래스들이기 때문에 handler method가 한개인 Listener들은 당연히 adapter가 없다.
+
+	↓%활용예시 java24 - com.bit.event.github ex10참조.%↓
+상속받기 싫으면 3가지 방법 중에 택1하라. 1.외부클래스를 만들어 메인문에서 해당 객체를 생성해서 사용, 2.내부클래스를 만들어 메인에서 호출해서 사용, 3.anonymous클래스를 활용하여 사용.
+	주석처리된 부분이 1,2번방법 접근해 본 것, 주석처리 안된 부분이 3번으로 처리해 본 것.
+
+	↓%활용예시 java24 - com.bit.event.github ex11참조.%↓
+이미지를 불러오고 싶을때?
+	Canvas에서 g.drawImage를 오버라이딩 하여 사용하자.
+	이미지 객체를 만드는 것은 Toolkit 클래스의 getImage()메소드를 활용
+	인자 설명 = drawImage(Image img, int x, int y, int sizeX, int sizeY, Observer obs) img파일, x,y에서 이미지 시작, 사이즈 크기는 sizeX x sizeY(안적어주면 파일이 원래 가지고있는 이미지 크기), Obs는 이미지를 넣을 객체
+	주의 : awt버튼에는 이미지 못 넣는다. 정 넣고 싶으면 Jbutton(스윙 버튼) 쓰삼
+		버튼에 이미지 넣기. Icon icon= new ImageIcon(Image img) ;를 통해 icon을 선언하고 (ImageIcon은 byte[]도 인자로 받을수 있으므로 IO를 통해 집적 넣어주는것도 가능하다.)
+		btn.setIcon(icon);을 통해 버튼에 아이콘 삽입
+
+	↓%활용예시 java24 - com.bit.event.github ex12참조.%↓		
+JFrame 의 특징. WindowClosing()을 구현 안해도 x버튼 누르면 꺼짐. 사실 진짜 꺼진건 아니고 Visible이 False값이 되는 것
+	setDefaultCloseOperation(0); 을 넣음으로써 x를 눌러도 안 꺼지게 만들 수 있다. 1을 넣으면 Visible만 false로,(default옵션) 2를 넣으면 아예 프로그램이 종료되게 만들 수 있다. JFrmae의 상수로도 정의되어있다.
+JOptionPane.showMessageDialog(Component comp , String msg); msg내용이 뜨는 확인창을 나오게 할 수 있다... 나머지는 깃헙 참조
+
+

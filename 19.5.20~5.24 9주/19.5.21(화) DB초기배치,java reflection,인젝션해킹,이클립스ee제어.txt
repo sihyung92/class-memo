@@ -1,0 +1,53 @@
+19.5.21(화)
+DB초기화용 실행 배치파일 만들기.
+	테이블.bat 파일 생성, 내용은
+	ex) sqlplus scott/tiger @ guest01.sql exit 
+
+한글 안 깨지게 하는법(get방식 한글처리) => eclipse접속=> workspace servers=>tomcat v7.0=>server.xml=>
+	소스코드에서 <Connector> 태그 안에 URIEncoding="알맞은 케릭터셋" 추가
+
+톰켓 서버에 설정 안하고 집적 한글로 인코딩, 디코딩 하는 방법
+	java.net.URLEncoder.encode(msg);
+	java.net.URLDecoder.decode(msg);
+
+*java reflection 자바 리플렉션
+	구체적인 클래스 타입을 알지 못해도 해당 클래스의 메소드, 타입, 변수들을 접근할 수 있게 해주는 자바 api
+	Class.forName(String 클래스경로) 클래스 경로에 있는 클래스를 Class타입으로 반환해준다.
+	Class타입의 메소드
+		newInstance() 해당 클래스의 객체를 만들어낸다. Object타입 반환
+		getMethod() 어떤 메소드들이 있는지 알 수 있다. Method[]타입 반환
+		getField() 어떤 필드들이 있는지 알 수 있다. Field[] 타입 반환 (Field타입은 이름을 String으로 반환해주는 getName()메소드가 있다.)
+
+이클립스상에서 서버 포트번호 바꾸는거
+	server탭에서 서버이름 더블클릭, port 상세항목 조정하면됨
+	overview가 아닌 Modules에서 서버에서 어떤 파일들을 실행중인지 알 수 있다.
+	edit을 통해 패스를 바꿔줄 수 있는데, /로 바꿔놓으면 편하기야 하겠지만 두개 이상의 파일이
+	같이 /를 쓰고있으면 충돌해서 오류가 날 수도 있다.
+
+이클립스EE
+	window -> webBrowser -> 1디폴트 웹브라우저를 하면 원하는 브라우저 창에서 결과를 볼 수 있다.
+				2인터넷익스플로러는 윈도우에서 기본설정한 브라우저를 따라간다.
+인젝션 해킹(쿼리문 조작)
+	id'-- (sql주석처리) 하는 식으로 아이디를 입력하여 비밀번호를 생략하고 접속을 할 수 있는 해킹방법
+	아이디를 특수문자로 만드는 경우를 차단함으로써 방비할 수 있다.
+	게시판에서 제목이나 내용에서 하는 경우는 특수문자들을 특수문자 표현식으로 바꾸는 작업을 통해 방지할 수 있다.	
+	ex) sub=sub.replace("<","&lt;");
+
+나만의 라이브러리 만들기^^
+	원하는 클래스를 만든 후 프로젝트를 export=>jar타입으로 하여 다른 프로젝트에서 라이브러리로 참조하면 된다.
+	export를 프롬프트에서 하고싶으면 cmd열기=>해당 프로젝트 경로=> jar cvf 파일이름.jar * 을 하여 export할 수 있다.
+
+나만의 실행파일 만들기^^
+	export 할 때 Runnable jar 타입으로 export 하면 실행할 수 있다. 실행해야할 실행문(main문)이 있어야 할 것이다
+
+다이나믹 웹 프로젝트에서 웹 콘텐트 하위의 META-INF 파일을 자바가 필요한 정보가, WEB-INF에는 서버가 필요한 정보가 담겨있다.
+
+form태그에서 제공하는 메소드(방식) get과 post - get은 주소표시줄을 통해 encoding해서 날리고, post는 헤더를 이용해서 정보를 날린다.
+	get방식이 주소표시줄을 통해 정보를 전달하기 때문에 헤더에서 긁어와야하는 post보다 상대적으로 빠르다. 하지만 
+	post방식은 정보의 노출을 막고, get에서는 자칫 길어져서 곤란해질 수 있는 정보들을(주소표시줄이 너무 길어질 테니까)
+	아무리 길어도 다 담아줄 수 있다.
+
+eclipse에서 작성한 프로젝트 배포하는 방법 = 프로젝트 war파일로 export=>  tomcat 서버정지 => tomcat설치 경로의 webapps폴더=> war파일 삽입하고 서버재시작
+bat문법
+	call <다른배치파일> => 배치파일 실행
+

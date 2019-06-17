@@ -1,0 +1,24 @@
+19.6.10(월)
+
+싱글톤 패턴(Singleton Pattern)
+ 애플리케이션이 시작될 때 어떤 클래스가 최초 한번만 메모리를 할당하고(Static) 그 메모리에 인스턴스를 만들어 사용하는 디자인패턴.
+ 생성자가 여러 차례 호출되더라도 실제로 생성되는 객체는 하나고 최초 생성 이후에 호출된 생성자는 최초에 생성한 객체를 반환한다.
+ (자바에선 생성자를 private로 선언해서 생성 불가하게 하고 getInstance()로 받아쓰기도 함)
+
+비동기 통신
+	https://private.tistory.com/24
+	사용 예문은 수업내용 ajax01, ajax02, ajax03 참조
+	https://github.com/bit01class/web2019/tree/master/ajax01
+	
+java
+향상된 포문
+	for(받고자하는 타입과 변수명 : 배열혹은자료구조){
+		변수명 활용}
+
+JSON(제이슨, JavaScript Object Notation)
+	비동기 통신을 위한 (AJAX) xml을 대체하는 데이터 포멧
+	비록 javaScript 기반이지만 제이슨에선 single quote를 사용하지 않는다.
+	기본 양식은 {key:value}이고 무조건 key는 문자열임
+	맵과 같은 게 아니므로 key의 중복도 허용된다, 비정형 데이터
+	xml처럼 기본 structure를 지켜줘야 한다
+	 XMLHttpRequest().responseJSON이 있다면 좋겠지만 없기때문에^^ responseText파일로 받은 후 JSON.parse()를 통해 활용한다.	

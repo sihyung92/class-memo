@@ -1,0 +1,60 @@
+19.4.11(목)
+
+기타 클래스 메소드
+java.lang(생략가능).System.arraycopy(Obj src, int srcPos, Obj dest, int destPos, int length) 
+ 			=배열 src를 srcpos 부터 length까지 복사하여 dest의 destpos 부터 넣음. static void타입
+java.util.Arrays.toString(array arr) = 배열 arr을 받아 static String 으로 반환
+
+다중배열과 다중객체
+int [][] 가 다중배열인 것처럼
+ClassName[] cs=new ClassName[];
+cs[]= new ClassName();
+다중객체 생성가능. 다중배열과 유사한 기능으로 사용할 수 있다.
+장점으로는 다중배열에서는 할 수 없는 다양한 메소드와 필드들을 담아줄 수 있다는거.
+단점은 그러다보니 준나게 무거워서 느려짐.
+그러므로 다중배열로 해결할 수 있을때는 다중배열로 해결하는것이 합당.
+
+StringBuffer 메소드 활용.
+ String 은 바뀔때마다 객체생성. 수정이 잦다면 컴이 부담스러. 자주바꿀거라면 16칸의 여유공간을 미리 생성하는 StringBuffer사용
+StringBuffer 선언 및 초기화.
+String 처럼 StringBuffer str = ""; 같은 편의성은 제공되지않음.
+StringBuffer msg = new StringBuffer(String str); 식의 선언.
+ SB생성자 - StringBuffer() =>16자의 공간생성
+	    StringBuffer(int i) => i만큼의 공간생성
+	    StringBuffer(String str) => str+16자의 공간생성
+	    StringBuffer(CharSequence seq) => seq + 16자의 공간생성
+ StringBuffer 메소드 -
+	append(모든 자료형,객체,char배열) = 뒷부분에 ()를 추가. StringBuffer반환
+	replace(int start, int end, String str) = start 부터 end 까지의 문자열을 str로 변환,StringBuffer 반환
+	insert(int offset, String str) = offset위치에 str추가,StringBuffer반환
+	delete(int start, int end)= start end사이 삭제 StringBuffer 반환
+	toString() = StringBuffer이 가지고있는 문자열을 String으로 반환.
+	trimToSize() = 현재 가지고 있는 char들사이즈에 맞게 메모리를 줄여줌. StringBuffer반환
+
+동적할당
+ 배열을 선언하고 초기화 할 때 배열의 갯수를 설정하면 변경할 수 없는 배열의 한계를 극복하는 방법.
+
+상속 - 다형성
+ Father class 와 Child class가 있다.
+ Father me = new Child();를 하고 Father도 있고 Child도 있는 func()메소드를 호출해보면?
+띠용~자식 것이 나오네. 오버라이드 되었기 때문.
+그러면 Father객체로 왜만들었어. 그냥 child객체 생성하지.
+child 하나만 있냐. 그 객체에child2 3 4 들 마다 다른 오버라이드 메소드 기능이 있을건데 다 덮어씌울수 있음
+18..모르겠다 실은
+
+자식클래스에서 부모클래스의 객체를 생성할 때-> 자동형변환 됨. 부모클래스에서 자식클래스의 객체를 생성하고 싶으면 ->강제형변환 필요
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

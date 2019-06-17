@@ -1,0 +1,56 @@
+19.5.15(수)
+트랜잭션 관리
+	*트랜잭션Transaction의 개념
+		DMBS에서 데이터를 다루는 논리적인 작업의 단위.
+		DB에서 데이터를 다룰때 장애가 일어나는 경우, 트랜잭션은 데이터를 복구하는 작업의 단위가 된다.
+		DB에서 여러 작업이 동시에 같은 데이터를 다르는 경우, 트랜잭션은 작업을 서로 분리하는 단위가 된다.
+	* 트랜잭션의 특징
+		 원자성(Atomicity), 일관성(Consistency), 고립성(Isolation), 지속성(Durability)
+	* SQL*PLUS 트랜잭션 명령어
+		savepoint 이름 = savepoint를 생성하고 이름을 부여함
+		Rollback [to savepoint이름]트랜잭션이 시작되기 전 savepoint로 복구함, to savepoint하면 지정한 세이브포인트로 복구
+		Commit 모든 작업을 정상적으로 처리 (새로운 savepoint)
+		
+무료 웹서버 프로그램 => APACHE
+개같은 웹서버 구성을 쉽게 할 수 있게 해준다.
+아파치 설치부터 실행까지~
+	다운로드 https://www.apachelounge.com/download/
+	C:/에 apache24 폴더 생성, 해당폴더에 압축풀어서 내용물을 넣어주기(bin폴더가 apache24폴더에 들어가도록)
+	conf 폴더에 httpd.conf 메모장으로 실행
+	define 이하 루트 c:/apache24/...으로 잘되어있나 확인
+	ServerRoot "${SRVROOT}"
+	servername 이하 자기자신의 서버로 설정
+
+	시스템변수에서
+	이름 APACHE_HOME 
+	경로 c:/APACHE24
+
+	PATH 맨 뒤에 ;%APACHE_HOME%\bin 추가
+	cmd에서 path 쳐봐서 확인.
+
+	cmd 관리자로 실행(cmd쳐놓고 기다렸다가 나오는 프롬프트 관리자권한 실행)
+	httpd -k install
+	이후 httpd -k start 
+	C:\Apache24\htdocs 폴더에 들어있는 파일이 클라이언트들에게 제공됨
+	*서버 끄고 싶으면 httpd -k stop
+
+WEB CONTAINER tomcat
+	java 버전에 맞춰 설치, 포트 번호를 8080으로 하기전에 localhost:8080으로 8080포트를 사용하고 있는지 확인하자. oracle에서 사용하고 있을 수 도 있다.
+	웹 컨테이너(web container, 또는 서블릿 컨테이너)는 웹 서버의 컴포넌트 중 하나로 자바 서블릿과 상호작용한다. 웹 컨테이너는 서블릿의 생명주기를 관리하고, URL과 특정 서블릿을 맵핑하며 URL 요청이 올바른 접근 권한을 갖도록 보장한다
+
+java elipse에서 필요한 설치목록
+	help -> install new software -> work with 디폴트 설정 중에 하나 클릭. -> web,xml,java EE...탭 클릭->
+    Eclipse Java EE Developer Tools
+    Eclipse Java Web Developer Tools
+    Eclipse Web Developer Tools
+    Eclipse XSL Editors and Tools
+    JavaScript Development Tools
+    JST Server Adapters Extensions
+	설치 후 -> open perspective -> java EE -> 아래 servers 탭 -> new server wizard -> tomcat 7.0 클릭+경로 찾아주기 -> finish
+	이후 프로젝트 생성시 web -> Dynamic Web Project 생성
+	이후 webcontent에 예제 생성
+	run as server로 테스트
+
+cygwin 이전의 웹서버 구동방식
+	그 전에는 정해진 ip주소에서 미리 정해둔 정보만 전달했었다.
+	이후에는 배쉬(셀 중 하나)를 활용해서 동적인 정보 처리가 가능하게 됐다.
