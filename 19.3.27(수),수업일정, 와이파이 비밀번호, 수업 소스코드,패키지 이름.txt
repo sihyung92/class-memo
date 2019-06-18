@@ -24,11 +24,11 @@ Datebase - 2일
 ---2달---
 web - 표준식 수업 - 2.5주 
 	=> html5 - 1일, css - 1일, javascript - 3일, Jquarry - 4일, 서블릿(MVC2) - 5일
-+semi project3(현장식 의뢰)-요구공학,소프트웨어공학 -1주
++semi project3(현장식 의뢰)-요구공학,소프트웨어공학 - 1주
 ---3달---
 framework 4주
 	 => bit framework - 3일, struts2 - 3일, spring(2.x) - 3일, (3.x) -5 일,(4.x~5.x) -10일
-app => 네이티브 - 2일,하이브리드 - 3일
+app => 네이티브 - 2일, 하이브리드 - 3일
 ---4달---
 최종프로젝트 - 2달
 

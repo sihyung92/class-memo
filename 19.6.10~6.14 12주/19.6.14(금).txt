@@ -15,7 +15,7 @@ css
 
 jquery 비동기통신
 	.load( url [, data ] [, complete ] ) Load data from the server and place the returned HTML into the matched elements.
-	jQuery.get( url [, data ] [, success ] [, dataType ] )Load data from the server using a HTTP GET request.
+	jQuery.get( url [, data ] [, success ] [, dataType ] ) Load data from the server using a HTTP GET request.
 	jQuery.post(url [, data ] [, success ] [, dataType ]); Load data from the server using a HTTP POST request.
 	jQuery.error(String message); Takes a string and throws an exception containing it.
 	$.ajax(url [,settings]) Perform an asynchronous HTTP (Ajax) request. / contentType 속성도 확인해볼것..

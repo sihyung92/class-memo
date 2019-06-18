@@ -1,0 +1,2 @@
+ER모델(Entity Relationship)
+	세상의 사물을 개체(entity)와 관계(relationship)
