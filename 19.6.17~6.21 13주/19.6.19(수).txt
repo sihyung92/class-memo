@@ -1,0 +1,25 @@
+19.6.20(목)
+메뉴 설계서 : 각 메뉴에 대한 depth와 설명, 난이도 들을 명시함
+메뉴 설계도 : 그래픽적으로 한눈에 보이게 도표를 제시
+
+스토리 보드 : 화면 한장한장에 대한 대략적인 레이아웃과 설명 첨부
+	-스토리 보드 제작을 위한 프로토 타입 툴이 있다 : Balsamiq (공짜 ㅎㅎ), 카카오 오븐
+
+servlet 커넥션 풀 connection pool
+	접속 할때마다 커넥션 객체를 만들면 접속자가 한순간에 몰렸을 때 과부하가 올 것이므로 미리 커넥션객체들을
+	만들어놓고(커넥션 풀) 접속할때마다 할당하는 방식, 접속이 종료되면 커넥션 객체를 커넥션 풀로 돌려놓는다.
+	
+	만드는 법 => 서버 패키지 => 톰켓 => context.xml => <Resource auth="" type="" name="" driverClassName="" url="" username="" password=""/>
+		다른 속성들 중 유의할만한 것
+			maxWait="" default 3000 받을 커넥션이 없을 때 얼마나 대기할지, 시간단위 밀리세컨드
+			minIdle="" default 10 커넥션풀의 최소 유지 커넥션 수
+			maxIdle="" default 100 커넥션풀의 최대 유지 커넥션 수
+			maxActive= "" default 100 최대 유지 가능한 커넥션 수
+	사용법 => workspace2의 servers=>tomcat=>context와 mvc04 예제/Java Resources/src/com.bit.model/Guest02Da0/getList()참고
+
+jquery CDN 방식 (Contents Delivery Network)
+	jquery 다운로드 가장 하단 = > jquery CDN => 원하는 버전 클릭 => 예시 나옴
+
+http 프로토콜의 통신방식 2가지 
+	get : url경로를 통해 파라미터 전달
+	post : header를 통해 파라미터 전달

@@ -1,0 +1,10 @@
+LMS 러닝 매니지먼트 시스템
+
+actor : student
+성적조회, 수강 강의 정보 조회, 개인 프로필 설정, 수강중인 강의에 질의, 일정표, 전체를 요약해주는overview
+
+actor:teacher
+성적입력, 수강 정보 입력 및 수정, overview,
+
+actor : manager
+게시글 삭제, 수강 등록 및 삭제, 
