@@ -1,0 +1,50 @@
+19.6.20(목)
+테스트용 코드 작성
+	예컨데 bean에 어떤 내용이 담겨있는지 확인해야되는 상황이다. println(bean) 해버리면 레퍼린스가 찍히기때문에 (bean.toString)
+	일일이 뽑아서 체크를 하는 방법을 써왔지만 bean파일에서 toString을 오버라이드해와서 내가 원하는 형태로 나오게 바꾸는 방법도 있다.
+	테스트 중 자주 오버라이드하게 되는 항목인 toString 과 hashcode, equals등은 우클릭=>source에서 자동으로 만들어 주는 기능이 있다.
+	mvc05예제 Guest02Dao 와 DaoTest 참고
+
+백엔드 작업시 프론트엔드가 마치기를 기다리는게 아니라 모델을 미리 만들어놓고(mvc모델일 경우) 개발자 테스트를 활용해서 작업을 마칠 수 있다.
+	
+서블렛 web.xml
+	<welcome-file-list>태그는 초기화면을 어떤 파일로 실행할지 정해주는 태그이다.
+
+servlet 에서 파라미터 넘기는 방법
+	web.xml => <servlet></servlet> 태그 사이에 <init-param></init-param>태그를 넣음으로써 줄 수 있다.
+	initparam 태그의 하위 태그로는 <param-name>파라미터 이름</~> 과 <param-value>벨류</~>가 있다.
+	initparam을 쓸때는 this.getInitParameter("파라미터 이름")으로 쓸 수 있다. 서블릿의 객체에 담는 원리임
+	param여러개를 동시에 꺼내고 싶으면 getInitParameterNames()를 통해 Enumeration 을 받아와서 돌려돌려
+
+servlet에서 세션불러오기
+	서블릿 자식(mvc에선 컨트롤러)에서 HttpSession session = request.getSession()를 통해.
+	쓸만한 메소드 : 
+		invalidate() : 세션을 새것으로 갱신
+		removeAttribute() : 속성 삭제
+		getAttribute() : 
+		setAttribute() :
+servlet 3.0 , annotation
+	기존 웹xml 맵핑방식이 아닌 새로운 형식의 접근법
+	import javax.servlet.annotation.WebServlet;를 하고
+	@WebServlet(url)을 클래스 위편에 붙여준다. url이 패턴으로 오면 해당 클래스로 온다는 의미.
+	*괄호안에는 value= 가 생략되어있다. 스트링 배열로 준다면 배열에 담긴 url로 접근하는 것들 전부 이 클래스로 보낸다는 의미가 된다.
+	*다른 property : 
+		urlpatterns= : value랑 차이없음
+		initParams= : {@WebInitParam(name="",value=""),@Web...}형식.
+	서블릿 맵핑을 한 것과 같은 의미, 서블릿 어노테이션을 달았다면 반드시 껐다 켜주자
+
+서블릿은 호출되면 단 한번만 객체를 생성하고 해당 객체를 계속 재사용한다.(싱글톤)
+
+에러메세지를 js로 보내는 것도 생각해보자 
+
+erwin 설치
+	next 여러번 누른다
+	제품키 RPQEU-NL3L7-PWQTU-4KBMW-C232A (교육용 시리얼키 30일)
+
+데이터 모델링 (erwin)
+	model 은 logical/physical 겸용으로 생성, 이후 모델 프로펄티에서 notation=> 둘다 IE로 변경
+	logical은 개념영역 physical은 물리영역
+	테이블을 만들고 더블클릭 => 각 데이터타입을 설정해줄 수 있음
+	Tools => forward enginner => schema generations 를 통해 실제로 db에 접근할 수 있음.
+
+	pdf printer(print시 pdf파일로 만들어주는 드라이버들)를 통해 pdf파일로 만들자

@@ -16,6 +16,12 @@ servlet 커넥션 풀 connection pool
 			maxIdle="" default 100 커넥션풀의 최대 유지 커넥션 수
 			maxActive= "" default 100 최대 유지 가능한 커넥션 수
 	사용법 => workspace2의 servers=>tomcat=>context와 mvc04 예제/Java Resources/src/com.bit.model/Guest02Da0/getList()참고
+		서버에 xml에 컨텍스트를 정의해줌으로써 톰캣이 커넥션 풀을 돌릴 수 있는 기반을 마련해주게 된다. 해당 컨텍스트를 읽어와서 커넥션을 찍게 되고.. 
+	* 커넥션 풀의 최대 유지 커넥션 수를 넘어가면 접속이 있을 때 마다 connection을 찍어내게 되고, maxactive 마저 넘어서면 접속을 받아주지 않고 대기상태로 기다리게 할것이다
+	* 커넥션 풀은 서버에 설정을 주기때문에 현재 수준에서 사용하기 난감하다, 서버의 설정도 복사해오긴 귀찮잖아
+mvc모델
+	현재 수업까지의 구조 => 도메인을 통해 접속이 들어오면 web.xml에 정의된 url맵핑으로 보내는데, jsp파일로 집적 접근하는게 아니라 httpServlet을 상속받은 controller에게 보내
+	doGet() 과 doPost()를 이용하여 접근하게 하고 있다. doGet혹은 doPost가 jsp로 접근하는 방법은 리퀘스트 디스패쳐를 통해 해당 jsp파일로 forward시키는 것이다. 
 
 jquery CDN 방식 (Contents Delivery Network)
 	jquery 다운로드 가장 하단 = > jquery CDN => 원하는 버전 클릭 => 예시 나옴
