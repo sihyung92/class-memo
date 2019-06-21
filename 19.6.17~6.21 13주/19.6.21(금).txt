@@ -1,0 +1,35 @@
+19.6.21(금)
+servlet 과 transaction 
+	servlet에서 db접근시 transaction 을 설정해 주어야 한다면 이대로 진행하자.
+	1. 2개이상의 sql문을 처리할 때 connetcion객체를 close()하지 말고 유지시킨다.
+	2. 하나의 sql문을 할 때마다 오토커밋을 하기때문에 connection.setAutocommit(false);
+	3. 커밋이 필요한 시점에 connection.commit을, exception catch문에서 connection.rollback;을 넣자
+	mvc06예제 => guest02dao 참고
+
+servlet 파일 업로드 / 다운로드
+	필요 외부 라이브러리
+	www.servlets.com 오른쪽 메뉴중 3번째를 누르고 화면 하단의 cos-20.08.zip
+	lib 적용하고 싶다면 앞축풀고 lib/cos.jar을 넣어주자
+	form 태그에 enctype(엔코딩타입) 을 추가하고 값을 multipart/form-data로 바꾼다.
+	
+	업로드 : 
+	new MultipartRequest 객체를 생성한다.
+		업로드 경로는 req.getRealPath("/하위경로"); 로 해주어야 한다. workspace에 있는 코드들의 경로는 실제 경로가 아니기 때문이다
+		MultipartRequest(request , 업로드경로, 사이즈, encoding type,중복시 처리new DefaultFileRenamePolicy()) : 사이즈의 단위는 1byte이다, DFRP는 파일 중복시 덮어씌우는 게 아니라 넘버링을 붙여준다.
+	! 통신방식 post만을 지원한다
+	! 업로드시 파일명이 일치하면 덮어써버린다. 해결을 위해 파일이름이 안 겹치게 하는 방법이 있다. 현재시간을 넣어주든지, 겹칠 때 넘버링을 해주든지.
+		MultipartRequest()의 5번째 인자로 new DefaultFileRenamePolicy()를 넣어주면 된다.
+		겹쳐버린 이름을 다운로드 할 때 파일 이름은 MultipartRequest.getFilesystemName("myfile")을 통해 바뀐 이름을 넣어줄 수 있다.
+
+	다운로드 :
+	a태그로 해당 파일 경로를 설정해주면 된다.
+
+	!새로고침 하지 않으면 다운로드가 안 되는 이유 :  업로드 되는 위치와 실행위치가 다르다. 직관적으로 패스를 집적 지정했는데 왜 다른 곳이라고 하지? 싶지만
+		이클립스 구동원리를 생각해보면 이클립스에서 실행=>일시실행을 위해 톰캣서버를 복사해와서 실행=> wepapps에 넣음=> 결과물 보여줌 이므로 실제 경로는 
+		C:\java\workspace2\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\나머지 하위 경로 이렇게 된다.	
+
+ajax와 js를 통한 업로드/다운로드
+	FormData() : 정보를 form형식으로 가공, input타입들의 값을 잡아온단 말이 되겠지
+
+javascript
+	펑션의 첫글자가 대문자는 객체를 찍어내기 위한 펑션이라는 규칙이 있다.

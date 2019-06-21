@@ -9,6 +9,12 @@
 	https://private.tistory.com/24
 	사용 예문은 수업내용 ajax01, ajax02, ajax03 참조
 	https://github.com/bit01class/web2019/tree/master/ajax01
+	xhr.readyState 정보
+	=0 none
+	=1 open()
+	=2 header
+	=3 content
+	=4 complete
 	
 java
 향상된 포문

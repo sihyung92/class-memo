@@ -1,6 +1,6 @@
 19.6.20(목)
 테스트용 코드 작성
-	예컨데 bean에 어떤 내용이 담겨있는지 확인해야되는 상황이다. println(bean) 해버리면 레퍼린스가 찍히기때문에 (bean.toString)
+	예컨대 bean에 어떤 내용이 담겨있는지 확인해야되는 상황이다. println(bean) 해버리면 레퍼린스가 찍히기때문에 (bean.toString)
 	일일이 뽑아서 체크를 하는 방법을 써왔지만 bean파일에서 toString을 오버라이드해와서 내가 원하는 형태로 나오게 바꾸는 방법도 있다.
 	테스트 중 자주 오버라이드하게 되는 항목인 toString 과 hashcode, equals등은 우클릭=>source에서 자동으로 만들어 주는 기능이 있다.
 	mvc05예제 Guest02Dao 와 DaoTest 참고
@@ -23,6 +23,7 @@ servlet에서 세션불러오기
 		removeAttribute() : 속성 삭제
 		getAttribute() : 
 		setAttribute() :
+
 servlet 3.0 , annotation
 	기존 웹xml 맵핑방식이 아닌 새로운 형식의 접근법
 	import javax.servlet.annotation.WebServlet;를 하고
@@ -34,8 +35,7 @@ servlet 3.0 , annotation
 	서블릿 맵핑을 한 것과 같은 의미, 서블릿 어노테이션을 달았다면 반드시 껐다 켜주자
 
 서블릿은 호출되면 단 한번만 객체를 생성하고 해당 객체를 계속 재사용한다.(싱글톤)
-
-에러메세지를 js로 보내는 것도 생각해보자 
+에러메세지를(뿐만아니라 텍스트를 전달할때) js태그로 보내는 것도 생각해보자 
 
 erwin 설치
 	next 여러번 누른다
@@ -46,5 +46,7 @@ erwin 설치
 	logical은 개념영역 physical은 물리영역
 	테이블을 만들고 더블클릭 => 각 데이터타입을 설정해줄 수 있음
 	Tools => forward enginner => schema generations 를 통해 실제로 db에 접근할 수 있음.
+
+	닭발을 붙여 1:m,n:m,1:1관계등을 할수 있다. 닭발의 실선은 idetify, 점선은 non-identify
 
 	pdf printer(print시 pdf파일로 만들어주는 드라이버들)를 통해 pdf파일로 만들자
