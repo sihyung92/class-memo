@@ -1,7 +1,5 @@
 16.6.17(월)
 
-게시판 등의 2차 혹은 최종 때 copy해가서 그대로 사용할 만한 예제는 진행 안 하실 예정
-
 동일출처정책
 	한 출처(origin)에서 로드된 문서나 스크립트가 다른 출처 자원과 상호작용하지 못하도록 제약하는 정책.
 	그로 인해 cross domain문제가 발생(불러오는 도메인이 원래의 도메인 or 포트번호 or ip와 다를 때 불러올 때 제약하는 것)
@@ -32,9 +30,6 @@ mvc 패턴 (model-view-controller) https://ko.wikipedia.org/wiki/%EB%AA%A8%EB%8D%B
 	controller는 모델에 명령을 보냄으로써 모델의 상태를 변경할 수 있다. 관련된 뷰에 명령을 보냄으로써 모델의 표시방법을 바꿀 수 있다.
 	model은 db와 소통하고 모델의 상태에 변화가 있을 때 마다 컨트롤러와 뷰에 상태를 통보한다.
 	view는 유저가 볼 결과물을 생성하기 위해 모델로부터 정보를 가져온다.
-
-서블릿servlet
-	javax.servlet.RequestDispatcher jsp액션태그로 치면 forward와 include를 할 수 있게 해주는 클래스
 
 html
 	input의 attribute 인 readonly 와 disabled의 차이점 => 둘다 수정할 수 없고 볼수만 있단건 같지만 disable는 form태그로 전송할때 value전달도 안함

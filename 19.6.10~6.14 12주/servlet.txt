@@ -1,0 +1,94 @@
+jsp 서블릿
+	tomcat api => http://tomcat.apache.org/의 Documentation탭 참조
+	dinamic web project를 만들 때 next->next-> generate web.xml 을 체크해 주어야 한다
+	
+	tomcat에 내장되어있는 javax.servlet을 임포트하여 인터페이스로 사용 하면 임플먼트 해야 하는 메소드들을 통해 서블릿의 구조를 생각해보자
+		init(ServletConfig arg0) 서버가 실행된 후 최초의 접속 작동하는 메소드, 서비스를 하기 위한 준비
+		destroy() 서비스가 정상 종료될 때 실행하는 메소드. 서블릿 정리작업
+		getServletInfo() 서블릿의 정보. 기계어이다
+ 		getServletConfig() 서블릿 환경설정 정보들을 얻어낼 수 있는 메소드
+		service(ServletRequest arg0, ServletResponse arg1) 요청이 있을 때 마다 호출되는 메소드
+	*web.xml을 generate 한 이유? web-inf는 보안상의 이유로 접근을 불허하는데, web-inf하에 있는 classes에 컴파일 코드들을 써야할것 아니야..
+	web.xml이 web-inf에 접근할 때 다른 경로로 접근을 할 수 있도록 도와주는 역할을 한다. 그동안 아무것도 안치면 index.~~로 갔던 이유는 
+	web.xml의 내용이 그렇게 구성되어있기 때문이다. 마음에 안 들면 밀어~
+
+	서블릿 사용법
+		HttpServlet에서 doPost(), doGet() 사용-post방식일 때,get방식일 때.
+	
+	서블릿 작동시 web.xml작성법
+  <servlet>
+  	<servlet-name>ex01</servlet-name>
+  	<servlet-class>com.bit.test01.Ex01</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>ex01</servlet-name>
+  	<url-pattern>/ex01.html</url-pattern>
+  </servlet-mapping>
+	실행순서 : mapping에서 url패턴이 ex01.html로 들어오면 서블릿네임이 ex01인 것을 실행시키게 되고, 위에서
+	 서블릿 네임ex01은 com.bit.test01.ex01이므로 해당 컴파일 코드를 실행해서 출력해주게 됨
+	이렇게 url 을 내맘대로 제어함으로써 보안성이 강화되고, 자유도가 올라간다
+
+	*서블릿에서 자바코드 혹은 web.xml파일을 수정하면 서버를 껐다 켜야 컴파일이 이루어진다.
+
+서블릿 클래스
+	javax.servlet.RequestDispatcher jsp액션태그로 치면 forward와 include를 할 수 있게 해주는 클래스
+
+서블렛 web.xml
+	<welcome-file-list>태그는 초기화면을 어떤 파일로 실행할지 정해주는 태그이다.
+
+servlet 에서 파라미터 넘기는 방법
+	web.xml => <servlet></servlet> 태그 사이에 <init-param></init-param>태그를 넣음으로써 줄 수 있다.
+	initparam 태그의 하위 태그로는 <param-name>파라미터 이름</~> 과 <param-value>벨류</~>가 있다.
+	initparam을 쓸때는 this.getInitParameter("파라미터 이름")으로 쓸 수 있다. 서블릿의 객체에 담는 원리임
+	param여러개를 동시에 꺼내고 싶으면 getInitParameterNames()를 통해 Enumeration 을 받아와서 돌려돌려
+
+servlet에서 세션불러오기
+	서블릿 자식(mvc에선 컨트롤러)에서 HttpSession session = request.getSession()를 통해.
+	쓸만한 메소드 : 
+		invalidate() : 세션을 새것으로 갱신
+		removeAttribute() : 속성 삭제
+		getAttribute() : 
+		setAttribute() :
+
+servlet 3.0 , annotation
+	기존 웹xml 맵핑방식이 아닌 새로운 형식의 접근법
+	import javax.servlet.annotation.WebServlet;를 하고
+	@WebServlet(url)을 클래스 위편에 붙여준다. url이 패턴으로 오면 해당 클래스로 온다는 의미.
+	*괄호안에는 value= 가 생략되어있다. 스트링 배열로 준다면 배열에 담긴 url로 접근하는 것들 전부 이 클래스로 보낸다는 의미가 된다.
+	*다른 property : 
+		urlpatterns= : value랑 차이없음
+		initParams= : {@WebInitParam(name="",value=""),@Web...}형식.
+	서블릿 맵핑을 한 것과 같은 의미, 서블릿 어노테이션을 달았다면 반드시 껐다 켜주자
+
+서블릿은 호출되면 단 한번만 객체를 생성하고 해당 객체를 계속 재사용한다.(싱글톤)
+에러메세지를(뿐만아니라 텍스트를 전달할때) js태그로 보내는 것도 생각해보자 
+
+servlet 과 transaction 
+	servlet에서 db접근시 transaction 을 설정해 주어야 한다면 이대로 진행하자.
+	1. 2개이상의 sql문을 처리할 때 connetcion객체를 close()하지 말고 유지시킨다.
+	2. 하나의 sql문을 할 때마다 오토커밋을 하기때문에 connection.setAutocommit(false);
+	3. 커밋이 필요한 시점에 connection.commit을, exception catch문에서 connection.rollback;을 넣자
+	mvc06예제 => guest02dao 참고
+
+servlet 파일 업로드 / 다운로드
+	필요 외부 라이브러리
+	www.servlets.com 오른쪽 메뉴중 3번째를 누르고 화면 하단의 cos-20.08.zip
+	lib 적용하고 싶다면 앞축풀고 lib/cos.jar을 넣어주자
+	form 태그에 enctype(엔코딩타입) 을 추가하고 값을 multipart/form-data로 바꾼다.
+	
+	업로드 : 
+	new MultipartRequest 객체를 생성한다.
+		업로드 경로는 req.getRealPath("/하위경로"); 로 해주어야 한다. workspace에 있는 코드들의 경로는 실제 경로가 아니기 때문이다
+		MultipartRequest(request , 업로드경로, 사이즈, encoding type,중복시 처리new DefaultFileRenamePolicy()) : 사이즈의 단위는 1byte이다, DFRP는 파일 중복시 덮어씌우는 게 아니라 넘버링을 붙여준다.
+	! 통신방식 post만을 지원한다
+	! 업로드시 파일명이 일치하면 덮어써버린다. 해결을 위해 파일이름이 안 겹치게 하는 방법이 있다. 현재시간을 넣어주든지, 겹칠 때 넘버링을 해주든지.
+		MultipartRequest()의 5번째 인자로 new DefaultFileRenamePolicy()를 넣어주면 된다.
+		겹쳐버린 이름을 다운로드 할 때 파일 이름은 MultipartRequest.getFilesystemName("myfile")을 통해 바뀐 이름을 넣어줄 수 있다.
+
+	다운로드 :
+	a태그로 해당 파일 경로를 설정해주면 된다.
+
+	!새로고침 하지 않으면 다운로드가 안 되는 이유 :  업로드 되는 위치와 실행위치가 다르다. 직관적으로 패스를 집적 지정했는데 왜 다른 곳이라고 하지? 싶지만
+		이클립스 구동원리를 생각해보면 이클립스에서 실행=>일시실행을 위해 톰캣서버를 복사해와서 실행=> wepapps에 넣음=> 결과물 보여줌 이므로 실제 경로는 
+		C:\java\workspace2\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\나머지 하위 경로 이렇게 된다.	
