@@ -452,14 +452,14 @@
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">400</XPD:ATTR>
-<XPD:ATTR name="Top" type="integer">508</XPD:ATTR>
+<XPD:ATTR name="Top" type="integer">504</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">180</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">45</XPD:ATTR>
 <XPD:REF name="Model">VmvugFiF1Um7ANUKoDrf8wAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="3M105ghWIkKz8tiP2ZZjdAAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="msYYITUGnUirOCOjd5pWeAAA">
 <XPD:ATTR name="FontStyle" type="integer">1</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">마케팅 페이지 클릭</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">마케팅 페이지</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="D5emVE3W2UiB6l6KlhaUXQAA">
 <XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
@@ -879,7 +879,7 @@
 <XPD:OBJ name="OwnedViews[21]" type="UMLIncludeView" guid="PE/QLTMkS0Sy4KeZuVowSwAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">579,529;808,526</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">579,526;808,525</XPD:ATTR>
 <XPD:REF name="Model">ITwaAlaMq0a7lOv6BiA53gAA</XPD:REF>
 <XPD:REF name="Head">3Novv3Yvj0+FP3c2frX8UwAA</XPD:REF>
 <XPD:REF name="Tail">c9lwvHpdQEmOCNvoOv6FkAAA</XPD:REF>
@@ -905,7 +905,7 @@
 <XPD:OBJ name="OwnedViews[22]" type="UMLAssociationView" guid="u9VUyWdgCECz514WXKsLvAAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">216,378;449,508</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">216,377;449,504</XPD:ATTR>
 <XPD:REF name="Model">A36wE7zCT0KvtfDdTDmIrwAA</XPD:REF>
 <XPD:REF name="Head">c9lwvHpdQEmOCNvoOv6FkAAA</XPD:REF>
 <XPD:REF name="Tail">hpkznH3QY0qf6QSGb9qNWgAA</XPD:REF>
@@ -2803,7 +2803,7 @@
 <XPD:REF name="Includes[0]">FHSjO7PlRkmAGG5I6p2mrAAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[17]" type="UMLUseCase" guid="VmvugFiF1Um7ANUKoDrf8wAA">
-<XPD:ATTR name="Name" type="string">마케팅 페이지 클릭</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">마케팅 페이지</XPD:ATTR>
 <XPD:REF name="Namespace">29ZrcmVDZEGoPIdFLxYx5QAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">c9lwvHpdQEmOCNvoOv6FkAAA</XPD:REF>
