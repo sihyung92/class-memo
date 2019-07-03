@@ -22,19 +22,23 @@ DROP TABLE userKind CASCADE CONSTRAINTS;
 
 CREATE TABLE attendance
 (
-	day date,
+	num number NOT NULL,
+	day date NOT NULL,
 	-- 0정상출석
 	-- 1결석
 	-- 2지각
 	-- 3조퇴
 	-- 
-	type number,
+	type number NOT NULL,
 	lecNum number NOT NULL,
 	userNum number NOT NULL,
 	-- 00 학생
 	-- 01 강사
 	-- 02 관리자
-	kind number NOT NULL
+	kind number NOT NULL,
+	startTime date,
+	endTime date,
+	PRIMARY KEY (num)
 );
 
 
@@ -45,11 +49,7 @@ CREATE TABLE attendanceKind
 	-- 2 지각
 	-- 3 조퇴
 	codeNum number NOT NULL,
-	-- 0 정상출석
-	-- 1 결석
-	-- 2 지각
-	-- 3 조퇴
-	kind varchar2(50),
+	num number,
 	PRIMARY KEY (codeNum)
 );
 
@@ -72,6 +72,7 @@ CREATE TABLE bbsKind
 
 CREATE TABLE career
 (
+	num number NOT NULL,
 	startdate date,
 	enddate date,
 	company varchar2(100),
@@ -79,7 +80,8 @@ CREATE TABLE career
 	-- 00 학생
 	-- 01 강사
 	-- 02 관리자
-	kind number NOT NULL
+	kind number NOT NULL,
+	PRIMARY KEY (num)
 );
 
 
@@ -99,6 +101,7 @@ CREATE TABLE lecture
 	enddate date,
 	classroom varchar2(21),
 	content varchar2(6000),
+	attach varchar2(1000),
 	PRIMARY KEY (num)
 );
 
@@ -118,6 +121,7 @@ CREATE TABLE lms_bbs
 	nalja date,
 	views number,
 	attach varchar2(1000),
+	PRIMARY KEY (listNum, bbsNum, num),
 	CONSTRAINT bbs_key UNIQUE (listNum, bbsNum, num)
 );
 
@@ -134,6 +138,7 @@ CREATE TABLE reply
 	lecNum number NOT NULL,
 	content varchar2(6000),
 	nalja date,
+	id varchar2(50),
 	PRIMARY KEY (num)
 );
 
@@ -157,14 +162,17 @@ CREATE TABLE schedule
 
 CREATE TABLE score
 (
-	num number NOT NULL,
+	scoreNum number NOT NULL,
+	lecNum number NOT NULL,
 	userNum number NOT NULL,
 	-- 00 학생
 	-- 01 강사
 	-- 02 관리자
 	kind number NOT NULL,
-	test varchar2(100),
-	score varchar2(20)
+	firstTest varchar2(10),
+	secondTest varchar2(10),
+	thirdTest varchar2(10),
+	PRIMARY KEY (scoreNum)
 );
 
 
@@ -186,7 +194,7 @@ CREATE TABLE userData
 	-- 01 강사
 	-- 02 관리자
 	kind number NOT NULL,
-	lecNum number NOT NULL,
+	lecNum number,
 	id varchar2(50) NOT NULL,
 	pw number NOT NULL,
 	name varchar2(30) NOT NULL,
@@ -195,6 +203,7 @@ CREATE TABLE userData
 	email varchar2(100),
 	address varchar2(100),
 	major varchar2(50),
+	PRIMARY KEY (userNum, kind),
 	UNIQUE (userNum, kind)
 );
 
@@ -235,7 +244,7 @@ ALTER TABLE lms_bbs
 
 
 ALTER TABLE score
-	ADD FOREIGN KEY (num)
+	ADD FOREIGN KEY (lecNum)
 	REFERENCES lecture (num)
 ;
 
@@ -294,10 +303,6 @@ COMMENT ON COLUMN attendance.kind IS '00 학생
 01 강사
 02 관리자';
 COMMENT ON COLUMN attendanceKind.codeNum IS '0 정상출석
-1 결석
-2 지각
-3 조퇴';
-COMMENT ON COLUMN attendanceKind.kind IS '0 정상출석
 1 결석
 2 지각
 3 조퇴';
