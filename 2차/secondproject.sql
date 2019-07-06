@@ -8,13 +8,59 @@ DROP TABLE career CASCADE CONSTRAINTS;
 DROP TABLE userCert CASCADE CONSTRAINTS;
 DROP TABLE certification CASCADE CONSTRAINTS;
 DROP TABLE reply CASCADE CONSTRAINTS;
-DROP TABLE lms_bbs CASCADE CONSTRAINTS;
+DROP TABLE lmsBbs CASCADE CONSTRAINTS;
 DROP TABLE score CASCADE CONSTRAINTS;
 DROP TABLE schedule CASCADE CONSTRAINTS;
 DROP TABLE userData CASCADE CONSTRAINTS;
 DROP TABLE lecture CASCADE CONSTRAINTS;
 DROP TABLE userKind CASCADE CONSTRAINTS;
 
+
+
+/* Drop Sequences */
+
+DROP SEQUENCE attendanceKind_seq;
+DROP SEQUENCE attendance_seq;
+DROP SEQUENCE bbsKind_seq;
+DROP SEQUENCE career_seq;
+DROP SEQUENCE certification_seq;
+DROP SEQUENCE lecture_seq;
+DROP SEQUENCE lmsBbs_0_seq;
+DROP SEQUENCE lmsBbs_1_seq;
+DROP SEQUENCE lmsBbs_2_seq;
+DROP SEQUENCE lmsBbs_3_seq;
+DROP SEQUENCE lmsBbs_4_seq;
+DROP SEQUENCE reply_seq;
+DROP SEQUENCE schedule_seq;
+DROP SEQUENCE score_seq;
+DROP SEQUENCE userData_0_seq;
+DROP SEQUENCE userData_1_seq;
+DROP SEQUENCE userData_2_seq;
+DROP SEQUENCE userKind_seq;
+
+
+
+
+/* Create Sequences */
+
+CREATE SEQUENCE attendanceKind_seq START WITH 0;
+CREATE SEQUENCE attendance_seq;
+CREATE SEQUENCE bbsKind_seq START WITH 0;
+CREATE SEQUENCE career_seq;
+CREATE SEQUENCE certification_seq START WITH 0;
+CREATE SEQUENCE lecture_seq;
+CREATE SEQUENCE lmsBbs_0_seq;
+CREATE SEQUENCE lmsBbs_1_seq;
+CREATE SEQUENCE lmsBbs_2_seq;
+CREATE SEQUENCE lmsBbs_3_seq;
+CREATE SEQUENCE lmsBbs_4_seq;
+CREATE SEQUENCE reply_seq;
+CREATE SEQUENCE schedule_seq;
+CREATE SEQUENCE score_seq;
+CREATE SEQUENCE userData_0_seq;
+CREATE SEQUENCE userData_1_seq;
+CREATE SEQUENCE userData_2_seq;
+CREATE SEQUENCE userKind_seq START WITH 0;
 
 
 
@@ -31,13 +77,13 @@ CREATE TABLE attendance
 	-- 
 	type number NOT NULL,
 	lecNum number NOT NULL,
+	startTime date,
+	endTime date,
 	userNum number NOT NULL,
 	-- 00 학생
 	-- 01 강사
 	-- 02 관리자
 	kind number NOT NULL,
-	startTime date,
-	endTime date,
 	PRIMARY KEY (num)
 );
 
@@ -100,13 +146,13 @@ CREATE TABLE lecture
 	startdate date,
 	enddate date,
 	classroom varchar2(21),
-	content varchar2(6000),
+	content varchar2(2000),
 	attach varchar2(1000),
 	PRIMARY KEY (num)
 );
 
 
-CREATE TABLE lms_bbs
+CREATE TABLE lmsBbs
 (
 	listNum number NOT NULL,
 	-- 00 공지사항
@@ -116,19 +162,21 @@ CREATE TABLE lms_bbs
 	bbsNum number NOT NULL,
 	num number NOT NULL,
 	title varchar2(100),
-	content varchar2(6000),
+	content varchar2(2000),
 	id varchar2(50),
 	nalja date,
 	views number,
 	attach varchar2(1000),
-	PRIMARY KEY (listNum, bbsNum, num),
-	CONSTRAINT bbs_key UNIQUE (listNum, bbsNum, num)
+	PRIMARY KEY (listNum, bbsNum, num)
 );
 
 
 CREATE TABLE reply
 (
 	num number NOT NULL,
+	content varchar2(2000),
+	nalja date,
+	id varchar2(50),
 	listNum number NOT NULL,
 	-- 00 공지사항
 	-- 01 수업자료
@@ -136,9 +184,6 @@ CREATE TABLE reply
 	-- 03 질문_질의
 	bbsNum number NOT NULL,
 	lecNum number NOT NULL,
-	content varchar2(6000),
-	nalja date,
-	id varchar2(50),
 	PRIMARY KEY (num)
 );
 
@@ -150,7 +195,7 @@ CREATE TABLE schedule
 	enddate date,
 	category varchar2(20),
 	title varchar2(100),
-	content varchar2(6000),
+	content varchar2(2000),
 	userNum number NOT NULL,
 	-- 00 학생
 	-- 01 강사
@@ -196,15 +241,14 @@ CREATE TABLE userData
 	kind number NOT NULL,
 	lecNum number,
 	id varchar2(50) NOT NULL,
-	pw number NOT NULL,
+	pw varchar2(50) NOT NULL,
 	name varchar2(30) NOT NULL,
 	birth date,
 	phone number,
 	email varchar2(100),
 	address varchar2(100),
 	major varchar2(50),
-	PRIMARY KEY (userNum, kind),
-	UNIQUE (userNum, kind)
+	PRIMARY KEY (userNum, kind)
 );
 
 
@@ -237,7 +281,7 @@ ALTER TABLE attendance
 ;
 
 
-ALTER TABLE lms_bbs
+ALTER TABLE lmsBbs
 	ADD FOREIGN KEY (num)
 	REFERENCES lecture (num)
 ;
@@ -257,7 +301,7 @@ ALTER TABLE userData
 
 ALTER TABLE reply
 	ADD FOREIGN KEY (listNum, bbsNum, lecNum)
-	REFERENCES lms_bbs (listNum, bbsNum, num)
+	REFERENCES lmsBbs (listNum, bbsNum, num)
 ;
 
 
@@ -289,60 +333,6 @@ ALTER TABLE userCert
 	ADD FOREIGN KEY (userNum, kind)
 	REFERENCES userData (userNum, kind)
 ;
-
-
-
-/* Comments */
-
-COMMENT ON COLUMN attendance.type IS '0정상출석
-1결석
-2지각
-3조퇴
-';
-COMMENT ON COLUMN attendance.kind IS '00 학생
-01 강사
-02 관리자';
-COMMENT ON COLUMN attendanceKind.codeNum IS '0 정상출석
-1 결석
-2 지각
-3 조퇴';
-COMMENT ON COLUMN bbsKind.codeNum IS '00 공지사항
-01 수업자료
-02 과제
-03 질문_질의';
-COMMENT ON COLUMN bbsKind.kind IS '00 공지사항
-01 수업자료
-02 과제
-03 질문_질의';
-COMMENT ON COLUMN career.kind IS '00 학생
-01 강사
-02 관리자';
-COMMENT ON COLUMN lms_bbs.bbsNum IS '00 공지사항
-01 수업자료
-02 과제
-03 질문_질의';
-COMMENT ON COLUMN reply.bbsNum IS '00 공지사항
-01 수업자료
-02 과제
-03 질문_질의';
-COMMENT ON COLUMN schedule.kind IS '00 학생
-01 강사
-02 관리자';
-COMMENT ON COLUMN score.kind IS '00 학생
-01 강사
-02 관리자';
-COMMENT ON COLUMN userCert.kind IS '00 학생
-01 강사
-02 관리자';
-COMMENT ON COLUMN userData.kind IS '00 학생
-01 강사
-02 관리자';
-COMMENT ON COLUMN userKind.codeNum IS '00 학생
-01 강사
-02 관리자';
-COMMENT ON COLUMN userKind.kind IS '00 학생
-01 강사
-02 관리자';
 
 
 

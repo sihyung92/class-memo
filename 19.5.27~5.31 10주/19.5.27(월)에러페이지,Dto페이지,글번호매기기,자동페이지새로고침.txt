@@ -13,7 +13,7 @@ war만드는 명령어 webcontent경로에서 jar -cvf test.war *
 이런 작업들을 정형화 해놓은 것이 빌드툴(ant등)이다.
 
 javaBean 이란? 다른 이름 Dto(Data Transfer Object), VO(value Object)
-	반복적으로 코드를 따로 작성하여 재사용하기 위해 만들어진 클래스이다.
+	반복적으로 사용하는 코드를 따로 작성하여 재사용하기 위해 만들어진 클래스이다.
 	빈은 속성과 메서드로 이루어져 있으며, 데이터의 처리를 담당한다.
 	형식은 get변수명, set변수명 을 따른다
 
