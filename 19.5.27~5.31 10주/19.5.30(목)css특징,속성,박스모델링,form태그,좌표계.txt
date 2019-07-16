@@ -12,7 +12,7 @@ css 속성 :
 	font-family : a폰트,b폰트,c폰트  / a없으면 b, b없으면 c폰트 실행, 폰트설정은 3개까지 가능
 	text-decoration : underline,overline,line-through,none. none은 어따쓰냐? 하겠지만 <a>태그의
 			밑줄을 지워주는데 쓰지요~ 혹은 hover,active등 다른 상황마다 다른 퍼포먼스를 주고 싶을때
-	text-indent : 들여쓰기 (px만큼) 음수값으로 내어쓰기도 가능
+	text-indent : 들여쓰기 (px만큼) 음수값으로 ``내어쓰기도 가능
 	text-align : 정렬상태 설정
 
 박스 모델링과 박스 레벨, 인라인 레벨

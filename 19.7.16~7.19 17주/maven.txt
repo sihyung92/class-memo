@@ -1,0 +1,4 @@
+https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html -> 메이븐 가이드
+
+메이븐 사용법
+1. 메이븐 다운로드 - 압축 해제 - 하위결로의 bin폴더로 패스 설정 : 패스가 잘 설정되었는지 확인하기 위해 cmd에서 mvn -v 입력!
