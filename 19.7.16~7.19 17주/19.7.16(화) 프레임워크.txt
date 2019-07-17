@@ -1,3 +1,4 @@
+19.7.16(화)
 java 프레임워크 : 아파치 스트럿츠 , 스프링
 아파치 스트럿츠의 특징 : web개발에 특화된 java 프레임워크, 10년대 초반까지 많이 사용했지만 한국에서는 스프링에 밀려 점유율이 많이 떨어진 상태.
 	문법이 틀려도 어느정도 출력해주는 게 특징.
@@ -16,7 +17,7 @@ java 프레임워크 : 아파치 스트럿츠 , 스프링
 여기까지 하면 어시스턴스는 작동하지만 컴파일을 시도하면 클래스를 찾지 못한다. webcontent > web-inf > lib에도 라이브러리를 넣어야 한다. 집적 넣는 방법도 있지만 내가 지정한 위치에서 긁어오게 할 수 있다. (더이상 소스에 포함 안 시킴)
 라이브러리와 코드 분리 : 다이나믹 웹 프로젝트 프로펄티 => Deployment Assembly => add버튼 클릭 => 자바빌드패스하위에 스트럿츠 라이브러리 누르고 확인 => 완료
 
-web.xml 설정 => struts 라이브러리 경로 중 \struts2-core-2.5.20.jar에서 필터를 찾을 수 있다.
+web.xml 설정 => struts 라이브러리 경로 중 \struts2-core-2.5.20.jar에서 필터 클래스를 찾을 수 있다.
   <filter>
   	<filter-name>struts01</filter-name>
   	<filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter.class</filter-class>
