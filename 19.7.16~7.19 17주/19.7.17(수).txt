@@ -90,7 +90,12 @@
 				
 	<interceptor-ref name="params"></interceptor-ref> : getter setter 역할을 해줌. form에서 건너오는 것 중 컨트롤러에 setter로 정의되어있는 것들은
 		다 넣어주고 getter로 되어있는 것들을 attribute에 넣어준다
-
+	<interceptor-ref name="modelDriven"></interceptor-ref> 들어와서 있는 객체 안의 setter에게 값을 넣어줌 사용하려면 ModelDriven 인터페이스를 상속해야 한다.
+		ModelDriven에서 getModel()메소드에서 return값을 원하는 객체를 하면 됨. 해당 인터페이스의 제네릭은 리턴하려는 객체이면 된다.
+		!주의 : 해당 인터페이스를 상속받은 클래스는 반환하고자 하는 객체를 미리 만들어놔야 한다. 안 그럼 에러. 그리고 이 interceptor는
+		struts 맵핑에서 interceptor 중 가장 위에 있어야 한다. 그런데 필드에 미리 객체를 생성해 놓는 것은 메모리관리상 안 좋은 패턴이고, 그렇다고 생성자에
+		정의해놓자니 struts는 싱글톤 패턴이라 버그가 나기 좋다. 그래서 Preparable인터페이스를 상속받고 prepare()안에서 객체를 찍고
+		<interceptor-ref name="prepare"></interceptor-ref> 필터를 modelDriven필터보다 상위에 해놓고 써야 한다.
 	* struts는 context path 까지 root로 본다.
 
 ! struts 의 약점 : session객체를 이용할 수 없고 http접근 시 method(get,post)를 구분할 수 없다.
