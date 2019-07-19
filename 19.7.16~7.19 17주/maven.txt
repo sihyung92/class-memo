@@ -5,3 +5,56 @@ https://maven.apache.org/guides/getting-started/index.html -> 메이븐 30분 가이드
 1. 메이븐 다운로드 - 압축 해제 - 하위결로의 bin폴더로 패스 설정 : 패스가 잘 설정되었는지 확인하기 위해 cmd에서 mvn -v 입력!
 2. 프로젝트의 루트 폴더를 만든다. 거기서 cmd창을 열어 다음을 입력 : 
 mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+
+
+기본 형식
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mycompany.app</groupId>
+  <artifactId>my-app</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Maven Quick Start Archetype</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+validate - 프로젝트가 올바른지 확인하고 필요한 모든 정보를 사용할 수 있는지 확인하십시오.
+compile - 프로젝트의 소스 코드 컴파일
+test- 적절한 단위 테스트 프레임 워크를 사용하여 컴파일 된 소스 코드를 테스트합니다. 이 테스트에서는 코드를 패키지화하거나 배포 할 필요가 없습니다.
+package - 컴파일 된 코드를 JAR과 같은 배포 가능한 형식으로 패키지화합니다.
+verify - 통합 테스트 결과에 대한 검사를 실행하여 품질 기준을 충족하는지 확인합니다.
+install - 패키지를 로컬 저장소에 설치하여 다른 프로젝트의 종속성으로 로컬로 사용합니다.
+deploy - 빌드 환경에서 수행되어 최종 패키지를 원격 저장소에 복사하여 다른 개발자 및 프로젝트와 공유합니다.
+
+위에서 부터 순서대로 진행됨
+
+mvn -B archetype:generate ^ 
+  -DarchetypeGroupId=org.apache.maven.archetypes ^
+  -DgroupId=com.bit.myapp ^
+  -DartifactId=mvn01
+
+maven 버전의 snapshot 의 의미 : 개발중에 한 버전이라는 뜻. release 면 배포판이겠지
+
+* 프롬프트에서
+	유닉스 개행 \
+	윈도우 개행 ^
+
+maven-compiler-plugin 태그에서 jdk 버전을 설정 가능하다.
+<configuration>
+         <source>1.8</source>   내 jdk의 버전
+         <target>1.8</target>   사용할 버전
+</configuration>
+
+build에서 <finalName>패키징하고싶은이름</finalName>
