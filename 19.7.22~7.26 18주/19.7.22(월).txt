@@ -1,0 +1,25 @@
+19.7.22(월)
+ibatis = 3.0이후 mybatis로 이름 바뀜
+
+서버와 맞춰주기 위해 struts 프로젝트의 web.xml의 <webapp>태그는 서버의 web.xml의 <web-app>태그를 복사해와서 붙여준다.
+
+struts.properties 파일 : xml이외의 struts의 설정을 줄 수 있는 파일.
+ struts.action.extension= 옵션으로 확장자를 .action에서 다른 것으로 바꾸어줄 수 있다.
+
+부트스트랩 bootstrap
+https://getbootstrap.com/docs/3.4/getting-started/
+
+3.0과 4.0의 차이 => 3.0은 모바일기기 적용을 위한 버전, 4.0은 프론트엔드 프로젝트를 진행하기 위한 버전(백엔드 프로젝트를 진행하는 우리의 경우 3.0대가 적합)
+
+ojdbc14 처럼 고장난 파일 집어넣기. user=>user=>.m2=>repository 경로에 해당 dependency 경로를 찾아가 본다. 파일이 없을텐데, ojdbc14파일을 집어넣고 ojdbc14-버전.jar을 입력해 주면
+dependency에서 읽어올 수 있다
+
+struts에서 struts.xml이 아닌 다른 xml파일을 읽어오게 하고 싶다면 <include file="나만의.xml"></include>
+
+ActionSupport를 상속받으면 action과 같은기능을 할 수 있다. 추가로 validate()도 사용할 수 있음
+
+Ibatis sqlMapConfig.xml의 스키마 : <!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+	xml양식 : 루트는 <sqlMapConfig></sqlMapConfig>
+오늘 수업자료의 resources 폴더에 Query.xml와 sqlMapConfig.xml 참조
+ibatis query.xml에서 parameterClass를 VO혹은Dto로 삼으면 #object# = object의 getter를 호출
