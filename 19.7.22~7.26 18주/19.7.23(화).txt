@@ -1,0 +1,45 @@
+19.7.23(화)
+오늘의 학습목표- bit framework 만들어보기
+
+//bit framework
+	패키지명은 bit.com.framework로
+	url에 따른 controller, view
+
+//user
+	패키지명은 bit.com.controller 등 개발자가 작성해야 하는 패키지
+
+자바 리플렉션 : 
+	Class clazz = Class.forName(패키지를 포함한 자바파일 경로);
+	clazz.newInstance()를 통해 객체생성
+
+패스와 포워딩 혹은 리다이렉트를 설정할 때 패스마다 일일이 if, else if문을 다는 방법보다는 map자료구조에
+패스와 클래스경로를 담아놔서 얻어와서 쓰는 방법이 낫겠다. servlet의 init메소드를 오버라이드해서 map에 미리 패스를
+넣어주면 올때마다 자료구조를 쓸 일 도 없을거고. 이 방법도 매번 객체생성이 되는 메모리 낭비가 있기 때문에 싱글톤 패턴으로
+구현하면 퍼포먼스가 향상될것임
+
+프론트 컨트롤러 디자인 패턴 https://opentutorials.org/module/3569/21219
+mvc모델에서 컨트롤러에 들어가기 앞서 디스패쳐 서블릿(프론트컨트롤러)를 거치게 하는 패턴.
+프론트 컨트롤러는 핸들러맵핑을 통해 정보를 어떤 컨트롤러로 전달할지 결정하고 이후 mvc모델대로 굴러간다.
+
+커맨드 디자인 패턴 https://gmlwjd9405.github.io/2018/07/07/command-pattern.html
+실행될 기능을 캡슐화함으로써 주어진 여러 기능을 실행할 수 있는 재사용성이 높은 클래스를 설계 하는 패턴
+
+리팩토링 (refactoring) 소프트웨어 공학에서 '결과의 변경 없이 코드의 구조를 재조정함'을 뜻한다.
+	주로 가독성을 높이고 유지보수를 편하게 한다. 버그를 없애거나 새로운 기능을 추가하는 행위는 아니다.
+	사용자가 보는 외부 화면은 그대로 두면서 내부 논리나 구조를 바꾸고 개선하는 유지보수 행위이다.
+
+java문법 : java.util.properties 클래스 http://www.gisdeveloper.co.kr/?p=5160
+properties 파일 다루는 패턴
+		Properties prop = new Properties();
+		Class<? extends DispatcherServlets> clz = getClass();
+		ClassLoader loader = clz.getClassLoader();
+		InputStream is = loader.getResourceAsStream("bit.properties");
+
+Class와 ClassLoader 
+
+프로젝트와 상관없이 사용할 수 있는 template클래스.
+오브젝트 배열과 추상클래스를 활용하여 프로젝트의 의존성을 없앤다.
+오늘 수업자료 com.bit.framework.templateUpdate 와 com.bit.framework.templateQuery 참조 
+
+템플릿의 통합 => 오늘 수업자료 com.bit.framework.JdbcTemplate 참조
+오버로딩 편하게 하기 => 구현해놓은 메소드를 호출하여 사용하면 코드를 재사용 할 수 있겠지
