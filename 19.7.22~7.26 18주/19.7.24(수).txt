@@ -1,0 +1,63 @@
+19.7.24(수)
+bit framework 리팩토링 + 테스트 모듈을 설치하여 즉시 테스트
+
+TestFramework Junit
+Junit 다운로드 - https://junit.org/junit4/ 에서 다운로드 - maven 디펜던시 긁어오기
+Junit getting started - https://github.com/junit-team/junit4/wiki/Getting-started 
+ 제공되는 메소드
+	Assert.assertNotNull(); //null != 성공
+	Assert.assertNull(null); //null == 성공
+	Assert.assertEquals(1, 1); //same == 성공 .equals()로 비교
+	Assert.assertSame(1, 2); // same == 성공
+	Assert.assertNotSame(1, 2); // same != 성공
+	Assert.assertTrue(true); //true == 성공
+	Assert.assertFalse(false); //false == 성공
+	!주의 try catch를 하면 exception 상황시 catch문으로 넘어가서 Assert문이 실행되지 않는 경우가 생길 수 있다. throws를 하면 Junit에서 받아
+	에러로 처리하기 때문에 throws를 해주는 편이 낫다. try catch문을 써야하는 상황(throws하면 exception상황에서 뒤의 테스트들은 실행 안 할 것이므로 그런 상황을 피하기 위하여)
+	이라면 catch문에 Assert.assertFalse(true); 를 넣어줌으로써 Failures를 추가해주는 방향으로.
+	!주의 생성자를 사용하지 않음. @beforeClass 어노테이션 활용해야함.
+ 각 테스트케이스 간에는 순서가 정해져있지 않고 맘대로 실행됨. 선행되어야하는 메소드가 있다면 @before 를 붙이면 @test 메소드가 실행되기전 before가 실행됨. @after도 마찬가지
+ 딱 한번 생성자처럼 실행될때만 작동되는 메소드를 만들고 싶다면 @beforeClass 를 붙여주면 됨. 종료할 때 : @afterClass
+ !주의 beforeClass와 afterClass는 반드시 static이어야 한다.
+
+ Maven Test 로 실행시키면 콘솔에서 메세지 출력 (왜냐하면 test 폴더를 빌드하는 명령어니까)
+ Junit Test 로 실행시키면 자체 UI에서 출력
+*Major version 의 차이점 3.x : 문법 지켜야함 / 4.x : POJO방식 채택되면서 엄격한 문법으로부터 다소 자유로워짐
+
+DataSource 클래스들의 최상위 클래스 - java.sql.DataSource 클래스
+java.sql.DataSource 의 특징 : getter들은 만들어놨지만 setter는 없음. 이 클래스를 상속받은 클래스들이 setter를 만들어서 활용됨.
+
+오늘 수업자료 com.bit.framework.jdbcTemplate가 abstract클래스 인 관계로 jdbcTemplate를 객체로 만들때마다 abstract Mapper 메소드가 필요 없는 메소드들도 할 수 없이 구현했어야 했다.
+그것을 방지하기 위해 abstract Mapper 메소드를 인터페이스로 빼고 해당 메소드가 필요한 메소드들에서 그 인터페이스를 인자로 받아 활용한다.
+
+java 가변인자
+ 대충 메소드(String msg, char ch, Object ... objs)
+	해당 타입을 여러개 받을 수 있다. 반드시 마지막 인자로 사용해야 하고, 인자로 넘길때는 해당 타입으로 넘기면 되고,
+	메소드에서 활용할 때는 해당 타입의 배열이라고 생각하고 쓰면 된다.
+
+Spring 스프링
+ Spring Tool Suite sts툴 받는 법 => eclipse help => marketplace 에서 검색해서 받는 방법, https://spring.io/tools 가서 집적 받는 방법
+ 3.x버전 => 4.x버전으로 올라가며 3버전대의 기능이 제거됨. 사용하고 싶다면 add-on 플러그인을 받아서 써야함
+
+프레임워크의 장점 중 하나 - 보안!
+
+스프링 버전 별 특징
+	2.5~3.1 xml로 설정
+	3.2~4.초반 어노테이션으로 설정
+	5.x ~ 자바 프레임워크를 벗어나 언어의 확장(스칼라 코틀린)
+
+스프링webmvc를 받을 때 주의사항 - spring core의 버전을 맞춰주지 않으면 에러가 날 확률이 높다.
+
+스프링 서블릿 디스패처 이름 형식 - 프로젝트이름-servlet.xml
+	root는
+ <beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+web.xml 설정
+서블릿 디스패처 클래스 경로 => org\springframework\spring-webmvc\3.0.5.RELEASE\spring-webmvc-3.0.5.RELEASE.jar 하위의org.springframework.web.servlet.DispatcherServlet
+
+서블릿 디스패처 설정
+뷰 리졸버 경로 => org\springframework\spring-webmvc\3.0.5.RELEASE\spring-webmvc-3.0.5.RELEASE.jar 하위의 org.springframework.web.servlet.view 밑에 InternalResourceViewResolver
+
+
