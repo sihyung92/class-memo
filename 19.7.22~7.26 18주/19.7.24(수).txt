@@ -60,4 +60,4 @@ web.xml 설정
 서블릿 디스패처 설정
 뷰 리졸버 경로 => org\springframework\spring-webmvc\3.0.5.RELEASE\spring-webmvc-3.0.5.RELEASE.jar 하위의 org.springframework.web.servlet.view 밑에 InternalResourceViewResolver
 
-
+Vo / Dto 객체 생성 후 세터질도 귀찮다면 생성자로 필드의 인자를 다받아 (source => 필드로 생성자 만들기 있다) 셋해주는 방법도 있다
