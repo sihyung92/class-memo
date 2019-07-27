@@ -6,7 +6,7 @@ MariaDB 5.5 버전 이후 두 DB간의 차별점이 생김. 수업용으로는 5.5버전 사용(5.5버전
 	root계정에서 존재하는 계정 확인 : select user,host,password from mysql.user;
 		* host는 접속 권한이다
 	계정 생성 create user 'scott'@'localhost' identified by 'tiger';
-		*localhost 부분을 *로 바꾸면 어디서든 접근할 수 있다
+		*localhost 부분을 %로 바꾸면 어디서든 접근할 수 있다
 	root 에서 create database xe(db이름, 교육용이라 xe라는 이름의 db만 생성가능) ; 을 통해 db를 만들고
 	show databases 를 통해 db목록을 확인할 수 있다.
 	create user 'id'@'접속권한(host)' identified by 'password'; 로 유저를 만들고
