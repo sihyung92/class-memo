@@ -27,7 +27,8 @@ web.xml 설정 => struts 라이브러리 경로 중 \struts2-core-2.5.20.jar에서 필터 클래
   	<url-pattern>/*</url-pattern>
   </filter-mapping>
 필터를 설정 후 파일이 필터를 타고 오게된다. 사용하는 클래스에 대해 정보가 없기 때문에 해당 struts를 사용하기 위해 src폴더 루트경로에 (패키지없이) struts.xml파일을 생성해준다.
-내용은 스트럿츠 코어 라이브러리 하위의 struts-default.xml 에서 doctype태그를 복사해와서 struts.xml에 붙여넣는다. 그러고 나면 어시스트를 활용할 수 있다. struts.xml파일의 루트 태그는 struts 이다. 
+내용은 스트럿츠 코어 라이브러리 하위의 struts-default.xml 에서 docty\
+pe태그를 복사해와서 struts.xml에 붙여넣는다. 그러고 나면 어시스트를 활용할 수 있다. struts.xml파일의 루트 태그는 struts 이다. 
 해당 독타입 태그 내용 =
     <!DOCTYPE struts PUBLIC
     "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
