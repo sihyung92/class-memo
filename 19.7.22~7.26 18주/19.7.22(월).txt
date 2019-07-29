@@ -4,7 +4,7 @@ ibatis = 3.0이후 mybatis로 이름 바뀜
 서버와 맞춰주기 위해 struts 프로젝트의 web.xml의 <webapp>태그는 서버의 web.xml의 <web-app>태그를 복사해와서 붙여준다.
 
 struts.properties 파일 : xml이외의 struts의 설정을 줄 수 있는 파일.
- struts.action.extension= 옵션으로 확장자를 .action에서 다른 것으로 바꾸어줄 수 있다.
+struts.action.extension= 옵션으로 확장자를 .action에서 다른 것으로 바꾸어줄 수 있다.
 
 부트스트랩 bootstrap
 https://getbootstrap.com/docs/3.4/getting-started/
