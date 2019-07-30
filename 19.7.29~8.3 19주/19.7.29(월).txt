@@ -6,6 +6,7 @@ org.springframework.context.support.ClassPathXmlApplicationContext(파일이름) 클�
 org.springframework.context.support.FileSystemXmlApplicationContext(패스+파일이름) 클래스
 둘의 특징을 합쳐놓은 GenericXmlApplicationContext(패스+파일이름 or classPath) 클래스
  --패스+파일이름으로 할 시 xml파일의 위치는 실행위치 기준으로 패스를 넣어주어야 한다. 클래스경로로 넣을 시 classpath:/~; 스타일로 넣어주어야 한다
+**classpath:/ 는 target의 classes폴더가 root이다. 이것이 컴파일된 클래스파일들과 함께 있는 이유는 src이하 폴더들은 메이븐이 편의상의 분류를 해놨지만 사실 같은 루트를 기반으로 하고 있기 때문이다.
 
 둘다 ApplicationContext 클래스를 상속받고 있음
 bean 하위 태그
@@ -56,7 +57,6 @@ web.xml에 listener주어 applicationContext.xml 먼저 읽어오게 하기.
 	</listener>	
 
 ModelAndView()클래스에 인자로 string을 주면 setViewName(String) 과 같다.
-**classpath:/ 는 target의 classes폴더가 root이다. 이것이 컴파일된 클래스파일들과 함께 있는 이유는 src이하 폴더들은 메이븐이 편의상의 분류를 해놨지만 사실 같은 루트를 기반으로 하고 있기 때문이다.
 
 필터로 encoding하기! web.xml에
 	<filter>
@@ -71,6 +71,7 @@ ModelAndView()클래스에 인자로 string을 주면 setViewName(String) 과 같다.
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
+	<filter-mapping>~~</>
 *보통은 잘 되는데 안되는 경우 forceEncoding을 true로 한다.
 
 *js 와 html 에서 /는 ip주소바로뒤 / 이다.(context path 짤라먹는다).
@@ -106,7 +107,7 @@ afterCompletion()메소드 : 인터셉터 종료시점(뷰로 가기전에), 인자로 exception을 �
 	TransactionDefinition객체는 인터페이스 이므로 집적 구현하면 빡세고, new DefaultTransactionDefinition()을 통해 객체를 만들자.
 	해당 트랜잭션 객체는 다른 커넥션 객체로 트랜잭션 관리를 해야하는 상황이더라도 스프링에서 커밋과 롤백 관리를 해준다
 
-
-어플리케이션 계층 / 프레젠테이션 계층 / 서비스계층 비즈니스 / <=공부하자
+3 Tier Architecture (3계층 구조)
+ 프레젠테이션 로직(클라이언트, 사용자 인터페이스), 비즈니스 로직, 데이터베이스를 각각 다른 플랫폼 상에서 구현한 것.
 
 익명클래스에서 사용하는 상위클래스의(익명클래스가 포함되어있는) 변수들은 final이어야 한다. jdk1.8부터는 final이 생략가능하지만 글만 그런거지 실제론 final이기 때문에 변수값이 변하면 에러가 난다.

@@ -1,0 +1,38 @@
+19.7.30(화)
+
+eclipse에서 perspective를 spring으로 바꾸고 new => spring legacy project (sts3점대 프로젝트이므로 sts3version add on을 받지 않았다면 없다)=> spring mvc 템플릿으로 생성
+
+web.xml에서 <load-on-startup>1</load-on-startup> 태그로 어떤 서블릿이 먼저 로딩될 지 결정할 수 있다.
+
+xml파일의 dtd(Document Type Definition) 설명!
+	xmlns = 형식 없을 시의 xml 스키마 구조 정의
+	xmlns:abcd = <abcd:~~~> 태그들의 스키마 구조 정의
+
+spring annotation 정리
+annotation 을 scan하고 싶다면 <context:component-scan base-package="com.bit.day05"/>태그를 넣고(먼저 dtd에 xmlns:context 설정을 추가 해야겠지) 넣어야 한다.
+<annotation-driven />태그는 controller의 설정을 도와준다
+@Controller 컨트롤러 bean 설정
+@RequestMapping(value="/ex01", method=RequestMethod.GET) 핸들러 맵핑 설정
+	requestmapping 어노테이션을 붙인 메소드는 Model model, HttpServletRequest req, HttpServletResponse res) 인자를 자동으로 받을 수 있다.
+** class에 @RequestMapping("/namespcae")를 붙여주면 경로를 줄 수 있다.(struts에서 맵핑 때 namespace를 주던 것 처럼)
+	*꿀팁 : requestMapping어노테이션을 붙여놓은 method에 리턴타입을 void로 해버리면 requestMapping에 달린 value와 같은 depth를 뒤져서 찾아본다. 확장명이 들어가면 확장명은 제외하고 viewResolver에 정의된 suffix를 붙여서 찾는다.
+	@RequestMapping한 메소드에서 받아쓰는 Model model객체와 같이 쓸 수 있는 변수 어노테이션들
+		@ModelAttribute("msg") String param 변수 앞에 달아주면 Model 객체에 addAttribute("msg",request.getParmeter("msg")) 를 자동으로 해준다.
+			혹은 VO나 DTO 타입이라면 setter와 이름이 같은 attribute들을 넣어서 알아서 bean으로 만들어준다. 물론 이 때는 변수이름을 특정할 방법이 없으므로 넘어오는 변수명과 bean의 setter의 변수명이 일치해야 한다.
+			만약 일치하는 setter가 없으면 그냥 빈깡통 넘기거나 있는 setter만 채워서 보내는데, 이 성질을 이용해 model객체를 대체하는 방식으로도 사용할 수 있다.
+		@RequestParam("msg") String param => param에 request.getParameter("msg")해서 넣어준다. 만약 어노테이션에 ()를 생략한다면 객체이름과 같은 파라미터를 읽어와서 넣어준다.
+		*REST(Representational State Transfer)방식!
+		@PathVariable("패스변수와 같이") requestMapping에서 value="/원래경로/{변수명}"
+			패스에 값을 주어 변수를 받아올 수 있다! 기존의 parameter를 대체할 수 있는 강력한 방식. wiki페이지들도 같은 방식이니 참고하자 @RequestParam과 마찬가지로 ()를 빼면 변수이름으로 찾아온다.
+			! 패스변수에 null은 허용되지 않음.
+	@AutoWired 생성자, 메소드, 멤버변수위의 사용하여 검색하여 자동으로 값 대입, 같은 이름의 객체가 2개 있을 경우는 @Qualifier 필요
+		AutoWired 시리즈 는 교재91page 참조
+
+@component 어노테이션 를 사용할 때와 controller, repository 어노테이션을 사용할때의 차이?
+	모두 componenet 를 사용했다면 controller보다 repository (Dao) 먼저 생성될 경우 controller에서 repository를 호출 했을 때 null이라 에러 내지는 버그가 발생할 것이다. 하지만
+	repository 어노테이션은 controller보다 우선해서 등록되기 때문에 그런 에러를 방지할 수 있다.
+
+*ModelAndView에서 view라는건 render메소드에서 출력할 정보를 model, request, response에서 받아다가 집적 출력해주는 방식이었음
+
+legacy프로젝트에서 log4j 라이브러리가 org.slf4j.Logger에서 사용한다. 기존에 org.apache.log4j와 달라진 점은 객체를 얻어올 때 LoggerFactory.getC... 요렇게 받아옴
+
