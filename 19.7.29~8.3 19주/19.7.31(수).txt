@@ -1,0 +1,80 @@
+19.7.31(수)
+test용 db H2 => http://www.h2database.com/html/main.html
+윈도우 installer 혹은 zip파일 압축해제
+실행은 시작 => 모든 프로그램 => h2 => H2 console (command line) 실행.
+웹페이지에서 나온 콘솔에서 실행
+
+*인메모리 데이터베이스 (ram에 올리는)라서 접근속도 ↑ / 안정성 ↓
+그럼 다른 DBMS들은? 디스크 데이터베이스임. 메모리접근 보다 디스크 접근이 10000배 이상 느리기 때문에
+디스크 DBMS 들은 그를 보안하기 위한 여러 대책을 갖추고 있음. 하지만 IO작업을 최소화 하는 것이 가장 좋은 방법
+
+jetty plugin에서 pom문으로 webapp root를 주려면 다음 설정을 넣어줘라 : 
+	<configuration>
+		<webApp>
+			<contextPath>/day06</contextPath>
+		</webApp>
+	</configuration>
+
+connection pool library => Commons DBCP
+dbcp 라이브러리를 dependency 하고 나면 dataSource로 해당 라이브러리의 BasicDataSource를 사용한다. property를 확인하면 다양한
+커넥션풀의 속성들을 받는 것을 확인할 수 있다.(MinIdle,MaxIdle 등등)
+
+electron 데스크탑용 앱 개발 용 프레임워크. 웹에서 쓰이는 언어를 기반으로 만들어져 학습이 용이하고 쉽게 접근할 수 있다
+
+restful 방식으로 구현해보자. bbs/1 은 1번 디테일페이지, bbs/2는 2번 디테일페이지... 이런 식으로 하고 get으로 접근하면 디테일페이지, post으로 오면 해당페이지 입력으로.
+	오늘 배우는 새로운 http method : put방식, delete방식! 메소드 방식을 늘려서 하나의 요청으로 다채롭게 써먹어보자
+	다만 get,post 이외의 메소드는 html5에서 지원 안하기 때문에 스프링에서 조작하거나 js등으로 다뤄서 보내야 한다.
+
+***다른 HTTP METHOD로 보내고 싶을때!!
+	스프링을 이용하는 방법 : org.springframework.web.filter.HiddenHttpMethodFilter 를 이용, 필터를 통해 서블릿 디스패처를 통하기 전에 메소드를 바꿔줄 수 있다.
+			그러려면 먼저 필터를 와 필터맵핑을 해주어야 하고, 이후 porm태그를 통해 값이 전달 될 때 "_method"라는 파라미터값을 PUT 혹은 DELETE로 주면 해당 메소드로 바꾸어준다.
+		<input type="hidden" name="_method" value="put"/>
+		! porm태그의 메소드는 반드시 post여야 스프링에서 작동함
+
+	JavaScript에서 다른 메소드 방식으로 보내는 방법 :
+		js 에서
+		xhr=new XMLHttpRequest(); (객체)
+		xhr.onreadystatechange=function(){  요청을 전송할 때의 이벤트 펑션을 주는 것이다. 비동기통신이라 답이 온것으로 요청이 완료되었는지 판단할 수 없으므로 정보가 도착할때마다 구분자들이 도착하는데, readystate가 4가
+							가 되면 통신이 완료된 것이다.
+			if(xhr.readyState==4){	
+				if(xhr.status==200){	통신이 성공적일때.
+					var data =xhr.responseXML;(응답값의 형식에 따라 메소드가 달라진다)
+				}
+			}
+		};
+		xhr.open('get','students.xml'); <== 여기 첫번째 인자가 메소드다. GET, POST, DELETE, PUT 두번째는 url, 자세한건 https://developer.mozilla.org/ko/docs/Web/API/XMLHttpRequest/open
+		xhr.send(); <== 요청 전송
+		------
+		jq 에서 
+		$.ajax({
+			method:'get',  <=========== 여기!
+			url:'https://www.naver.com/',
+			dataType: "text",
+			//data:'id=admin',
+			error:function(xhr,errmsg,err){
+				alert('에러입니다 잠시후 재접속바랍니다');
+			},
+			success:function(data){
+				console.log(data);
+			}
+		});
+
+3계층 모델 : 프레젠테이션 계층, 서비스 계층, 데이터 엑세스 계층을 3단계로 나누어 처리
+	프레젠테이션 계층 (3tier모델에선 client tier): 브라우저 상의 웹 클라이언트의 요청 및 응답을 처리. 상위계층(서비스, 데이터엑세스)에서 발생하는 exception에 대한 처리 @controller 
+	서비스 계층 (3tier모델에선 application tier, 2계층 모델에선 프레젠테이션과 함께 client tier): 비즈니스 로직 처리, 트랜잭션 처리, 프레젠테이션과 데이터엑세스 계층 사이를 연결함. @service 계층
+ 	데이터 엑세스 계층 (3tier모델에선 data tier) : 데이터 액세스 로직과 DB에 crud, @repository
+
+ORM FrameWork (Object-Relation Mapping)이용하기 - ibatis편 : 
+	Spring 에서 ibatis 이용하기. spring framework ibatis 옛날버전을 가져오고(ibatis 옛날에 끝나서 최신 스프링프레임워크도 없음)
+	<bean id="SqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/sqlMapConfig.xml"></property>
+	</bean> 데이터 소스와 sqlmap의 설정파일을 넣어주어야함. sqlmap.xml파일의 위치는 config에서 특정해줌
+	이후 환경설정.xml에선 알맞은 dtd(web검색)를 넣어주고 <sqlMapConfig> <sqlMap resource="sqlMap.xml경로"/> </splMapConfig>,
+	그리고 sqlMap.xml에서도 알맞은 dtd를 넣어주고 <sqlMap> 하위에 <select>,<delete>,<update> 태그에 id로 호출할 이름, resultClass는 값을 담아줄 객체(Vo 등), 받을 파라미터는 parameterClass="타입"
+	각 태그는 하나의 쿼리문만, 그리고 pstmt에서 ?에 해당하는것은 #value#(Vo나 Dto가 들어와서 getter로 값을 받아와야 하는 경우는 getter변수명을 맞춰주어야만 값이 들어간다) 이다. ;는 빼도 된다
+
+*dispacther servlet : bean 객체의 scope의 default는 singleton이다(application과 비슷) https://gmlwjd9405.github.io/2018/11/10/spring-beans.html 참조
+
+**html 페이지에서 이미지, 외부html, js등의 소스를 불러오는 방식은, 해당 페이지가 로딩 될 때 받아와야 하는 소스들에
+ 대해 새로운 요청을 날려서 불러들여온다.
