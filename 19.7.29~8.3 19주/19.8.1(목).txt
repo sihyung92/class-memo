@@ -1,4 +1,68 @@
 19.8.1(목)
+프론트엔드 프로젝트 => 새로운 프론트엔드 프레임워크들이 백엔드 (자바스크립트를 필두로 한 여러 언어들)역할까지 하면서
+	프론트엔드 언어만 이용하여 웹페이지를 구성하는 프론트엔드 프로젝트들도 나오게 되었음. 백엔드 프로젝트와 프론트엔드 프로젝트는
+	각각 장단점이 있음, 프론트엔드 프로젝트는 데이터를 다룰 때 안정성이 떨어짐 그러나 데이터가 크게 중요하지 않은 프로젝트인 경우 프론트로
+	진행하는게 나을 때도(강사님은 백엔드 프로젝트 선호)
+	
+	spring legacy 프로젝트 -> mvc 프로젝트 생성
+	*dependency 중 servlet 과 jsp-api의 버전을 올려주자!
+
+orm 프레임워크 사용 => mybatis, http://www.mybatis.org/mybatis-3/ko/index.html
+	pom.xml문에 dependency로 mybatis와 mybatis-spring 추가
+	mybatis의 sqlSessionFactory객체를 생성하게 도와줄 mybatis-config.xml 생성
+	<configuration>
+	  <mappers>
+    		<mapper resource="mybatis/bbsMapper.xml"/> <== 맵퍼 경로
+	  </mappers>
+	</configuration>
+
+	이후 맵퍼에서 설정
+	<mapper namespace="bbs"> <== bbs라는 이름의 객체 생성
+		<select id="selectAll" resultType="com.bit.day07.model.entity.BbsVo">
+			SELECT * FROM BBS OREDR BY NUM DESC;
+		</select>
+	</mapper>
+
+	서블릿디스패처에서 sqlSession 생성 (session템플릿에서 기본생성자가 없어서 인자로 세션팩토리 주입필요)
+
+	<bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+	p:dataSource-ref="dataSource"
+	p:configLocation="classpath:/mybatis-config.xml"
+	/>  ==> dataSource는 common dbcp (커넥션풀을 쉽게 제공하는 라이브러리)의 BasicDataSource
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> <<== template 는 SqlsessionFactory.opensession()를 매번 하지 않아도 되도록
+ 도와준다.
+		<constructor-arg ref="SqlSessionFactory"/>
+	</bean>
+	sqlsession은 원래 sqlSessionFactory.openSession() 을 통해 얻어와서 sqlSession객체의 메소드를 이용해 sql문 처리가능.
+
+	이후 
+스프링에서의 resources 파일처리
+	=> 디폴트로 resources 폴더 가 지정되어있긴 하지만 개별로 지정해주고 싶다면 집적 맵핑과 로케이션을 지정해주면 된다
+		<resources mapping="/css/**" location="/css/" />
+
+Spring dispatcher servlet.xml 설정 => namespaces 에 p스키마를 추가하면 <property>태그를 만들 필요 없이 p:id ="value" 형태로 넣어줄 수 있다.
+	ref를 받아야 하는 property 같은경우 id-ref라는 속성이 있는데 그걸 사용하면 된다. id-ref="values's ref";
+
+Spring annotation
+	@ResponseBody 리턴타입 혹은 메소드:  메소드에, 혹은 리턴타입에 @ResponseBody 로 어노테이션이 되어 있다면 메소드에서 리턴되는 값은 View 를 통해서 
+				출력되지 않고 HTTP Response Body 에 직접 쓰여지게 된다.
+
+	이때 쓰여지기 전에 리턴되는 데이터 타입에 따라 MessageConverter 에서 변환이 이뤄진 후 쓰여지게 된다.
+	4점대 annotation
+	@GetMapping("url") => get방식으로만 접근 @requestmapping(value="",method=get)과 같겠지
+	@PostMapping("url") => post..이하 위와 같음
+	@PutMapping("url") => ... 위와 같음
+	@DeleteMapping("url") => ... 위와 같음
+	@RestController controller 와 responsebody 를 합쳐놓은 퍼포먼스 / 메소드 전부 @responseBody를 적용한 것처럼 동작하게 해준다
+single page application
+	페이지 하나를 비동기 통신을 이용해 데이터를 갈아껴 가며 동적으로 구성하는 방식.
+	자바스크립트를 동원하여 a태그를 눌렀을 때 이벤트를 막고 컨텐츠 부분의 div의 html을 내가 원하는 걸로 바꾸어주는 방식으로 구현 가능하다
+	백엔드에서는 프론트의 비동기통신을 json으로 되돌려줄 로직을 작성하면 된다.
+
+SPA로 할 경우 필요한 라이브러리 : jackson data type => json타입으로 변환하기 위해 필요한 라이브러리. dependency로 추가해주자
+
+ResponseEntity 타입으로 헤더에 정보를 실어 보낼수 있음 <<<<<수정필요 restfulController 참조
 
 aop 의 expression 속성
 	 = "execution(* com.bit.day.. *impl.*(..))"
