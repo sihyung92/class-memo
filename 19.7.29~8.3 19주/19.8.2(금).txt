@@ -1,0 +1,98 @@
+19.8.2(금)
+
+AOP 관점지향 프로그래밍
+ 비즈니스 클래스에서 생각해보면 비즈니스 로직보다는 로깅이나 익셉션처리, 트랜잭션 관리 등의 코드가 더 많은 경우들이 있다.
+ 이럴 때 로직은 핵심관심, 모든 비즈니스클래스에 들어가야 하는 로/익/트 등은 횡단관심으로 분류 할 수 있는데 횡단 관심의 코드중복을
+ 막기위해 공통 로직으로 작동할 수 있도록 구현하는 것이 관점지향 프로그래밍이다.
+
+AOP의 동작방식은 프록시 서버 (프록시서버 참고 : https://ko.wikipedia.org/wiki/프록시_서버)운용 방식과 비슷한데 프록시 객체를 선언 후 
+DAO를 주입하면 dao에 접근하기전에 프록시 객체가 상황에 맞는 횡단관심을 수행하고 DAO객체를 호출한다.
+
+ApplicationContext.xml에 실제 예제를 보며 생각해보자.
+	<bean id="day09Dao"
+	class="com.bit.day09.model.Day09DaoImpl"></bean>
+	
+	<bean id="methodBeforeAdvice"
+	class="com.bit.day09.aop.BeforeRun"></bean>
+	
+	<bean id="proxyFactoryBean"
+	class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="day09Dao"/>
+		<property name="interceptorNames">
+			<array>
+				<value>methodBeforeAdvice</value>
+			</array>
+		</property>
+	</bean>
+이제 호출시에 Dao를 호출하는게 아니라 proxyFactoryBean을 호출하면 횡단관심이 주욱 실행되고 비즈니스 로직이 실행될 것이다.
+
+AOP의 Implements들은 다음과 같다.
+	MethodBeforeAdvice 메소드 실행 이전
+	AfterReturningAdvice 메소드 실행 이후 
+	ThrowsAdvice 에러 시 <==상속받아도 오버라이딩해야하는 메소드가 없다. f3키를 눌러 문서를 찾아가 예시샘플을 활용하자
+	methodInterceptor 실행 이전과 이후
+
+	해당 인터페이스들의 메소드를 오버라이딩해보면 여러 인자를 받는것을 볼 수 있다.
+	1.Method method => 실행시킬 메소드
+	2.Object[] args 어떤 인자들을 받았는지 오브젝트 배열로
+	3.Object target 호출할 비즈니스 로직 메소드(xml파일에서 타겟으로 지정한)
+	4.애프터 리터닝 어드바이스는 추가로 Object returnValue 도 받아볼 수 있다. 실제로 리턴되는 값 그대로
+	5.throwsAdvice는 Exception ex 객체 하나만 인자로 받는다. 에러상황에서 작동하는 메소드니까
+	6.methodInterceptor는 invocation 하나만 받는데, 해당 인자의 proceed()를 하면 타겟 메소드가 실행되는 시점이기때문에 그 위아래로 원하는
+		횡단관심을 구현하면 되고, return object는 proceed()결과를 리턴해주면 된다. (AfterReturningAdvice의 Object returnValue와 같음)
+
+하지만 위의 예제처럼 구현한다면 interceptor랑 다를게 무엇인가?? 원하는 애들만 콕콕 찝어 하고싶어.
+할 수 있는 비즈니스 메소드들은 jointcut이라고 하고 콕 찝어서 할 메소드는 pointcut이라고 부른다. aspect / advice는 실행할 횡단관심 메소드이다.
+pointcutAdvisor는 pointcut이 실행될 때 해당 advice를 맵핑해주는 것이다. 이러면 원하는 포인트 컷에만 원하는 어드바이스만 실행하도록 할 수 있다.
+org.springframework.aop.support.JdkRegexpMethodPointcut클래스나 org.springframework.aop.support.NameMatchMethodPointcut클래스로 pointcut 빈을 만들 수있다. property로 타겟메소드 지정
+org.springframework.aop.support.DefaultPointcutAdvisor클래스로 포인트컷 어드바이저 빈을 만들 수 있다. property로 포인트컷과 어드바이스 지정.
+그리고 org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator를 쓰면 proxyFactoryBean에서 일일이 포인트 어드바이저를 지정해줄 필요 없이
+자동으로 포인트 어드바이저들이 등록된다.
+물론 이렇게 잘 안쓴다. AOP구현은 aspectJ라는 프레임워크 쓸꺼야 ^^ 개념만 찝어두자  
+
+<aop:aspectj-autoproxy/> 잊지말자!!! 설정해주어야 자동으로 aos 어드바이저들을 객체 생성해준다.
+<aop:config>를 통해 각 포인트컷들에 디테일하게 설정을 줄 수 있다. 여러개가 들어가도 무방!
+예제를 통해 생각해보자. 시기가 어느때, 어떤 포인트컷에, 어떤 어드바이스/aspect를 실행할건지. 그리고 리턴일때는 리턴값 변수의 이름을 지정해줄 수 있고.
+	!!!!정리필요
+	<bean id="day09Dao"
+	class="com.bit.day09.model.Day09DaoImpl"></bean>
+	<bean id="methodBeforeAdvice" class="com.bit.day09.aop.BeforeRun"/>
+	<aop:aspectj-autoproxy/>
+	<aop:config>
+			<aop:pointcut id="bitBefore" expression="execution(* com.bit.day09.model.Day09DaoImpl.*(..))" />
+		<aop:aspect ref="methodBeforeAdvice">
+			<aop:before method="before" pointcut-ref="bitBefore"/>
+			<aop:after-returning returning="obj" method="after" pointcut-ref="bitBefore"/>
+		</aop:aspect>
+	</aop:config> 
+
+aop 의 expression 속성
+	 = "execution(* com.bit.day.. *impl.*(..))"
+		    리턴   패키지     클래스 메소드&매개변수
+리턴타입 표현식 : *, void, !void
+패키지 지정 : com.~~~~.bit <<정확히 그 패키지만, com.~~.bit.. <<이 패키지 이하 전부, com.~~.bit..impl 마지막 패키지이름이 impl로 끝나는 패키지들
+클래스 지정 : Board << 정확히 Board만, *Board <<~~~Board로 끝나는, Board+ <<Board의 자식클래스
+메소드 지정 : *(..) <<모든 메소드, get*(..) <<,get으로 시작되는 모든 메소드
+매개변수 지정 : (..) <전부 , (*) <반드시 한개, (type) < 반드시 해당타입 변수, (!type) <해당타입을 가지지 않은 메소드들
+
+aop annotation
+@Aspect 어드바이스 클래스로 지정. @Component도 달아주지 않으면 객체가 생성되지 않아 작동 안 할테니 주의
+	@Before("execution(~~~)") = 실행전
+	@After("~"), @AfterReturning("~",return객체이름) = 실행 후
+	@Around("~") arround, 이 클래스는 ProceedingJoinPoint 객체를 인자로 설정해서 해당 인자에서 proceed 해주어야 하기전, 하기 후의 메소드를 구현하겠지
+
+mybatis 스킬 : 
+	mapper에서 namespace를 인터페이스 경로로 줘버린다. 이후 sqlSession 객체를 주입받아  sqlSession.getMapper(Day09Dao.class).selectAll(); 하는 식으로
+	따로 구현을 안하고도 mybatis를 통해 dao역할을 수행하게 할 수 있다. 그러려면 경로명과 메소드명, 파라미터 리턴타입을 맞춰주어야 할 것이다
+
+	dynamic sql : mybatis는 쿼리의 동적입력도 지원한다. 뭘로? if,choose,trim,foreach로. => http://www.mybatis.org/mybatis-3/ko/dynamic-sql.html 참조
+		if문 같은 경우 else문이 없단 것에 유의. choose문은 태그 하위에 when, otherwise로 case문처럼 짤 수 있다.
+
+aop 상의 트랜잭션 : annotation  방식은
+	서블릿.xml에서
+	<aop:aspectj-autoproxy/>
+	<tx:annotation-driven/>
+	후 @Transactional을 클래스 혹은 메소드위에 부착을 통해 간단하게 트랜잭션 구현 가능. <= 원리에 대해 학습필요
+	,https://goddaehee.tistory.com/167 참고
+
+다음주를 위해 android studio 설치

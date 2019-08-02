@@ -29,7 +29,13 @@ orm ÇÁ·¹ÀÓ¿öÅ© »ç¿ë => mybatis, http://www.mybatis.org/mybatis-3/ko/index.html
 	p:dataSource-ref="dataSource"
 	p:configLocation="classpath:/mybatis-config.xml"
 	/>  ==> dataSource´Â common dbcp (Ä¿³Ø¼ÇÇ®À» ½±°Ô Á¦°øÇÏ´Â ¶óÀÌºê·¯¸®)ÀÇ BasicDataSource
-	
+	¸Ê ·ÎÄÉÀÌ¼ÇÀ» ÀÌ·¸°Ô ¹ŞÀ»¼öµµ ÀÖ´Ù.
+	**	<property name="mapperLocations">
+			<array>
+				<value>classpath*:sqlmap/*-mapper.xml</value>
+			</array>
+		</property>
+
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> <<== template ´Â SqlsessionFactory.opensession()¸¦ ¸Å¹ø ÇÏÁö ¾Ê¾Æµµ µÇµµ·Ï
  µµ¿ÍÁØ´Ù.
 		<constructor-arg ref="SqlSessionFactory"/>
@@ -64,6 +70,3 @@ SPA·Î ÇÒ °æ¿ì ÇÊ¿äÇÑ ¶óÀÌºê·¯¸® : jackson data type => jsonÅ¸ÀÔÀ¸·Î º¯È¯ÇÏ±â À§Ç
 
 ResponseEntity Å¸ÀÔÀ¸·Î Çì´õ¿¡ Á¤º¸¸¦ ½Ç¾î º¸³¾¼ö ÀÖÀ½ <<<<<¼öÁ¤ÇÊ¿ä restfulController ÂüÁ¶
 
-aop ÀÇ expression ¼Ó¼º
-	 = "execution(* com.bit.day.. *impl.*(..))"
-		    ¸®ÅÏ   ÆĞÅ°Áö     Å¬·¡½º ¸Ş¼Òµå&¸Å°³º¯¼ö
