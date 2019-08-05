@@ -1,0 +1,122 @@
+19.8.5(월)
+오늘의 수업 - 
+스프링 마무리 - 파일 다운로드 / 업로드
+
+파일 다운로드 / 업로드
+	1. 업로드!
+	필요 디펜던시 : apache Commons-fileupload
+	<dependency>
+	    <groupId>commons-fileupload</groupId>
+	    <artifactId>commons-fileupload</artifactId>
+	    <version>1.4</version>
+	</dependency>
+
+	서블릿 디스패처 설정
+		스프링이 가지고 있는 파일 업로드 클래스
+		org.springframework.web.multipart.commons.CommonsMultipartResolver.class <==commons 라이브러리의 multipart를 지원
+		dispatcher-servlet.xml 설정에
+			<!-- upload file size limit : 1mb -> 1024*1024*5 byte -->
+		<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<beans:property name="maxUploadSize" value="5242880"/>
+			<!--<beans:property name="uploadTempDir" value=""/>--> <==== 얘를 주어 업로드 파일 위치를 집적 지정할 수 도 있다.
+		</beans:bean>
+		를 추가해준다. 
+	
+	
+	뷰 페이지 설정
+		<form action ="upload" method="post" enctype="multipart/form-data"> <=== enctype이 중요
+
+	컨트롤러 설정
+		org.springframework.web.multipart.MultipartFile 을 통해 넘어온 폼 데이터를 인자로 받아서 다루면 된다. 해당 객체의 인풋스트림으로 받아서 java IO방식으로 제어할 수 도 있고
+		편하게 하고 싶으면 해당 객체의 메소드인 .transferTo(path) 보낼 수 도 있다.
+	!주의 : 중복파일 처리는 알아서 해야한다. System.currentTimeMillis()를 통해 받아서 붙이는 방식 등을 고려하자.
+	 	그리고 또! DB에는 파일 본래이름과 변경된 이름을 같이 집어넣어주어야 한다. 나중에 다운로드를 지원할 때 원래 파일 이름으로 불러들이려고 시도할 테니 
+
+	2. 다운로드!
+		HttpServletResponse 객체 리스폰스의 아웃풋 스트림을 받고 자료가 들어있는 디렉토리+파일이름을 기반으로 파일객체를 생성하여 인풋스트림을 만든다. 인풋스트림에서 받아온
+		데이터를 아웃풋 스트림으로 뽑아주면 구현가능.
+		org.springframework.util.FileCopyUtils 클래스에	FileCopyUtils.copy(fis, out); 를 통해 아웃풋스트림을 선언하는 과정을 생략할 수 도 있을 것 같다. <<공부필요
+
+		해당 파일을 보여주려는 게 아니라 다운로드 시키려면 컨텐트타입을 뭔지 모르게 해서 페이지로 읽을 수 없게 해야한다.
+	3. 다중 업로드! 		
+		org.springframework.web.multipart.MultipartFile 객체를 인자로 받는게 아니라 배열로 받아야겠지? 여러개니까. 근데 해보면 init과정에서 에러남. 배열에다가는 잘 못넣어주는구나.
+		그렇기 때문에 MultipartFile배열 필드가 있는 vo하나 만들고 겟셋만 generate해줘서 해당 vo를 @ModelAttribute 어노테이션을 달아 인자로 받아준다. 그러면 거기서 multipart 배열을 받을 수 있을 것이고
+		해당 배열을 for문으로 돌려서 업로드 절차를 거치도록 하면된다.
+	** 혹시~ @PathVariable 을 통해 파일이름을 불러들이려 할때 확장명은 빼버리기때문에 /download/{filename:.+} <== {filename}이 아니라! 저렇게 적어주어야 함.
+	** 다운로드 파일이름을 내가 설정하고 싶을 때 ! 다운로드 컨트롤러에서 HttpServletResponse객체 => resp.setHeader("Content-Disposition", "attachment; filename=\""+원하는이름+"\"");
+	* 다운로드를 유도하기 위해 resp.setContentType("application/octet-stream;charset=\"utf-8\""); 현재 안쓰는 포멧으로 변경한다. application/octet-stream은 최초의 유닉스os에서 사용하던 타입으로 현재는 사용되지 않아 적절하다.
+	* a태그에 target="_blank" 라는 속성을 주어 새로운 창에서 출력되게 할 수 있다.
+
+안드로이드
+	haxm -> 안드로이드 에뮬레이터 가속기 (android studio를 설치할 때 기설치 되어 있어야 정상)
+	프로젝트를 만들 때 api레벨을 맞출 수 있다. help me choose를 통해 얼마만큼의 기기와 호환되는지 확인할 수 있다.
+	버전별 특징 : 3.0부터 타블로이드 지원, 그 전까진 스마트폰 지원, 4.0 (ice cream sandwich)부터는 둘다 섞어서.
+			아이스크림 샌드위치는 처음 두개를 다 지원하느라 구리다.
+	* 버전별로 a부터 z까지 올라가는데 디저트 이름을 달아주는 관행이 있다. yummy~
+	* 각 버전은 각각 다른 OS이다. 하위호환을 지원하긴 하지만... 서로 다른 기기를 위한 os를 호환시키려 할 경우(즉 4.0이하) 각 기기별 프로젝트를 따로 만들어버리는 꼴을 보게 될 것이다.
+
+	알아두면 재미있는 arm 이야기
+		모바일 기기는 대부분 cpu를 arm을 활용하는데 컴퓨터는 intel꺼 쓰자나? 그러다보니 cpu간의 차이에서 생기는 연산차이 때문에 에뮬레이터가 몹시 느리다. 그래서 안드 스튜디오에서 인텔걸로 잘 돌아가게
+		호환하는 이미지를 제공한다. x86으로 된거 ^.^ other은 arm용, 모바일기기 테스트할 때는 그걸로 해야할지도?
+
+	Tools에서 AVD Manager를 눌러 가상기기를 생성. 이미지는 q나  
+	C:\Users\USER\.android\avd
+
+	IntelliJ IDEA 환경에서 개발된 안드로이드 스튜디오. 이클립스에서 ctrl+space였던 단축키가 ctrl+space, alt+insert 
+
+	프로젝트 및의 자바폴더의 가장 상위 파일이 실제 소스코드임.(com.example.myapplication) 나머지 두개는 테스트용
+	activity_main.xml은 res/layout/activity_main.xml 파일임 안드로이드 스튜디오에서 만지면 xml파일이 변경되는것
+	activity_main.xml - design
+		LinearLayout (horizontal, vertical) 두가지 방식. 위에서 쌓이는, 옆으로 쌓이는
+		각 엘리먼트들은 match_parent 와 wrap_content를 통해 부모 객체에 꽉 차게, 내용사이즈로 크기가 조정되게 할 수 있다.
+	
+	안드로이드는 c로 돌아가게 되어있다. 그런데 java로도 돌아간다는 것은? java로 c언어를 돌리기위해 Dalvik virtual machine을 구현함, 나중에 ART(안드 런타임) VM으로 교체. 리소스의
+	주소에 접근하기 위해 R클래스를 생성하게되고 필드로 사용되는 변수들에 대해 자동으로 메모리주소를 가지게 됨
+
+	결국 안드로이드 소스라는 것은 무엇이냐 ? c언어로 제어해야 하고 그러자면 포인터가 필요하고 포인터를 달기 위해 resource에 담겨있는 xml파일들로 R(resources)객체를 생성하면서 모든 주소를 명시하고(포인터) 그 R객체를 자바 소스로 다루는 것임
+	리소스를 통해 미리 메모리주소들을 할당해 놓음으로써 로딩은 오래걸리지만 실행은 빠르게 이루어진다. java code로 작성하면 로딩은 금방 끝나겠지만 실행이 오래 걸릴 것이다. 주로 xml을 통해 실행을 빠르게 하는 방식이 애용된다.
+	 
+	안드로이드 xml 태그 문법 : 
+		android:id="@+id/tf01" resources에 id를 추가한다, 그 아이디는 tf01 // @+?? ??를 추가한다
+		android:text="@string/app_name" 스트링 리소스에서 app_name의 value를 찾아와서 텍스트에 넣자 // @?? ??를 호출한다
+		android:oo="??" 패턴으로 지정할 수 도 있지만, xml로 할때의 장점을 말아먹는 짓이라서.. 로딩도 오래걸리고 실행도 오래걸린다
+
+	안드로이드 화면 디자인은 모두 상대적인 방식으로 지정된다. 왜냐하면 각 핸드폰마다 모니터 사양이 다르니까! 하지만 안드로이드 스튜디오에서의 보여지는 모습과 실제로 보여지는 모습은 조금 다르다. 원하는대로 잘 안되서 개빡치게 한다고..
+
+	프로젝트의 환경설정 menifests/AndroidManifest.xml 이 안드로이드 프로젝트의 환경설정 부분이다.
+		<application>이 루트 태그이다. activity 태그는 각 화면이 된다. main activity가 되는 activity태그는
+		<intent-filter>
+			<action android:name="android.intent.action.MAIN" />
+			<category android:name="android.intent.category.LAUNCHER" />
+		</intent-filter>
+		그리고 각 태그가 얻는 권한들 같은 경우에도 여기서 정의가 된다.
+
+	그동안 전가의 보도처럼 써왔던 System.out.println은 모바일기기의 console에 뜨고 우리는 거기에 접근할 수 없으므로 체크가 불가능하다. 대신 안드로이드 스튜디오는 logCat이라는 logging 툴을 제공한다.
+	Log.d("bit", "onCreate: 출력합니다"); 이런 식으로 사용하자. logcat은 미주알고주알 모든 것에 대해 나오므로 tag를 특이한 것을 사용하여 필터를 적용할 수 있게 해서 보면 된다.
+	log4j처럼 logcat도 6개의 모드가 있고 Log.d << 이 글자가 Verbose, Debug, Info, Warn, Error, Assert 중 앞글자를 따서 한 것, 원하는 것을 쓰면 된다.
+
+	**Layout중에 보이는 모든 엘리먼트들은 View를 상속받는다! 그래서 온갓 것이 view 클래스에 필드 및 메소드 및 이너클래스로 구현되어있음.
+	리스너 이벤트 중 클릭 이벤트.
+	A방법. xml에서 각 엘리먼트에 아이디를 주고, 자바 소스에서 findViewById를 통해 찾아내장. 그리고 setOnClickListener(View.OnClickListener())메소드를 사용하여 인자인 클릭리스너 인터페이스를 구현하여 클릭이벤트를 만들 수 있다.
+	B방법. 자바 코드에 View view객체를 인자로 받는 메소드를 만들고, activity_main.xml파일에서 이벤트를 달고 싶은 엘리먼트 태그에 android.onClick="메소드 이름"식으로 하는 방법도 있다. (android4.0이후 문법)
+		이 방법에서 View view객체는 this, 이벤트가 일어나는 객체이다.
+	
+	타이틀바 치우기 setTheme(R.style.Theme_AppCompat_Light_NoActionBar); <==한페이지만 할 때 적용할만한 방법.
+		manifest.xml에 가서 설정된 테마에 f4를 눌러 클래스를 찾아간 다음 원하는 설정을 고쳐서 쓰면 된다.
+	혹은 style.xml파일에 가서 원하는 테마를 집적 고를 수 도 있다.
+
+	안드로이드 식 alert 띄우기
+		Toast toast = Toast.makeText(this, "메세지 출력",Toast.LENGTH_SHORT); 
+
+	안드로이드 사이즈 단위 : dp, 폰트 크기 단위 : sp
+
+	페이지 넘기기 / 파라미터 넘기기
+		이벤트 메소드 안에
+		Intent intent = new Intent(this, 넘기고자하는페이지클래스.class);
+		intent.putExtra(이름,value);
+		start Activity(intent); <<페이지 이동
+
+		받는 페이지에서는
+		this.getIntent() 를 통해 intent객체를 받아내고
+		String msg = intent.getStringExtra("파라미터 이름"); <<받아내야하는 타입
+		받아낸 파라미터 활용
