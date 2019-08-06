@@ -1,0 +1,118 @@
+19.8.6(화)
+안드로이드
+	webView 위젯을 통해 외부 혹은 내부파일에 있는 html파일을 불러들여오자!(hybrid)
+	activity_main.xml파일에서 위젯=>webView 엘리먼트를 넣어준 뒤
+	MainActivity.java에서 해당 요소를 잡고(webView객체) 메소드 중 loadUrl을 통해 파일이라면 file:///android_asset/~~~ 를, 
+	url이라면 url을 그대로 인자로 주면 된다.
+	assets folder 만들기 => new => folder => Assets Folder
+
+	*하이브리드 앱을 만드는 두가지 방법!
+		A안 : loadUrl인자를 웹앱페이지 url을 주어 해결 => 인터넷 연결이 없으면 사용할 수 없음
+		B안 : assets파일에 html파일을 넣어 해결 => 이 방식으로 하면 컨테이너를 쓸 수 없고 (즉 jsp페이지를 쓸 수 없기 때문에) 백엔드를 다룰 방법이 없다. 모조리 비동기로 때려야함
+
+	
+	프로그레스 바의 활용
+		webView엘리먼트를 잡은 후 해당 webView에 setWebChromeClient(new WebChromeClient(){
+		  @Override
+          	  public void onProgressChanged(WebView view, int newProgress) {
+             	  	 super.onProgressChanged(view, newProgress);
+			 pbar.setProgress(newProgress); <== 내가 잡은 progressBar 엘리먼트
+              		 if(newProgress==100){
+ 		          pbar1.setVisibility(View.INVISIBLE);
+              		 }else{
+                    	  pbar1.setVisibility(View.VISIBLE);
+		         }
+            	  }
+		})를 통해 WebChromeClientonProgressChanged 메소드를 오버라이딩 해주고 (로딩률에 따른 이벤트리스너임)
+		newProgress인자(로딩 진행률)로 progress바를 채워줄 수 있다.
+		View같은 경우 visibility관련 필드상수로 invisible, gone(아예 사라짐), visible등을 가지고 있다. 찾아서 활용하자
+
+하이브리드
+	node js 설치
+		https://nodejs.org/ko/
+		=>node js는 javascript를 통해 앱의 백엔드 작업들을 수행할 수 있게 해주는 런타임 
+	apache cordova 설치 (cordova가 나중에 adove에 phone gap으로 이름을바꾸어 팔아먹음,phonegap은 유료화되고 cordova는 apache에서 무료 지원)
+
+	npm : 자바스크립트 프로그래밍 언어를 위한 패키지 관리자. (저장소)
+		npm 명령어 : -g,--global 옵션 , 이걸 안 주면 해당 패키지에 대한 모듈로서만 들어가고 -g를 주면 시스템 전체에서 전역적으로 쓸 수 있다 (path에 넣겠지)
+	하이브리드는 npm에 패키징한 우리의 파일을 서비스 함으로써 이루어진다.
+	
+	cordova는 여러 기기에 맞춰서 컴파일을 해준다. 하나의 코드로 다양한 기기에 서비스 가능
+
+ *cordova로 프로젝트 생성 및 진행!
+	https://cordova.apache.org/#getstarted 참조하여 진행
+	$cordova create 프로젝트이름 패키지 디스플레이네임
+
+	내 프로젝트에 들어가서 cordova platform ls 를 통해 설치가능한 플러그인을 확인하고 원하는 플랫폼을
+	cordova platform add 원하는플랫폼을 만들어준다. 플랫폼마다 맞춤 소스를 생성해주는 기준은 프로젝트/www/html파일들을 기준으로 만든다.
+		*browser 는 웹 환경을 뜻한다.
+
+	테스트를 해보려면 빌드가 되어야 할 것 이다.
+	cordova build {원하는 플랫폼}을 통해 빌드할 수 있다.
+
+	외부 페이지에서 파일을 불러오고 싶으면 프로젝트 경로의 config.xml에서 <content src="index.html"/>을 원하는 url로 교체해주면 된다. <<<cordova 9.0에서는 안 됨. index.html을 js로 제어해서 보내는 방법이 있다
+	config.xml에 whitelist plugin 하위의 <allow-intent href=""> 의 의미 <== 해당링크를 누르면 외부 앱으로 연결
+	<allow-navigation href="">의 의미 <== 다른 앱으로 가는게 아니라 현재 앱에서 페이지만 변경
+	<allow-intent>의 경로들 : tel:* 전화로, sms:* 문자로, mailto:* 이메일, geo:* 지도,
+	<platform name="android"> 태그에 쌓여있는 allow들은 해당 플랫폼에서만 작동하는 whitelist이다
+		예를들어 android 마켓 접근은 market: 같은 경우 	
+
+	cordova에서 만들어 준 index.html의 설정들
+	js 소스를 두 군데에서 받아오는 걸 볼 수 있다. js의 index.js에 우리가 원하는 스크립트를 적으면 되고, cordova.js도 있는데 지워선 안 된다. 컴파일 이후 에 필요한 파일이기 때문.
+	* <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover"> 모바일환경에서도 미디어쿼리들이 적용될 수 있도록 해놓은 설정
+
+	cordova에서 plugin 주입하기.
+		현재 설치되어 있는 plugin을 볼 수 있는 명령어 : cordova plugin ls
+		설치가능한 plugin은 https://cordova.apache.org/docs/en/latest/ 홈페이지 좌측메뉴 하단에서 찾을 수 있다.
+		그 중 모든 플러그인의 기본이 되는 device플러그인! cordova-plugin-device
+		먼저 설치해주자. 이후 device dom을 잡아 각종 속성을 이용할 수 있다.
+	
+	cordova-plugin-geolocation 을 주입하면  위도, 경도등 여러가지 정보를 받을 수 있음.
+		navigator.geolocation.getCurrentPosition(onSuccess(성공시 펑션), onError(실패시 펑션)); 값 한번만 받아오기
+		navigator.geolocation.watchPosition(onSuccess(성공시 펑션), onError(실패시 펑션)); 값 interval로 주기적으로 받아오기
+
+	cordova-plugin-camera 
+		카메라와 사진의 이미지파일에 대한 접근이 가능해진다. https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-camera/index.html 의 example들을 참고
+
+	알아두면 좋을~~~ 1분정보 :
+		지리정보 받는방법 세가지!
+		1.gps받아버림 새틀라이트 최고
+		2.기지국 정보로 삼각측량
+		3.인터넷회선 꼽을 때 인터넷회사에서 맵을 만듬. 맵 기반
+		정확도는 1>2>3 앞에 것이 정확도가 높음
+
+	전자정부 표준 프레임워크에서 사용하고 있는 jquery Mobile
+		body>div[data-role="page"]>div[data-role="header"], div[data-role="content"], div[data-role="footer"] 로 이루어진다. data-position = "fixed"를 주면 해당 자리에 고정
+		하나의 특징은 페이지 이동시 애니메이션 효과가 주어진다는 것(현재버전 fade in, fade out / 예전엔 slide) 인데, 페이지 이동에 애니메이션이 가능한 까닭은 jq-mobile은 비동기 통신방식으로
+		작동하기 때문이다. a태그를 달아보았자 비동기로 정보를 불러들이는 방식으로 바꿔버림. 그래서 첫페이지를 제외하고는 html,헤더,바디태그가 필요없음.
+
+		페이지를 이동하는 다른방식으로는 하나의 html 파일의 body에 data-role="page"를 여러장 주고 아이디를 주어서 href="#id"를 통해 페이지를 넘기는 방식으로 사용할 수 도 있다.
+		이것은 전체 페이지를 한번에 불러들이는 방식이기 때문에 로딩은 오래 걸리지만 동작은 부드러울 것이다. 페이지들을 여러 html파일로 나눈 방식이라면 이와 반대겠지.
+
+		그러자면 히스토리 문제가 걸리겠지? 한페이지에서 다 다루니까 뒤로가기 하면 뭐가 나오겠냐는 말이다. jquery모바일은 페이지가 넘어갈 때 마다 stack방식으로 각 페이지들을 메모리에 저장해둔다.
+		사용자에 동작에 맞춰 push and pop!
+		그러므로 뒤로가기 동작이 'history back'을 뜻할 때는 이벤트를 주길 원하는 엘리먼트에 data-rel="back" 속성을 주어야 작동
+
+		각 엘리먼트에 data-icon="주고싶은 아이콘" 을 통해 css에 구현된 여러가지 아이콘을 이용할 수 있다. jquey-mobile api 참조
+		아이콘의 위치는 왼편이 디폴트인데, data-iconpos="bottom,top,left,right" 를 통해 위치를 정해줄 수 도 있다.
+
+		header에 a태그를 주면 버튼모양으로 변하고, 2개를 주면 위에것은 왼편 아랫것은 오른편에 자동으로 붙는다. 3개가 넘으면 에러.
+		footer에 a태그를 주면 버튼으로는 바꿔주지만 숫자제한은 없음
+		
+		content에 button을 주면 모바일 스러운 버튼으로 알아서 붙음. 좌우가 꽉 차기 때문에 작은 버튼으로 주고 싶으면 data-inline="true" 속성을 주면 인라인 방식으로 작아진다.
+		약간 부트스트랩 느낌으로다가 content안의 a태그도 data-role="button"하면 버튼모양으로 변함
+
+		버튼들은 <div data-role=controlgroup> 태그에 넣음으로써 부트스트랩의 버튼 그룹처럼 사용할 수 있다. data-type="vertical","horizontal" 로 가로세로를 정할 수 있는데, vertical이 디폴트이다.
+		!주의 : footer에서는 horizontal datatype만 받아준다. vertical이면 씹어버림
+
+		div[data-role="navbar"] 하위의 ul>li>a 엘리먼트들은 마치 controlgroup을 한 것처럼 정렬된다. 5개 이하는 horizontal로, 6개부터는 horizontal과 vertical을 혼합한 형태로 정렬해준다.
+		*참고로 data-icon을 붙이면 top위치에 붙여준다. iconpos 를 지정하고 싶으면 navbar div에 attribute를 주어야 한다. 개별 메뉴에 attribute 줘봐야 안 먹음
+		*content에 넣으면 좌우가 뜨고, header에 넣으면 header와 content사이를 꽉 채우는 스타일로 들어가고, footer에 넣으면 가장 하단을 채운다.
+		*a태그에 class="ui-button-active" 를 주면 클릭되어 있는 것 처럼 활성화 된다.
+
+		ul[data-role="listview"] 하위의 >li>a 엘리먼트들은 리스트 형식으로 클릭할 수 있는 리스트가 된다. ul에 data-inset="true" 를 주면 좌우를 조금 여백을 주게 된다. data-filter="true"를 주면 검색창을 띄울 수 있다.
+		li 속성으로 data-role="list-divider"를 주면 위 아래를 구분해주는 구분 메뉴가 된다. 그 안에 inner text로 ㄱ,ㄴ,ㄷ을 주면 뭐 가나다 순처럼 보이는 이런 거 할 수 있겠지
+		하나의 li에 a태그를 두개를 넣으면 위에 것은 이름 부분, 아랫 것은 오른쪽의 아이콘 부분의 버튼역할을 한다.
+		
+
+	
