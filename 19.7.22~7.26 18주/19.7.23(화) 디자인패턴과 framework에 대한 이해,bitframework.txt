@@ -35,7 +35,8 @@ properties 파일 다루는 패턴
 		ClassLoader loader = clz.getClassLoader();
 		InputStream is = loader.getResourceAsStream("bit.properties");
 
-Class와 ClassLoader 
+Class와 ClassLoader : 자바 리플렉션인 Class는 아직 생성되지 않은 객체를 패키지 정보만 가지고 미리 생성을 준비 할 수 있다.
+	ClassLoader는 객체를 생성하는 과정에 대한 정보를 담고 있는 객체로써 원하는 데이터를 추출하여 활용 할 수 있다.
 
 프로젝트와 상관없이 사용할 수 있는 template클래스.
 오브젝트 배열과 추상클래스를 활용하여 프로젝트의 의존성을 없앤다.

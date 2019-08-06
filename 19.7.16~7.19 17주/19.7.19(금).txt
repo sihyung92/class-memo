@@ -1,6 +1,0 @@
-19.7.19(금)
-이클립스 메모리 늘리는 방법 : 
-이클립스 폴더위치 열기 -> eclipse.ini 메모장 열기 -> -xms원하는최소메모리m -xmx원하는최대메모리m 수정
-
-메이븐 cmd상에서 webapp 선택하는 법 : mvn archetype:generate -Dfilter=그룹아이디:검색어 (검색어는 필수)
-org.apache.maven.archetypes:maven-archetype-webapp 선택
