@@ -17,18 +17,20 @@ orm 프레임워크 사용 => mybatis, http://www.mybatis.org/mybatis-3/ko/index.html
 	</configuration>
 
 	이후 맵퍼에서 설정
-	<mapper namespace="bbs"> <== bbs라는 이름의 객체 생성
+	<mapper namespace="bbs"> <== bbs라는 이름의 인터페이스를 찾아서 바인딩해준다. 짧은 이름은 혼동의 여지가 생기기 때문에 패키지명을 다 적어주는 것이 에러를 줄이는 길.
 		<select id="selectAll" resultType="com.bit.day07.model.entity.BbsVo">
 			SELECT * FROM BBS OREDR BY NUM DESC;
 		</select>
 	</mapper>
+	만약 파라미터가 있다면 parameterType="" 을 설정해 주어야 한다. 파라미터가 기본형 타입일 경우 #{value} 라는 이름으로 받는다.
+	자료구조 일 경우 #{변수명} 으로 받는다.
+	배열일 경우 #{array[index]} 로 값을 받을 수 있다! 
 
 	서블릿디스패처에서 sqlSession 생성 (session템플릿에서 기본생성자가 없어서 인자로 세션팩토리 주입필요)
 
 	<bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
 	p:dataSource-ref="dataSource"
-	p:configLocation="classpath:/mybatis-config.xml"
-	/>  ==> dataSource는 common dbcp (커넥션풀을 쉽게 제공하는 라이브러리)의 BasicDataSource
+	p:configLocation="classpath:/mybatis-config.xml"/>  ==> dataSource는 common dbcp (커넥션풀을 쉽게 제공하는 라이브러리)의 BasicDataSource
 	맵 로케이션을 이렇게 받을수도 있다.
 	**	<property name="mapperLocations">
 			<array>
