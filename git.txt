@@ -13,4 +13,6 @@ git checkout -b 'local에서 쓸 브랜치이름' remote/branchName => 리모트 브랜치를 �
 git reset --hard 'commit 이름' => 리셋 쎄게
 git log --pretty=oneline => 로그를 한줄씩만
 git log --graph => 각 브랜치의 흐름을 그래프로 표현
+git merge --abort => confilct 상황에서 빠져나오기 (merge 전으로 되돌리기)
+git merge -Xignore-all-space => 머지 시 공백때문에 conflict가 생기는 것을 방지
 git log --oneline --decorate --graph --all => 모든 브랜치의 흐름을 표현.
